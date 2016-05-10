@@ -54,6 +54,7 @@ Route::put('/rto/approval', 'RTOController@editApproval');
 Route::post('/mail/send', 'MailController@send');
 
 
+
 });
 // Request existing RTOs
 
