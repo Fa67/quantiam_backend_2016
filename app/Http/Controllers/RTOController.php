@@ -27,20 +27,18 @@ class RTOController extends Controller
 
 	public function loadRTO(Request $request)
 	{
-		$employeeIDs = array($user_id = $request -> user -> employeeid);
-
-		$supervisors = $request -> user -> supervisors;
-
-		foreach($supervisors as $obj)
+		$idstofetch = array($request->user->employeeid);
+		foreach($request->user->subordinates as $obj)
 		{
-			$employeeIDs[] = $obj -> employeeid;
+			$idstofetch[] = $obj -> employeeid;
 		}
-
-		$rtos = array()
-		foreach ($employeeIDs as $employeeID)
+		dd($idstofetch);
+		$results = array();
+		foreach($idstofetch as $employeeID)
 		{
-			$rtos[] = $this -> rto -> getRTOdata($employeeID);
+			$results[] = $this -> rto -> getSubRTO($employeeID);
 		}
+		dd($results);
 	}
 
 

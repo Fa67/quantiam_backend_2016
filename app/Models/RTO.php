@@ -95,14 +95,6 @@ class RTO extends Model
     }
 
 
-
-    public function findSupervisor($employeeID)
-    {   // Can be modfied later with a hierarchy table to return all possible supervisors, w/ direct supervisor at [0]
-        return 4;
-    }
-
-
-
     // Used to pull a specified table with a given id name and number.
     private function getSpecificTable($tablename, $idname, $idnumber)
     {
@@ -139,7 +131,7 @@ class RTO extends Model
 
 
 
-    function getRTOdata($requestID)
+    private function getRTOdata($requestID)
     { 
 
         $return_object = array();
@@ -177,5 +169,20 @@ class RTO extends Model
                             $this -> approvals = $approvals;  
 
         return $this;
+    }
+
+    public function getSubRTO($employeeID)
+    { 
+        $results = array();
+        $requestIDs = DB::table('timesheet_rto') -> select ('requestID')
+                                       -> where ('employeeID', '=', $employeeID)
+                                       -> get();
+
+        dd($requestIDs);
+        foreach ($requestIDs as $obj)
+        {
+           $results[] = $this -> getRTOdata($obj -> requestID);
+        }
+        return $results;
     }
 }
