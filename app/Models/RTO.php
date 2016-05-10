@@ -131,7 +131,7 @@ class RTO extends Model
 
 
 
-    private function getRTOdata($requestID)
+    public function getRTOdata($requestID)
     { 
 
         $return_object = array();
@@ -171,18 +171,22 @@ class RTO extends Model
         return $this;
     }
 
-    public function getSubRTO($employeeID)
+    public function getSubRTO($IDarray)
     { 
-        $results = array();
-        $requestIDs = DB::table('timesheet_rto') -> select ('requestID')
-                                       -> where ('employeeID', '=', $employeeID)
-                                       -> get();
 
-        dd($requestIDs);
-        foreach ($requestIDs as $obj)
-        {
-           $results[] = $this -> getRTOdata($obj -> requestID);
-        }
-        return $results;
+        $return_object = array();
+        
+        $requestIDarray = DB::table('timesheet_rto')
+                                ->whereIn('timesheet_rto.employeeID', $IDarray)
+                                ->pluck('requestID'); // Requests column of requestID || for scalability, consider using chunk();
+
+        $tableData = DB::table('timesheet_rto')
+                ->select('*')
+                ->orderBy('updated')
+                ->whereIn('timesheet_rto.requestID', $requestIDarray)
+                ->take(100)
+                ->get();
+                                    
+        return $tableData;
     }
 }
