@@ -32,17 +32,13 @@ class RTOController extends Controller
 		{
 			$idstofetch[] = $obj -> employeeid;
 		}
-		dd($idstofetch);
-		$results = array();
-		foreach($idstofetch as $employeeID)
-		{
-			$results[] = $this -> rto -> getSubRTO($employeeID);
-		}
-		dd($results);
+
 	}
 
 
 	// Return a Json array of Subordinate User Objects
+
+	
 	public function getSubordinates(Request $request, $user_id)
 	{	dd();
 		$subordinates = (new User($user_id)) -> getSubordinates();
