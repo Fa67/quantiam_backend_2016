@@ -33,21 +33,6 @@ class RTOController extends Controller
 			$idstofetch[] = $obj -> employeeid;
 		}
 
-		$results = $this -> rto -> getSubRTO($idstofetch);
-
-		return response() -> json (['rtos' => $results], 200);
-	}
-
-	public function specRTO($requestID)
-	{
-		try {
-			$response = $this -> rto -> getRTOdata($requestID);
-			return response() -> json ([$response], 200);
-			
-		} catch (\Exception $e)
-		{
-			return response() -> json (['error' => $e], 400);
-		}
 	}
 
 
