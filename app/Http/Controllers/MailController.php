@@ -41,7 +41,7 @@ class MailController extends Controller
 			$mail->addAddress('cpetrone@quantiam.com', 'thishfoadshnfdskafdsa');
 
 			$mail->Subject = "Here is the subject";
-			$mail->Body    = file_get_contents('C:\inetpub\wwwroot\quantiam\resources\emails/email.php');
+			$mail->Body    = 'C:\inetpub\wwwroot\quantiam\resources\emails/email.php';
 			$mail->AltBody = "This is the body in plain text for non-HTML mail clients";
 			$mail->IsHTML(true);
 
