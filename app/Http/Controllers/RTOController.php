@@ -34,7 +34,6 @@ class RTOController extends Controller
 		}
 
 		$results = $this -> rto -> getSubRTO($idstofetch);
-
 		return response() -> json (['rtos' => $results], 200);
 	}
 
@@ -104,17 +103,22 @@ class RTOController extends Controller
 		}
 	}
 
-	public function editApproval(Request $request)
-	{	//example input {"approval":"denied","approvalID":23,"reason":"angry"}
-		$approvalChange = json_decode($request -> input ('approvalChange'), true);
-		$response = $this -> rto -> editApproval($approvalChange);
-		return response() -> json($response, 200);
+	public function editApproval(Request $request, $approvalID)
+	{	
+		$request -> user -> approvalChange = 'denied';
 
-	}
+		$approvalEmployeeID = DB::table('timesheet_rtoapprovals')->where('approvalID', '=', $approvalID)->value('employeeID');
 
-	public function updateApproval(Requests\rtoapprovalUpdateRequest $request){
-		dd('whatsup');
-		
+		if ($request -> user -> employeeID == $approvalEmployeeID)
+		{
+			$response = $this -> rto -> editApproval($request -> user, $approvalID);
+			dd($response);
+		}
+		else 
+		{
+			return response() -> json(['error' => 'Unauthorized access.  This Approval belongs to another employee.'], 401);
+		}
+
 	}
 
 	public function createUserToken(Request $request)

@@ -48,7 +48,7 @@ Route::get('/rto/request/{request_id}', 'RTOController@requestSpecific');
 Route::post('/rto/requestTime', 'RTOController@requestTime');
 Route::put('/rto/requestTime', 'RTOController@editRTOtime');
 
-Route::put('/rto/approval', 'RTOController@editApproval');
+Route::put('/rto/approval/{approval_id}', 'RTOController@editApproval');
 Route::post('/rto/{request_id}/approval', 'RTOController@postApproval');
 
 Route::post('/mail/send', 'MailController@send');

@@ -103,4 +103,10 @@ class User extends Model
     		return response() -> json(['error' => $e], 400);
     	}
     }
+
+    public function depth()
+    {
+        $depth = $this -> depth;
+        return $depth;
+    }
 }
