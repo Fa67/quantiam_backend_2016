@@ -5,3 +5,4 @@ Homestead.yaml
 Homestead.json
 .env
 git_sync.php
+composer.lock
