@@ -29,7 +29,7 @@ class JWTAuth
         //dd($data);
         //$data->setAudience('http://example.org');
         //$data->setId('4f1g23a12aa');
-
+		
         if ($token->validate($data)) // true, because validation information is equals to data contained on the token
         {
             // $token -> getClaim('employeeID') -> employeeid

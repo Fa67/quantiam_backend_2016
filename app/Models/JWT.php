@@ -20,7 +20,7 @@ class JWT extends Model
 	}
 
 	private function token($username, $upasswd){
-
+	
 		$ldaphost = getenv('LDAP_DOMAIN');
 		$ldapport = getenv('LDAP_PORT');
 
