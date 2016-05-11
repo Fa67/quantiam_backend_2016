@@ -51,28 +51,6 @@ class RTOController extends Controller
 	}
 
 
-	// Return a Json array of Subordinate User Objects
-
-	
-	public function getSubordinates(Request $request, $user_id)
-	{	dd();
-		$subordinates = (new User($user_id)) -> getSubordinates();
-		return response() -> json(['subs' => $subordinates -> subordinates]);
-	}
-
-
-
-
-	// Return a Json array of Supervisor + Sibling User Objects
-	public function getSupervisors($user_id)
-	{	dd($user_id);
-		$supervisors = (new User($user_id));
-		return response() -> json(['sups' => $supervisors -> supervisors]);
-
-	}
-
-
-
 
 
 	public function requestSpecific($requestID)
