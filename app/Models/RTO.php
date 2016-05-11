@@ -71,10 +71,9 @@ class RTO extends Model
 
 
 
-    public function postApproval($approval)
+    public function postApproval($user, $requestID)
     {
-    
-        $id = DB::table('timesheet_rtoapprovals') -> insertGetID($approval);
+        $id = DB::table('timesheet_rtoapprovals') -> insertGetID(['approval' => $user -> approval, 'employeeID' => $user -> employeeID, 'requestID' => $requestID]);
         $response = $this -> getSpecificTable('timesheet_rtoapprovals', 'approvalID', $id);
         $response['approvalID'] = $id;
         return $response[0];

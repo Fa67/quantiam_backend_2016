@@ -86,13 +86,22 @@ class RTOController extends Controller
 
 	}
 
-	public function postApproval(Request $request)
-	{	// example input {"approval":"approved","employeeID":78,"supervisorlevel":"test","reason":null,"requestID":12}
-		dd($request);
-		$approval = json_decode($request -> input('userinput'), true);
-		$approval['supervisorID'] = $this -> rto -> findSupervisor($approval['employeeID']);
-		$response = $this -> rto -> postApproval($approval);
-		return response() -> json($response, 200);
+	public function postApproval(Request $request, $requestID)
+	{	
+		$request -> user -> approval = 'approved';
+
+		$employeeID = $this -> rto -> getRTOdata($requestID) -> employeeID;
+		$employeeDepth = (new User($employeeID)) -> depth;
+
+		if ($employeeDepth > $request -> user -> depth)
+		{
+			$id = $this -> rto -> postApproval($request -> user, $requestID);
+			dd($id);
+			return response() -> json(['approval' => 'Aproval ID: '.$id], 200);
+		} else 
+		{
+			return response() -> json(['error' => 'Unauthorized to approve this request'], 401);
+		}
 	}
 
 	public function editApproval(Request $request)

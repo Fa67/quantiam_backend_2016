@@ -32,9 +32,7 @@ class JWTAuth
 
         if ($token->validate($data)) // true, because validation information is equals to data contained on the token
         {
-
-            $employeeID = $token -> getClaim('employeeID') -> employeeid;
-
+            // $token -> getClaim('employeeID') -> employeeid
             //Call User model to create a new user Object
             $user = new User(4, true);
             // Store user object under $request->user
