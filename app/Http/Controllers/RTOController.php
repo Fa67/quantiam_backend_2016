@@ -33,8 +33,14 @@ class RTOController extends Controller
 			$idstofetch[] = $obj -> employeeid;
 		}
 
-		$results = $this -> rto -> getSubRTO($idstofetch);
-		return response() -> json (['rtos' => $results], 200);
+		try 
+		{
+			$results = $this -> rto -> getSubRTO($idstofetch);
+			return response() -> json (['rtos' => $results], 200);	
+
+		} catch (\Exception $e) {
+			return response() -> json(['error' => $e]);
+		}
 	}
 
 	public function specRTO($requestID)
@@ -62,15 +68,32 @@ class RTOController extends Controller
 
 	public function createRTO(Request $request)
 	{	// Returns rto object containing table info.
-		$response = $this->rto->createRTO($request->user);
-		return response() -> json($response , 200);
+		
+		try 
+		{
+			$response = $this->rto->createRTO($request->user);
+			return response() -> json($response , 200);
+			
+		} catch (\Exception $e) {
+			return response() -> json(['error' => $e]);
+		}
 	}
 
-	public function requestTime(Request $request)
+	public function requestTime(Request $request, $request_id)
 	{	// Temporary, unsure how form data will be sent.
-		$info = ['requestID' => $request -> requestID, 'date' => $request -> date, 'hours' => $request -> hours, 'type' => $request -> type];
-		$response = $this -> rto -> requestTime($info);
-		return response() -> json($response , 200);
+		$user = $request -> user;
+		//$user -> requestID = $request_id; // Retrieved from URL
+		$user -> requestInfo = json_decode($request -> requestInfo, true);
+
+		try 
+		{
+			$response = $this -> rto -> requestTime($user);
+			return response() -> json($response , 200);
+		}
+		catch (\Exception $e)
+		{
+			return response() -> json(['error' => $e]);
+		}
 	}
 
 	public function editRTOtime(Request $request)

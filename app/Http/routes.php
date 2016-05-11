@@ -45,7 +45,7 @@ Route::put('/rto', 'RTOController@updateRTO');  // Edit existing RTO status.
 Route::get('/rto/request/callRTO', 'RTOController@callRTO');
 Route::get('/rto/request/{request_id}', 'RTOController@requestSpecific');
 
-Route::post('/rto/requestTime', 'RTOController@requestTime');
+Route::post('/rto/{request_id}/requestTime', 'RTOController@requestTime');
 Route::put('/rto/requestTime', 'RTOController@editRTOtime');
 
 Route::put('/rto/approval/{approval_id}', 'RTOController@editApproval');

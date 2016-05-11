@@ -35,11 +35,11 @@ class RTO extends Model
 
 
 
-    public function requestTime($info)
+    public function requestTime($user)
     {
        try
        {
-            $id = DB::table ('timesheet_rtotime') -> insertGetID ($info);
+            $id = DB::table ('timesheet_rtotime') -> insertGetID ($user -> requestInfo);
             $response = $this -> getSpecificTable('timesheet_rtotime', 'rtotimeID', $id);
             $response = $response[0];
 
