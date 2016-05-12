@@ -97,15 +97,9 @@ class RTOController extends Controller
 	}
 
 	public function editRTOtime(Request $request)
-	{	// Accepts array of data called 'timeRequested'
-		// rtotimeID, requestID
-		// ex {"date":"2053-11-13","hours":"428","type":" triple time","rtotimeID":"45"}
-		$info = json_decode($request->input('timeRequested'), true);
-		//dd($info);
-		$response = $this -> rto -> editRTOtime($info);
+	{	// must be in form x-www-form-urlencoded
+		$response = $this -> rto -> editRTOtime($request -> requestInfo);
 		dd($response);
-		return response() -> json($response, 200);
-
 	}
 
 	public function postApproval(Request $request, $requestID)
