@@ -166,7 +166,8 @@ class RTO extends Model
                         }
                             $this -> requested_time = $rtoTime;
                                 
-                            $this -> approvals = $approvals;  
+                            $this -> approvals = $approvals;  /*
+                            $this -> name = DB::table('employees')->where('employeeID', '=', $this -> )*/
 
         return $this;
     }
@@ -186,7 +187,18 @@ class RTO extends Model
                 ->whereIn('timesheet_rto.requestID', $requestIDarray)
                 ->take(100)
                 ->get();
+
+        foreach ($tableData as $obj)
+        {
+            foreach($obj as $key => $value)
+            {
+                $this -> $key = $value;
+            }
+        }
+
+        $name = DB::table('employees')->select('firstname', 'lastname')->where('employeeID', '=', $this -> employeeID) -> first();
+        $this -> name = $name -> firstname.$name->lastname;
                                     
-        return $tableData;
+        return $this;
     }
 }
