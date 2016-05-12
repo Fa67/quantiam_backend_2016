@@ -53,13 +53,13 @@ class RTO extends Model
 
 
 
-    public function editRTOtime($info)
-    {
+    public function editRTOtime($requestInfo)
+    {   dd($requestInfo);
         try
         {   
-            DB::table('timesheet_rtotime')  ->where('rtotimeID', $info['rtotimeID'])
-                                            ->update($info);
-            $response = $this -> getSpecificTable('timesheet_rtotime', null, $info['rtotimeID']);
+            DB::table('timesheet_rtotime')  ->where('rtotimeID', $requestInfo['rtotimeID'])
+                                            ->update($requestInfo);
+            $response = $this -> getSpecificTable('timesheet_rtotime', 'rtotimeID', $requestInfo -> rtotimeID);
             $response = $response[0];
         }
         catch (\Exception $e)

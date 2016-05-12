@@ -33,9 +33,14 @@ class RTOController extends Controller
 			$idstofetch[] = $obj -> employeeid;
 		}
 
-		$results = $this -> rto -> getSubRTO($idstofetch);
+		try 
+		{
+			$results = $this -> rto -> getSubRTO($idstofetch);
+			return response() -> json (['rtos' => $results], 200);	
 
-		return response() -> json (['rtos' => $results], 200);
+		} catch (\Exception $e) {
+			return response() -> json(['error' => $e]);
+		}
 	}
 
 	public function specRTO($requestID)
@@ -51,28 +56,6 @@ class RTOController extends Controller
 	}
 
 
-	// Return a Json array of Subordinate User Objects
-
-	
-	public function getSubordinates(Request $request, $user_id)
-	{	dd();
-		$subordinates = (new User($user_id)) -> getSubordinates();
-		return response() -> json(['subs' => $subordinates -> subordinates]);
-	}
-
-
-
-
-	// Return a Json array of Supervisor + Sibling User Objects
-	public function getSupervisors($user_id)
-	{	dd($user_id);
-		$supervisors = (new User($user_id));
-		return response() -> json(['sups' => $supervisors -> supervisors]);
-
-	}
-
-
-
 
 
 	public function requestSpecific($requestID)
@@ -85,54 +68,74 @@ class RTOController extends Controller
 
 	public function createRTO(Request $request)
 	{	// Returns rto object containing table info.
-		$response = $this->rto->createRTO($request->user);
-		return response() -> json($response , 200);
+		
+		try 
+		{
+			$response = $this->rto->createRTO($request->user);
+			return response() -> json($response , 200);
+			
+		} catch (\Exception $e) {
+			return response() -> json(['error' => $e]);
+		}
 	}
 
-	public function requestTime(Request $request)
+	public function requestTime(Request $request, $request_id)
 	{	// Temporary, unsure how form data will be sent.
-		$info = ['requestID' => $request -> requestID, 'date' => $request -> date, 'hours' => $request -> hours, 'type' => $request -> type];
-		$response = $this -> rto -> requestTime($info);
-		return response() -> json($response , 200);
+		$user = $request -> user;
+		//$user -> requestID = $request_id; // Retrieved from URL
+		$user -> requestInfo = json_decode($request -> requestInfo, true);
+
+		try 
+		{
+			$response = $this -> rto -> requestTime($user);
+			return response() -> json($response , 200);
+		}
+		catch (\Exception $e)
+		{
+			return response() -> json(['error' => $e]);
+		}
 	}
 
 	public function editRTOtime(Request $request)
-	{	// Accepts array of data called 'timeRequested'
-		// rtotimeID, requestID
-		// ex {"date":"2053-11-13","hours":"428","type":" triple time","rtotimeID":"45"}
-		$info = json_decode($request->input('timeRequested'), true);
-		//dd($info);
-		$response = $this -> rto -> editRTOtime($info);
+	{	// must be in form x-www-form-urlencoded
+		$response = $this -> rto -> editRTOtime($request -> requestInfo);
 		dd($response);
-		return response() -> json($response, 200);
-
 	}
 
-	public function postApproval(Request $request)
-	{	// example input {"approval":"approved","employeeID":78,"supervisorlevel":"test","reason":null,"requestID":12}
-		$approval = json_decode($request -> input('userinput'), true);
-		$approval['supervisorID'] = $this -> rto -> findSupervisor($approval['employeeID']);
-		$response = $this -> rto -> postApproval($approval);
-		return response() -> json($response, 200);
+	public function postApproval(Request $request, $requestID)
+	{	
+		$request -> user -> approval = 'approved';
+
+		$employeeID = $this -> rto -> getRTOdata($requestID) -> employeeID;
+		$employeeDepth = (new User($employeeID)) -> depth;
+
+		if ($employeeDepth > $request -> user -> depth)
+		{
+			$id = $this -> rto -> postApproval($request -> user, $requestID);
+			dd($id);
+			return response() -> json(['approval' => 'Aproval ID: '.$id], 200);
+		} else 
+		{
+			return response() -> json(['error' => 'Unauthorized to approve this request'], 401);
+		}
 	}
 
-	public function editApproval(Request $request)
-	{	//example input {"approval":"denied","approvalID":23,"reason":"angry"}
-		$approvalChange = json_decode($request -> input ('approvalChange'), true);
-		$response = $this -> rto -> editApproval($approvalChange);
-		return response() -> json($response, 200);
+	public function editApproval(Request $request, $approvalID)
+	{	
+		$request -> user -> approvalChange = 'denied';
 
-	}
+		$approvalEmployeeID = DB::table('timesheet_rtoapprovals')->where('approvalID', '=', $approvalID)->value('employeeID');
 
+		if ($request -> user -> employeeID == $approvalEmployeeID)
+		{
+			$response = $this -> rto -> editApproval($request -> user, $approvalID);
+			dd($response);
+		}
+		else 
+		{
+			return response() -> json(['error' => 'Unauthorized access.  This Approval belongs to another employee.'], 401);
+		}
 
-/*	public function postApproval(Requests\rtoapprovalPostRequest $request){
-		
-
-
-	}*/
-	public function updateApproval(Requests\rtoapprovalUpdateRequest $request){
-		dd('whatsup');
-		
 	}
 
 	public function createUserToken(Request $request)
