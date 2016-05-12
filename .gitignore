@@ -6,3 +6,4 @@ Homestead.json
 .env
 git_sync.php
 composer.lock
+web.config
