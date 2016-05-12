@@ -12,7 +12,7 @@ class User extends Model
 {
     function __construct($input, $hierarchy = false)
     {
-    	$this -> employeeid	= $input;
+    	$this -> employeeID	= $input;
     	$this -> getUserData();
        
         if($hierarchy)
@@ -29,7 +29,7 @@ class User extends Model
     {
 
        
-        $subordinates = Nest::where('employeeID', '=', $this -> employeeid) -> first() -> getDescendants();
+        $subordinates = Nest::where('employeeID', '=', $this -> employeeID) -> first() -> getDescendants();
 
         $response = array();
         foreach($subordinates as $obj)
@@ -49,13 +49,12 @@ class User extends Model
 
     public function getSupervisors()
     {
-        $ancestors = Nest::where('employeeID', '=', $this -> employeeid) -> first() -> getAncestors();
+        $ancestors = Nest::where('employeeID', '=', $this -> employeeID) -> first() -> getAncestors();
 
         $response = array();
         foreach($ancestors as $obj)
         {
             $user = new User($obj -> employeeID);
-            $user -> depth = $obj -> depth;
             $response[] = $user;
 
         }
@@ -68,7 +67,7 @@ class User extends Model
 
     private function getUserData()
     {
-    	$id = $this -> employeeid;
+    	$id = $this -> employeeID;
 
        	$temparray = array();
     	$employeeData = DB::table('employees')->select('*')
@@ -83,6 +82,7 @@ class User extends Model
     		}
     	}
     	$this -> name = $this->firstname.' '.$this->lastname;
+        $this -> depth = Nest::where('employeeID', '=', $this -> employeeID) -> value('depth');
 
     return;
     }
@@ -92,7 +92,7 @@ class User extends Model
     	try 
     	{
     		DB::table('employees')
-    			->where('employeeid', '=', $this->employeeid)
+    			->where('employeeid', '=', $this->employeeID)
     			->update([$key => $value]);
 
     		$this -> $key = $value;
@@ -102,5 +102,11 @@ class User extends Model
     		dd($e);
     		return response() -> json(['error' => $e], 400);
     	}
+    }
+
+    public function depth()
+    {
+        $depth = $this -> depth;
+        return $depth;
     }
 }

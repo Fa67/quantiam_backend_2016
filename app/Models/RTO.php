@@ -35,11 +35,11 @@ class RTO extends Model
 
 
 
-    public function requestTime($info)
+    public function requestTime($user)
     {
        try
        {
-            $id = DB::table ('timesheet_rtotime') -> insertGetID ($info);
+            $id = DB::table ('timesheet_rtotime') -> insertGetID ($user -> requestInfo);
             $response = $this -> getSpecificTable('timesheet_rtotime', 'rtotimeID', $id);
             $response = $response[0];
 
@@ -71,22 +71,21 @@ class RTO extends Model
 
 
 
-    public function postApproval($approval)
+    public function postApproval($user, $requestID)
     {
-    
-        $id = DB::table('timesheet_rtoapprovals') -> insertGetID($approval);
-        $response = $this -> getSpecificTable('timesheet_rtoapprovals', 'approvalID', $id);
-        $response['approvalID'] = $id;
-        return $response[0];
+        $id = DB::table('timesheet_rtoapprovals') -> insertGetID(['approval' => $user -> approval, 'employeeID' => $user -> employeeID, 'requestID' => $requestID]);
+/*        $response = $this -> getSpecificTable('timesheet_rtoapprovals', 'approvalID', $id);
+        $response['approvalID'] = $id;*/
+        return $id;
     }
 
 
 
-    public function editApproval($approvalChange)
+    public function editApproval($user, $approvalID)
     {
-        DB::table('timesheet_rtoapprovals') ->where('approvalID', $approvalChange['approvalID'])
-                                            ->update($approvalChange);
-            $response = $this -> getSpecificTable('timesheet_rtoapprovals', 'approvalID', $approvalChange['approvalID']);
+        DB::table('timesheet_rtoapprovals') ->where('approvalID', $approvalID)
+                                            ->update(['approval' => $user -> approvalChange]);
+            $response = $this -> getSpecificTable('timesheet_rtoapprovals', 'approvalID', $approvalID);
             $response = $response[0];
 
             $this -> editRTO($response);
@@ -122,6 +121,7 @@ class RTO extends Model
             $response = DB::table ($tablename)  -> select ('requestID')
                                                 -> where ($idname, '=', $idnumber)
                                                 -> get();
+            return $response;
         }
         catch (\Exception $e)
         {

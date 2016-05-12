@@ -4,5 +4,6 @@
 Homestead.yaml
 Homestead.json
 .env
-*git_sync.php
-*web.config
+git_sync.php
+composer.lock
+web.config
