@@ -36,8 +36,6 @@ Route::get('/hr/{employee_id}/hiearchy', 'RtoController@hrHiearchyBuild'); // ge
 
 Route::group(['middleware' => 'authuser'], function() 
 {
-Route::get('/authuser', 'RTOController@getAuthenticatedUser');
-
 Route::get('/rto', 'RTOController@loadRTO');	// Load all self- and subordinate-RTOs
 Route::get('/rto/{request_id}', 'RTOController@specRTO');	// Load specific rto
 Route::post('/rto', 'RTOController@createRTO');  // Post a new row in the timesheet_rto table.
@@ -62,7 +60,7 @@ Route::post('/rto/request/{request_id}/approval', 'RTOController@postApproval');
 // Edit existing approval
 Route::put('/rto/request/{request_id}/approval/{approval_id}', 'RTOController@updateApproval');  //  Submitted from Supervisor to approve/deny (?modify) an RTO.
 // Create a Json Web Token
-Route::post('/createJWT', 'RTOController@createUserToken'); // Create a JWT for a specific user.
+Route::post('/auth', 'RTOController@createUserToken'); // Create a JWT for a specific user.
 // Post a new RTO date/time
 Route::get('/user/{user_id}/getSubordinates', 'RTOController@getSubordinates');
 Route::get('/user/{user_id}/getSupervisors', 'RTOController@getSupervisors');
