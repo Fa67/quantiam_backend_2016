@@ -30,13 +30,13 @@ class MailController extends Controller
 			$mail->Password = 'test';                           // SMTP password 
 			$mail->SMTPSecure = 'tls';                            // Enable TLS encryption, `ssl` also accepted
 			$mail->Port = getenv('MAIL_PORT');                                    // TCP port to connect to
-			$mail->SMTPOptions = array(
+/*			$mail->SMTPOptions = array(
 			'ssl' => array(
 				'verify_peer' => false,
 				'verify_peer_name' => false,
 				'allow_self_signed' => true
 			)
-			);
+			);*/
 
 			$mail->addAddress('cpetrone@quantiam.com', 'thishfoadshnfdskafdsa');
 

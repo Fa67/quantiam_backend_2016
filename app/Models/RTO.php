@@ -121,6 +121,7 @@ class RTO extends Model
             $response = DB::table ($tablename)  -> select ('requestID')
                                                 -> where ($idname, '=', $idnumber)
                                                 -> get();
+            return $response;
         }
         catch (\Exception $e)
         {
