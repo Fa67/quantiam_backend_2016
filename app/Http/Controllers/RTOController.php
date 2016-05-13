@@ -90,6 +90,19 @@ class RTOController extends Controller
 		}
 	}
 
+	public function deleteRTO(Request $request, $request_id)
+	{
+		try
+		{
+			$response = $this -> rto -> deleteRTO($request_id);
+			return response() -> json(['success' => $response], 200);
+		}
+		catch (\Exception $e)
+		{
+			return response() -> json (['error' => $e]);
+		}
+	}
+
 	public function requestTime(Request $request, $request_id)
 	{
 		$userInput = json_decode(($request -> input), true);
@@ -114,6 +127,19 @@ class RTOController extends Controller
 			$reponse = $this -> rto -> editRTOtime($userInput);
 			dd($response);
 		}catch (\Exception $e)
+		{
+			return response() -> json(['error' => $e]);
+		}
+	}
+
+	public function deleteRTOTime(Request $request, $rtotime_id)
+	{
+		try
+		{
+			$response = $this -> rto -> deleteRTOTime($rtotime_id);
+			return response() -> json (['success' => $response], 200);
+		}
+		catch (\Exception $e)
 		{
 			return response() -> json(['error' => $e]);
 		}
