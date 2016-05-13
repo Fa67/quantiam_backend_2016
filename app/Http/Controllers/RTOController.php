@@ -90,9 +90,10 @@ class RTOController extends Controller
 		}
 	}
 
-	public function requestTime(Request $request)
+	public function requestTime(Request $request, $request_id)
 	{
 		$userInput = json_decode(($request -> input), true);
+		$userInput['requestID'] = $request_id;
 		
 		try
 		{
