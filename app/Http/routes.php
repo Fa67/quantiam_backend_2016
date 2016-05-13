@@ -33,6 +33,7 @@ Route::get('/hr/{employee_id}/hiearchy', 'RtoController@hrHiearchyBuild'); // ge
 	
 	
 });
+Route::post('/auth', 'RTOController@createUserToken'); // Create a JWT for a specific user.
 
 Route::group(['middleware' => 'authuser'], function() 
 {
@@ -62,7 +63,6 @@ Route::post('/rto/request/{request_id}/approval', 'RTOController@postApproval');
 // Edit existing approval
 Route::put('/rto/request/{request_id}/approval/{approval_id}', 'RTOController@updateApproval');  //  Submitted from Supervisor to approve/deny (?modify) an RTO.
 // Create a Json Web Token
-Route::post('/createJWT', 'RTOController@createUserToken'); // Create a JWT for a specific user.
 // Post a new RTO date/time
 Route::get('/user/{user_id}/getSubordinates', 'RTOController@getSubordinates');
 Route::get('/user/{user_id}/getSupervisors', 'RTOController@getSupervisors');
