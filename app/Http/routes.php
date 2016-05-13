@@ -28,12 +28,30 @@ Route::get('/', function () {
 
 Route::group(['middleware' => 'authuser'], function() 
 {
+<<<<<<< HEAD
+=======
+	Route::get('/authuser', 'RTOController@getAuthenticatedUser');
+
+>>>>>>> develop
 	Route::get('/rto', 'RTOController@loadRTO');	// Load all self- and subordinate-RTOs
 	Route::get('/rto/{request_id}', 'RTOController@specRTO');	// Load specific rto
 	Route::post('/rto', 'RTOController@createRTO');  // Post a new row in the timesheet_rto table.
 	Route::put('/rto', 'RTOController@updateRTO');  // Edit existing RTO status.
+<<<<<<< HEAD
 	Route::get('/rto/request/callRTO', 'RTOController@callRTO');
 	Route::get('/rto/request/{request_id}', 'RTOController@requestSpecific');
+=======
+	Route::delete('/rto/{request_id', 'RTOController@deleteRTO'); // Delete and RTO and all its associated approvals/times.
+
+	Route::post('/rto/{request_id}/requestTime', 'RTOController@requestTime');
+	Route::put('/rto/requestTime', 'RTOController@editRTOtime');
+	Route::delete('/rto/time/{rtotime_id}', 'RTOController@deleteTime');
+
+	Route::put('/rto/approval/{approval_id}', 'RTOController@editApproval');
+	Route::post('/rto/{request_id}/approval', 'RTOController@postApproval');
+
+	Route::post('/mail/send', 'MailController@send');
+>>>>>>> develop
 
 	Route::post('/rto/{request_id}/requestTime', 'RTOController@requestTime');
 	Route::put('/rto/requestTime', 'RTOController@editRTOtime');

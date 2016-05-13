@@ -28,8 +28,13 @@ class RTOController extends Controller
 	public function loadRTO(Request $request)
 	{	// Initialize array containing employeeID and subordinates.
 		$idstofetch = array($request->user->employeeid);
-		$pendingStatus = $request -> header('pendingStatus');
-
+		if (null !== $request -> pendingStatus){
+		$pendingStatus = $request -> pendingStatus;
+		}
+		else 
+		{
+			$pendingStatus = 'true';
+		}
 
 		foreach($request->user->subordinates as $obj)
 		{
@@ -85,21 +90,10 @@ class RTOController extends Controller
 		}
 	}
 
-	public function requestTime(Request $request, $request_id)
-	{	// Temporary, unsure how form data will be sent.
-		$user = $request -> user;
-		//$user -> requestID = $request_id; // Retrieved from URL
-		$user -> requestInfo = json_decode($request -> requestInfo, true);
-
-		try 
-		{
-			$response = $this -> rto -> requestTime($user);
-			return response() -> json($response , 200);
-		}
-		catch (\Exception $e)
-		{
-			return response() -> json(['error' => $e]);
-		}
+	public function requestTime(Request $request)
+	{
+			$userInput = json_decode($request -> input);
+			dd($userInput);
 	}
 
 	public function editRTOtime(Request $request)
