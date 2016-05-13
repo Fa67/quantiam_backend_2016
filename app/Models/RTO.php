@@ -95,7 +95,7 @@ class RTO extends Model
         {
             $response = DB::table ($tablename)  -> select('*')
                                                 -> where ($idname, '=', $idnumber)
-                                                -> get();
+                                                -> first();
 
             return $response;
         } 
