@@ -35,7 +35,7 @@ class RTO extends Model
 
 
 
-    public function requestTime($user)
+    public function requestTime($userInput)
     {
        try
        {
@@ -171,7 +171,7 @@ class RTO extends Model
         return $this;
     }
 
-    public function getSubRTO($idstofetch, $pendingStatus = true)
+    public function getSubRTO($idstofetch, $pendingStatus)
     { 
         if ($pendingStatus == 'true')
         {

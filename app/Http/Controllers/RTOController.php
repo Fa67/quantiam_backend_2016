@@ -28,8 +28,13 @@ class RTOController extends Controller
 	public function loadRTO(Request $request)
 	{	// Initialize array containing employeeID and subordinates.
 		$idstofetch = array($request->user->employeeid);
+		if (null !== $request -> header('pendingStatus')){
 		$pendingStatus = $request -> header('pendingStatus');
-
+		}
+		else 
+		{
+			$pendingStatus = 'true';
+		}
 
 		foreach($request->user->subordinates as $obj)
 		{
