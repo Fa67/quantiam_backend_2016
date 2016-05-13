@@ -166,39 +166,35 @@ class RTO extends Model
                         }
                             $this -> requested_time = $rtoTime;
                                 
-                            $this -> approvals = $approvals;  /*
-                            $this -> name = DB::table('employees')->where('employeeID', '=', $this -> )*/
+                            $this -> approvals = $approvals; 
 
         return $this;
     }
 
-    public function getSubRTO($IDarray)
+    public function getSubRTO($idstofetch, $pendingStatus = true)
     { 
-
-        $return_object = array();
-        
-        $requestIDarray = DB::table('timesheet_rto')
-                                ->whereIn('timesheet_rto.employeeID', $IDarray)
-                                ->pluck('requestID'); // Requests column of requestID || for scalability, consider using chunk();
-
-        $tableData = DB::table('timesheet_rto')
-                ->select('*')
-                ->orderBy('updated')
-                ->whereIn('timesheet_rto.requestID', $requestIDarray)
-                ->take(100)
-                ->get();
-
-        foreach ($tableData as $obj)
+        if ($pendingStatus == 'true')
         {
-            foreach($obj as $key => $value)
-            {
-                $this -> $key = $value;
-            }
+            $status = '=';
+        }
+        else {
+            $status = '!=';
         }
 
-        $name = DB::table('employees')->select('firstname', 'lastname')->where('employeeID', '=', $this -> employeeID) -> first();
-        $this -> name = $name -> firstname.$name->lastname;
-                                    
-        return $this;
+        $return_object = array();
+        $requestIDarray = DB::table('timesheet_rto')
+                                ->whereIn('timesheet_rto.employeeID', $idstofetch)
+                                ->pluck('requestID'); // Requests column of requestID || for scalability, consider using chunk();
+        
+
+        $tableData = DB::table('timesheet_rto') ->join('employees', 'timesheet_rto.employeeID', '=', 'employees.employeeID')
+                                                ->select('timesheet_rto.*', 'employees.firstname', 'employees.lastname')
+                                                ->orderBy('updated')
+                                                ->whereIn('timesheet_rto.requestID', $requestIDarray)
+                                                ->where('status', $status, 'pending')
+                                                ->take(100)
+                                                ->get();                 
+        
+        return $tableData;
     }
 }
