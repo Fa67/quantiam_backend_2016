@@ -92,14 +92,30 @@ class RTOController extends Controller
 
 	public function requestTime(Request $request)
 	{
-			$userInput = json_decode($request -> input);
-			dd($userInput);
+		$userInput = json_decode(($request -> input), true);
+		
+		try
+		{
+			$response = $this -> rto -> requestTime($userInput);
+			return response() -> json($response, 200);
+		}catch(\Exception $e){
+			return response() -> json(['error' => $e]);
+		}
+
 	}
 
 	public function editRTOtime(Request $request)
-	{	// must be in form x-www-form-urlencoded
-		$response = $this -> rto -> editRTOtime($request -> requestInfo);
-		dd($response);
+	{	
+		$userInput = json_decode(($request -> input), true);
+
+		try
+		{
+			$reponse = $this -> rto -> editRTOtime($userInput);
+			dd($response);
+		}catch (\Exception $e)
+		{
+			return response() -> json(['error' => $e]);
+		}
 	}
 
 	public function postApproval(Request $request, $requestID)

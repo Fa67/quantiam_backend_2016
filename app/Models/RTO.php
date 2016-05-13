@@ -36,12 +36,11 @@ class RTO extends Model
 
 
     public function requestTime($userInput)
-    {
+    {   
        try
        {
-            $id = DB::table ('timesheet_rtotime') -> insertGetID ($user -> requestInfo);
+            $id = DB::table ('timesheet_rtotime') -> insertGetID ($userInput);
             $response = $this -> getSpecificTable('timesheet_rtotime', 'rtotimeID', $id);
-            $response = $response[0];
 
        } catch (\Exception $e)
        {
@@ -54,18 +53,13 @@ class RTO extends Model
 
 
     public function editRTOtime($requestInfo)
-    {   dd($requestInfo);
-        try
-        {   
-            DB::table('timesheet_rtotime')  ->where('rtotimeID', $requestInfo['rtotimeID'])
-                                            ->update($requestInfo);
-            $response = $this -> getSpecificTable('timesheet_rtotime', 'rtotimeID', $requestInfo -> rtotimeID);
-            $response = $response[0];
-        }
-        catch (\Exception $e)
-        {
-            $response['error'] = $e;
-        }
+    {   
+      
+        DB::table('timesheet_rtotime')  ->where('rtotimeID', $requestInfo['rtotimeID'])
+                                        ->update($requestInfo);
+        $response = $this -> getSpecificTable('timesheet_rtotime', 'rtotimeID', $requestInfo['rtotimeID']);
+        dd($response);
+   
         return $response;   
     }
 
