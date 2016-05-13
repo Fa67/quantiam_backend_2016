@@ -25,6 +25,18 @@ class RTO extends Model
     }
 
 
+    public function deleteRTO($requestID)
+    {
+        DB::table('timesheet_rto')  -> where ('requestID', '=', $requestID)
+                                    -> delete();
+
+        DB::table('timesheet_rtotime')  -> where ('requestID', '=', $requestID) -> delete();
+        DB::table('timesheet_rtoapprovals') -> where ('requestID', '=', $requestID) -> delete();
+
+        $response = "RTO with ID: ".$requestID." successfully deleted.";
+        return $response;
+    }
+
 
     private function editRTO($approval)
     {
@@ -63,6 +75,16 @@ class RTO extends Model
         return $response;   
     }
 
+
+
+    public function deleteRTOTime($rtotimeID)
+    {
+            DB::table('timesheet_rtotime')  ->where('rtotimeID', '=', $rtotimeID)
+                                            ->delete();
+
+            return ("rto_time ".$rtotimeID." deleted");
+
+    }
 
 
     public function postApproval($user, $requestID)
