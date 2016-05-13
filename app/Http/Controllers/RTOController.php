@@ -28,19 +28,25 @@ class RTOController extends Controller
 	public function loadRTO(Request $request)
 	{	// Initialize array containing employeeID and subordinates.
 		$idstofetch = array($request->user->employeeid);
+		$pendingStatus = $request -> header('pendingStatus');
+
+
 		foreach($request->user->subordinates as $obj)
 		{
 			$idstofetch[] = $obj -> employeeid;
 		}
 
-		try 
+		try
 		{
-			$results = $this -> rto -> getSubRTO($idstofetch);
-			return response() -> json (['rtos' => $results], 200);	
+			$results = $this -> rto -> getSubRTO($idstofetch, $pendingStatus);	
+			return response() -> json ($results, 200);
 
-		} catch (\Exception $e) {
-			return response() -> json(['error' => $e]);
+		}catch (\Exception $e)
+		{
+			return response() -> json(['error' => $e], 400);
 		}
+
+
 	}
 
 	public function specRTO($requestID)
