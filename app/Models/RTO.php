@@ -6,6 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 
 use DB;
 
+use Carbon\Carbon;
+
 class RTO extends Model
 {
 
@@ -187,30 +189,37 @@ class RTO extends Model
         return $this;
     }
 
-    public function getSubRTO($idstofetch, $pendingStatus)
+    public function getSubRTO($idstofetch, $params)
     { 
-        if ($pendingStatus == 'true')
-        {
-            $status = '=';
-        }
-        else {
-            $status = '!=';
-        }
+        $status = $params -> status;
+        $employeeID = $params -> employeeID;
+        $firstDate = $params -> firstDate;
+        $lastDate = $params -> lastDate;
 
-        $return_object = array();
+        if($params -> firstDate == null)
+        {
+           $firstDate = Carbon::now() -> addYear(-1) -> toDateString();
+        }
+        if ($params -> lastDate == null)
+        {
+            $lastDate = Carbon::now() -> toDateString();
+        }
+        
         $requestIDarray = DB::table('timesheet_rto')
-                                ->whereIn('timesheet_rto.employeeID', $idstofetch)
+                                ->whereIn('employeeID', $idstofetch)
                                 ->pluck('requestID'); // Requests column of requestID || for scalability, consider using chunk();
         
 
         $tableData = DB::table('timesheet_rto') ->join('employees', 'timesheet_rto.employeeID', '=', 'employees.employeeID')
                                                 ->select('timesheet_rto.*', 'employees.firstname', 'employees.lastname')
-                                                ->orderBy('updated')
+                                                ->orderBy('created')
                                                 ->whereIn('timesheet_rto.requestID', $requestIDarray)
-                                                ->where('status', $status, 'pending')
+                                                ->where('timesheet_rto.status', 'like', '%'.$status.'%')
+                                                ->where('timesheet_rto.employeeID', 'like', '%'.$employeeID.'%')
+                                                ->whereBetween('created', [$firstDate, $lastDate])
                                                 ->take(100)
                                                 ->get();                 
-        
+
         return $tableData;
     }
 }
