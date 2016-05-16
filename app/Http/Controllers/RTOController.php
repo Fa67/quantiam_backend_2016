@@ -28,7 +28,8 @@ class RTOController extends Controller
 	public function loadRTO(Request $request)
 	{	// Initialize array containing employeeID and subordinates.
 		$idstofetch = array($request->user->employeeid);
-		$params = (json_decode($request -> params));
+		$params = ($request -> all());
+		$params = json_decode((json_encode($params)));
 
 
 		foreach($request->user->subordinates as $obj)

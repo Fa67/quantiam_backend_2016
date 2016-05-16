@@ -197,6 +197,7 @@ class RTO extends Model
         $lastDate = $params -> lastDate;
         $perPage = $params -> perPage;
 
+
         if($params -> firstDate == null)
         {
            $firstDate = Carbon::now() -> addYear(-1) -> toDateString();
@@ -213,7 +214,7 @@ class RTO extends Model
         $requestIDarray = DB::table('timesheet_rto')
                                 ->whereIn('employeeID', $idstofetch)
                                 ->pluck('requestID'); // Requests column of requestID || for scalability, consider using chunk();
-        
+
 
         $tableData = DB::table('timesheet_rto') ->join('employees', 'timesheet_rto.employeeID', '=', 'employees.employeeID')
                                                 ->select('timesheet_rto.*', 'employees.firstname', 'employees.lastname')
@@ -222,7 +223,8 @@ class RTO extends Model
                                                 ->where('timesheet_rto.status', 'like', '%'.$status.'%')
                                                 ->where('timesheet_rto.employeeID', 'like', '%'.$employeeID.'%')
                                                 ->whereBetween('created', [$firstDate, $lastDate])
-                                                ->paginate($perPage);                
+                                                ->paginate($perPage);    
+        $tableData -> count = count($tableData);          
 
         return $tableData;
     }
