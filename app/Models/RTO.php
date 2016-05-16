@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Pagination\Paginator;
 
 use DB;
 
@@ -196,36 +197,45 @@ class RTO extends Model
         $firstDate = $params -> firstDate;
         $lastDate = $params -> lastDate;
         $perPage = $params -> perPage;
+        $page = $params -> page;
 
-
-        if($params -> firstDate == null)
+        if ($page == null)
+        {
+            $page = 1;
+        }
+        if($firstDate == null)
         {
            $firstDate = Carbon::now() -> addYear(-1) -> toDateString();
         }
-        if ($params -> lastDate == null)
+        if ($lastDate == null)
         {
-            $lastDate = Carbon::now() -> toDateString();
+            $lastDate = Carbon::tomorrow() -> toDateString();
         }
-        if($params -> perPage == null)
+        if($perPage == null)
         {
             $perPage = 15;
         }
+        
+        $result['draw'] = $page;
         
         $requestIDarray = DB::table('timesheet_rto')
                                 ->whereIn('employeeID', $idstofetch)
                                 ->pluck('requestID'); // Requests column of requestID || for scalability, consider using chunk();
 
-
         $tableData = DB::table('timesheet_rto') ->join('employees', 'timesheet_rto.employeeID', '=', 'employees.employeeID')
                                                 ->select('timesheet_rto.*', 'employees.firstname', 'employees.lastname')
-                                                ->orderBy('created')
-                                                ->whereIn('timesheet_rto.requestID', $requestIDarray)
+                                                ->orderBy('created');
+
+        $result['recordsTotal'] = $tableData -> count();
+
+                                     $tableData ->whereIn('timesheet_rto.requestID', $requestIDarray)
                                                 ->where('timesheet_rto.status', 'like', '%'.$status.'%')
                                                 ->where('timesheet_rto.employeeID', 'like', '%'.$employeeID.'%')
-                                                ->whereBetween('created', [$firstDate, $lastDate])
-                                                ->paginate($perPage);    
-        $tableData -> count = count($tableData);          
+                                                ->whereBetween('created', [$firstDate, $lastDate]);
+        $result['recordsFiltered'] = $tableData -> count();
+        $result['data'] = $tableData ->Paginate($perPage);
 
-        return $tableData;
+
+        return $result;
     }
 }
