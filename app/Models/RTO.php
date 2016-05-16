@@ -233,8 +233,9 @@ class RTO extends Model
                                                 ->where('timesheet_rto.employeeID', 'like', '%'.$employeeID.'%')
                                                 ->whereBetween('created', [$firstDate, $lastDate]);
         $result['recordsFiltered'] = $tableData -> count();
-        $result['data'] = $tableData ->Paginate($perPage);
-
+        $dataArray = $tableData ->simplePaginate($perPage)->toJson();
+        $dataObj = json_decode($dataArray);
+        $result['data'] = $dataObj -> data;
 
         return $result;
     }
