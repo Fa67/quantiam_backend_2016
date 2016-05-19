@@ -43,32 +43,25 @@ class userController extends Controller
 			$response = DB::table('employees')	->where('employeeID', 'like', $search.'%')
 												->orWhere('email', 'like', $search.'%')
 												->orWhere('ldap_username', 'like', '%'.$search.'%')
-												->orWhere('firstname', 'like', $firstname)
-												->orWhere('lastname', 'like', $firstname)
-												->orWhere('lastname', 'like', $lastname)
+												->orWhere('firstname', 'like', '%'.$firstname.'%')
+												->orWhere('lastname', 'like', '%'.$firstname.'%')
+												->orWhere('lastname', 'like', '%'.$lastname.'%')
 												->orWhere('compensation', 'like', $search.'%')
 												->orderBy('employeeid')
 												->get();
-
-		
 
 			if (isset($response[0]))
 			{
 				return response() -> json(['results' => $response], 200);
 			}
 			else {
-				return response() -> json(['results' => "Your search -- ".$search." -- did not match any documents."], 200);
+				return response() -> json(['results' => "Your search for -- ".$search." -- returned no results."], 200);
 			}
 		}
 		catch (\Exception $e)
 		{
 			return response() -> json(['error' => $e]);
 		}
-
-
-
-
-
 	}
 
 
