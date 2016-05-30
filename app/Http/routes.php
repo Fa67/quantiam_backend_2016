@@ -47,6 +47,7 @@ Route::group(['middleware' => 'authuser'], function()
 	Route::post('/mail/send', 'MailController@send');
 
 	Route::get('/user/', 'userController@identifyUser');
+	Route::get('/user/{user_id}', 'userController@specificUser');
 
 });
 // Request existing RTOs

@@ -106,4 +106,11 @@ class userController extends Controller
 
 		return response() -> json($response, 200);
 	}
+
+	public function specificUser($employeeID)
+	{
+		$response = $this -> userInfo($employeeID, true);
+
+		return response() -> json($response, 200);
+	}
 }
