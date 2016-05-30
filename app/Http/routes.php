@@ -57,8 +57,7 @@ Route::put('/rto/request/{request_id}/approval/{approval_id}', 'RTOController@up
 Route::get('/user/{user_id}/getSubordinates', 'RTOController@getSubordinates');
 Route::get('/user/{user_id}/getSupervisors', 'RTOController@getSupervisors');
 
-
-Route::get('/user/{employee_id}', 'userController@userInfo');
+Route::get('/user/', 'userController@identifyUser');
 Route::post('/user/new', 'userController@newUser');
 Route::post('/user/', 'userController@searchUsers');
 Route::put('/user/{employee_id}', 'userController@editUser');

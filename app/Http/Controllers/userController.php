@@ -13,6 +13,8 @@ use DB;
 use Baum\Node;
 use Baum\Extensions\Query\Builder; 
 
+use Lcobucci\JWT\Parser;
+
 class userController extends Controller
 {
 
@@ -65,12 +67,12 @@ class userController extends Controller
 	}
 
 
-	public function userInfo($employee_id)
+	public function userInfo($employee_id, $truth = true)
 	{
 		$employeeID = $employee_id;
 
-		$response = new User($employeeID, true);
-		return response() -> json([$response], 200);
+		$response = new User($employeeID, $truth);
+		return $response;
 	}
 
 
@@ -90,5 +92,18 @@ class userController extends Controller
 	public function moveUser(Request $request)
 	{
 		dd('shmeerp');
+	}
+
+	public function identifyUser(Request $request)
+	{
+       		$token = $request->header('authorization');
+        		$token = str_replace('Bearer ', '', $token); //  Removes "Bearer " from token
+        		$token = (new Parser())->parse((string) $token); // Parses from a string
+
+        		$employeeID = $token -> getClaim('employeeID');
+		
+		$response = $this -> userInfo($employeeID, false);
+
+		return response() -> json($response, 200);
 	}
 }
