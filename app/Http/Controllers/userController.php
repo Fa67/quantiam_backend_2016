@@ -70,7 +70,7 @@ class userController extends Controller
 		$employeeID = $employee_id;
 
 		$response = new User($employeeID, true);
-		dd($response);
+		return response() -> json([$response], 200);
 	}
 
 
