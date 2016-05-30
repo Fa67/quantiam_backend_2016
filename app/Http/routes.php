@@ -25,14 +25,6 @@ Route::get('/', function () {
 | kernel and includes session state, CSRF protection, and more.
 |
 */
-
-Route::group(['middleware' => 'auth'], function () {
-
-Route::get('/rto/list/', 'RtoController@test'); // get all RTO requests applicable to this individual
-Route::get('/hr/{employee_id}/hiearchy', 'RtoController@hrHiearchyBuild'); // get all RTO requests applicable to this individual
-	
-	
-});
 Route::post('/auth', 'RTOController@createUserToken'); // Create a JWT for a specific user.
 
 Route::group(['middleware' => 'authuser'], function() 
@@ -54,8 +46,6 @@ Route::group(['middleware' => 'authuser'], function()
 
 	Route::post('/mail/send', 'MailController@send');
 
-
-
 });
 // Request existing RTOs
 // Post new approval.
@@ -68,3 +58,8 @@ Route::get('/user/{user_id}/getSubordinates', 'RTOController@getSubordinates');
 Route::get('/user/{user_id}/getSupervisors', 'RTOController@getSupervisors');
 
 
+Route::get('/user/{employee_id}', 'userController@userInfo');
+Route::post('/user/new', 'userController@newUser');
+Route::post('/user/', 'userController@searchUsers');
+Route::put('/user/{employee_id}', 'userController@editUser');
+Route::put('/hierarchy/{employee_id}', 'userController@moveUser');

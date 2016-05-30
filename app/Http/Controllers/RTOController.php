@@ -14,7 +14,7 @@ use App\Models\JWT;
 use DB;
 
 use Baum\Node;
-use Baum\Extensions\Query\Builder;  // modified to continue using Lcobucci builder...
+use Baum\Extensions\Query\Builder; 
 
 class RTOController extends Controller
 {
