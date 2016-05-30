@@ -40,7 +40,7 @@ class JWT extends Model
 	        	**	$username is authenticated4
 	        	*/
 	        	// Requests employee ID from User
-	        	$user_id = DB::table('employees') -> select('employeeid') -> where ('ldap_username', '=', $username) -> first();
+	        	$user_id = DB::table('employees') -> select('employeeid') -> where ('ldap_username', '=', $username) -> value(null);
 
 				// Using lcobucci framework.
 

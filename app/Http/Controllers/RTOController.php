@@ -117,6 +117,7 @@ class RTOController extends Controller
 	public function editRTOtime(Request $request)
 	{	
 		$userInput = json_decode(($request -> input), true);
+		dd($userInput);
 
 		try
 		{
