@@ -46,6 +46,8 @@ Route::group(['middleware' => 'authuser'], function()
 
 	Route::post('/mail/send', 'MailController@send');
 
+	Route::get('/user/', 'userController@identifyUser');
+
 });
 // Request existing RTOs
 // Post new approval.
@@ -57,7 +59,6 @@ Route::put('/rto/request/{request_id}/approval/{approval_id}', 'RTOController@up
 Route::get('/user/{user_id}/getSubordinates', 'RTOController@getSubordinates');
 Route::get('/user/{user_id}/getSupervisors', 'RTOController@getSupervisors');
 
-Route::get('/user/', 'userController@identifyUser');
 Route::post('/user/new', 'userController@newUser');
 Route::post('/user/', 'userController@searchUsers');
 Route::put('/user/{employee_id}', 'userController@editUser');
