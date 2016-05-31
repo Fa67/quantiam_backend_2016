@@ -169,7 +169,14 @@ class RTO extends Model
                         ->select('*')
                         ->where('timesheet_rtoapprovals.requestID', '=', $requestID)
                         ->get();
-                                        
+        
+
+        // Attach supervisor name to approvals object.
+        foreach($approvals as $obj)
+        {
+            $name = DB::table('employees')->select('firstname', 'lastname')->where('employeeID', '=', $obj->employeeID)->first();
+            $obj -> name = $name -> firstname." ".$name->lastname;
+        }
                         //Sorts through table and creates an $obj of each row
                             foreach($tableData as $obj)
                         {
