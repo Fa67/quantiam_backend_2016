@@ -54,7 +54,7 @@ class RTOController extends Controller
 	{
 		try {
 			$response = $this -> rto -> getRTOdata($requestID);
-			return response() -> json ([$response], 200);
+			return response() -> json ($response, 200);
 			
 		} catch (\Exception $e)
 		{
