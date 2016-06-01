@@ -62,9 +62,6 @@ class RTOController extends Controller
 		}
 	}
 
-
-
-
 	public function requestSpecific($requestID)
 	{
 		$test = $this->rto->getRTOdata($requestID);
@@ -101,7 +98,7 @@ class RTOController extends Controller
 
 	public function requestTime(Request $request, $request_id)
 	{
-		$userInput = json_decode(($request -> input), true);
+		$userInput = $request -> all();
 		$userInput['requestID'] = $request_id;
 		
 		try
