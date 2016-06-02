@@ -102,7 +102,7 @@ class userController extends Controller
 
         		$employeeID = $token -> getClaim('employeeID');
 		
-		$response = $this -> userInfo($employeeID, false);
+		$response = $this -> userInfo($employeeID, true);
 
 		return response() -> json($response, 200);
 	}
