@@ -156,6 +156,7 @@ class RTOController extends Controller
 		//if ($employeeDepth > $request -> user -> depth)
 		//{
 			$response = $this -> rto -> postApproval($params);
+			$response -> name = $request -> user -> name;
 			return response() -> json($response, 200);
 		//} else 
 		//{
