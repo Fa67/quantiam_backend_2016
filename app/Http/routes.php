@@ -48,6 +48,9 @@ Route::group(['middleware' => 'authuser'], function()
 
 	Route::get('/user/', 'userController@identifyUser');
 	Route::get('/user/{user_id}', 'userController@specificUser');
+	
+	Route::get('/u/rtobank/', 'TimesheetController@rto_allotment');
+	
 
 });
 // Request existing RTOs

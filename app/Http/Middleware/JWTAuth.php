@@ -20,6 +20,7 @@ class JWTAuth
      */
     public function handle($request, Closure $next)
     {
+
         $token = $request->header('authorization');
         $token = str_replace('Bearer ', '', $token); //  Removes "Bearer " from token
         $token = (new Parser())->parse((string) $token); // Parses from a string
@@ -35,8 +36,11 @@ class JWTAuth
             $employeeID = $token -> getClaim('employeeID');
             //Call User model to create a new user Object
             $user = new User($employeeID, true);
+			
+			
             // Store user object under $request->user
             $request -> user = $user;
+		
             return $next($request);
         }
         else
