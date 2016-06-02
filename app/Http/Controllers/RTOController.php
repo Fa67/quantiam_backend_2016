@@ -113,16 +113,16 @@ class RTOController extends Controller
 
 	public function editRTOtime(Request $request)
 	{	
-		$userInput = json_decode(($request -> input), true);
-		dd($userInput);
+		$userInput = $request -> all();
 
 		try
 		{
-			$reponse = $this -> rto -> editRTOtime($userInput);
-			dd($response);
+			$response = $this -> rto -> editRTOtime($userInput);
+			return response() -> json($response, 200);
+
 		}catch (\Exception $e)
 		{
-			return response() -> json(['error' => $e]);
+			return response() -> json(['error' => $e], 418);
 		}
 	}
 

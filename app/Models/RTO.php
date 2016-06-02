@@ -73,7 +73,6 @@ class RTO extends Model
         DB::table('timesheet_rtotime')  ->where('rtotimeID', $requestInfo['rtotimeID'])
                                         ->update($requestInfo);
         $response = $this -> getSpecificTable('timesheet_rtotime', 'rtotimeID', $requestInfo['rtotimeID']);
-        dd($response);
    
         return $response;   
     }
