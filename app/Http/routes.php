@@ -42,7 +42,7 @@ Route::group(['middleware' => 'authuser'], function()
 	Route::delete('/rto/time/{rtotime_id}', 'RTOController@deleteRTOTime');
 
 	Route::put('/rto/approval/{approval_id}', 'RTOController@editApproval');
-	Route::post('/rto/{request_id}/approval', 'RTOController@postApproval');
+	Route::post('/rto/approval/{request_id}', 'RTOController@postApproval');
 
 	Route::post('/mail/send', 'MailController@send');
 
