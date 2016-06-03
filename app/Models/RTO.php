@@ -115,9 +115,9 @@ class RTO extends Model
             return $response; 
     }
 
-    public function deleteApproval($params)
+    public function deleteApproval($approvalID)
     {
-        $blah = DB::table('timesheet_rtoapprovals') -> where ('approvalID', '=', $params['approvalID']) ;
+        $blah = DB::table('timesheet_rtoapprovals') -> where ('approvalID', '=', $approvalID) ;
         $requestID = $blah -> value('requestID');
         $blah -> delete();
 
