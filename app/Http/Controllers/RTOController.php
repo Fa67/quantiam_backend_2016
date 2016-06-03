@@ -184,11 +184,10 @@ class RTOController extends Controller
 
 	public function deleteApproval(Request $request)
 	{	// approvalID and requestID
-		$approvalID = $request -> all();
-		$approvalID = $approvalID -> approvalID;
+		$approvalID = $request -> input('approvalID');
 
 		$response = $this -> rto -> deleteApproval($approvalID);
-		return ("aid:" + $approvalID);
+
 		return response() -> json($response, 200);
 	}
 	
