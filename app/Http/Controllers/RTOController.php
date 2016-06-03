@@ -186,10 +186,9 @@ class RTOController extends Controller
 	{	// approvalID and requestID
 		$approvalID = $request -> input('approvalID');
 
-			$response = $this -> rto -> deleteApproval($approvalID);
-			return response() -> json($response, 200);
-
-
+		$response = $this -> rto -> deleteApproval($approvalID);
+		return $approvalID;
+		return response() -> json($response, 200);
 	}
 	
 
