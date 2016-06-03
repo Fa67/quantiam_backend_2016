@@ -182,12 +182,19 @@ class RTOController extends Controller
 
 	}
 
-	public function deleteApproval(Request $request)
-	{	// approvalID and requestID
-		$approvalID = $request -> all();
-		return $approvalID;
+	public function deleteApproval(Request $request, $approvalID)
+	{	
+		$approvalEmployeeID = DB::table('timesheet_rtoapprovals')->where('approvalID', '=', $approvalID)->value('employeeID');
 
-		$response = $this -> rto -> deleteApproval($approvalID);
+		if ($request -> user -> employeeID != $approvalEmployeeID)
+		{
+			return response() -> json(["error" => "Unauthorized"], 401);
+		}
+
+		else
+		{
+			$response = $this -> rto -> deleteApproval($approvalID);
+		}
 
 		return response() -> json($response, 200);
 	}
