@@ -41,10 +41,13 @@ class RTO extends Model
     }
 
 
-    private function editRTO($approval)
+    private function editRTO($params)
     {
-        DB::table('timesheet_rto')  -> where    ('requestID', $approval -> requestID)
-                                    -> update   (['status' => $approval -> approval, 'reason' => $approval -> reason]);
+        DB::table('timesheet_rto')  -> where('requestID', $params['requestID'])
+                                    -> update($params);
+
+        $response = $params['status'];
+        return $response;
     
     }
 
@@ -94,6 +97,7 @@ class RTO extends Model
         $id = DB::table('timesheet_rtoapprovals') -> insertGetID(['approval' => $params['approval'], 'employeeID' => $params['employeeID'], 'requestID' => $params['requestID']]);
               $response = $this -> getSpecificTable('timesheet_rtoapprovals', 'approvalID', $id);
         
+        $response -> check = $this -> checkApprovals($params['requestID']);
         return $response;
     }
 
@@ -109,6 +113,55 @@ class RTO extends Model
             $this -> editRTO($response);
 
             return $response; 
+    }
+
+    private function checkApprovals($requestID)
+    {
+        $approvals = DB::table('timesheet_rtoapprovals')->select('approval')->where('requestID', '=', $requestID)->get();
+        $status = null;
+
+
+        if (!isset($approvals[1]))
+        {
+                 if ($approvals[0] -> approval == 'denied')
+                {
+                    $status = 'denied';
+                }
+
+                else if ($approvals[0] -> approval == 'approved')
+                {
+                    $status = 'pending';
+                }
+                else 
+                {
+                    return "improper approval format";
+                }
+        }
+       else
+        {
+              if ($approvals[0] -> approval == 'denied' || $approvals[1] -> approval == 'denied')
+              {
+                     $status = 'denied';
+              }
+              else if ($approvals[1] -> approval == 'approved' && $approvals[1] -> approval == 'approved')
+              {
+                    $status = 'approved';
+              }
+        }
+
+        if ($status == null)
+        {
+            $status = 'pending';
+        }
+
+        $params = array (
+                        "requestID" => $requestID,
+                        "status" => $status
+                        );
+
+        $response = $this -> editRTO($params);
+        return $response;
+
     }
 
 
