@@ -153,15 +153,15 @@ class RTOController extends Controller
 		$employeeID = $this -> rto -> getRTOdata($requestID) -> employeeID;
 		$employeeDepth = (new User($employeeID)) -> depth;
 
-		//if ($employeeDepth > $request -> user -> depth)
-		//{
+		 ($employeeDepth > $request -> user -> depth)
+		{
 			$response = $this -> rto -> postApproval($params);
 			$response -> name = $request -> user -> name;
 			return response() -> json($response, 200);
-		//} else 
-		//{
-			//return response() -> json(['error' => 'Unauthorized to approve this request'], 401);
-		//}
+		} else 
+		{
+			return response() -> json(['error' => 'Unauthorized to approve this request'], 401);
+		}
 	}
 
 	public function editApproval(Request $request, $approvalID)
