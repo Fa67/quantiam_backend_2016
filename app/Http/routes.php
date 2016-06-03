@@ -41,8 +41,9 @@ Route::group(['middleware' => 'authuser'], function()
 	Route::put('/rto/requestTime', 'RTOController@editRTOtime');
 	Route::delete('/rto/time/{rtotime_id}', 'RTOController@deleteRTOTime');
 
-	Route::put('/rto/approval/{approval_id}', 'RTOController@editApproval');
-	Route::post('/rto/approval/{request_id}', 'RTOController@postApproval');
+	Route::put('/approval/{approval_id}', 'RTOController@editApproval');
+	Route::post('/approval/{request_id}', 'RTOController@postApproval');
+	Route::delete('/approval/', 'RTOController@deleteApproval');
 
 	Route::post('/mail/send', 'MailController@send');
 
@@ -67,3 +68,5 @@ Route::post('/user/new', 'userController@newUser');
 Route::post('/user/', 'userController@searchUsers');
 Route::put('/user/{employee_id}', 'userController@editUser');
 Route::put('/hierarchy/{employee_id}', 'userController@moveUser');
+
+

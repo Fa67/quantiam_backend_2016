@@ -182,6 +182,17 @@ class RTOController extends Controller
 
 	}
 
+	public function deleteApproval(Request $request)
+	{	// approvalID and requestID
+		$params = $request -> all();
+
+			$response = $this -> rto -> deleteApproval($params);
+			return response() -> json($response, 200);
+
+
+	}
+	
+
 	public function createUserToken(Request $request)
 	{
 		$payload = new JWT($request);

@@ -115,13 +115,26 @@ class RTO extends Model
             return $response; 
     }
 
+    public function deleteApproval($params)
+    {
+        $blah = DB::table('timesheet_rtoapprovals') -> where ('approvalID', '=', $params['approvalID']) ;
+        $requestID = $blah -> value('requestID');
+        $blah -> delete();
+
+        $response = $this -> checkApprovals($requestID);
+        return $response;
+    }
+
     private function checkApprovals($requestID)
     {
         $approvals = DB::table('timesheet_rtoapprovals')->select('approval')->where('requestID', '=', $requestID)->get();
         $status = null;
 
-
-        if (!isset($approvals[1]))
+        if (!isset($approvals[0]))
+        {
+            $status = 'pending';
+        }
+        else if (isset ($approvals[0]) && !isset($approvals[1]))
         {
                  if ($approvals[0] -> approval == 'denied')
                 {
