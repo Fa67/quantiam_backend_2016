@@ -11,11 +11,18 @@ Use App\Resources\Views\Emails;
 
 use Mail;
 
+use App\Models\User;
+
 class MailController extends Controller
 {
-	public function send(){
+	public function send(Request $request){
 
 		//include_once("C:\inetpub\wwwroot\quantiam\resources\emails/email.php");
+
+
+		$recipientID = $request -> input('employeeID');
+		$targetEmail = (new User($recipientID)) -> email;
+		$realEmail = $targetEmail;
 
 		$mail = new \PHPMailer(true);
 
@@ -37,11 +44,11 @@ class MailController extends Controller
 				'allow_self_signed' => true
 			)
 			);
+			$targetEmail = "christopher.petrone@quantiam.com";
+			$mail->addAddress($targetEmail);
 
-			$mail->addAddress('cpetrone@quantiam.com', 'thishfoadshnfdskafdsa');
-
-			$mail->Subject = "Here is the subject";
-			$mail->Body    = 'C:\inetpub\wwwroot\quantiam\resources\emails/email.php';
+			$mail->Subject = $request -> input ('subject');
+			$mail->Body    =  $request -> input("body");
 			$mail->AltBody = "This is the body in plain text for non-HTML mail clients";
 			$mail->IsHTML(true);
 
