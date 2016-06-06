@@ -92,12 +92,14 @@ class RTO extends Model
     }
 
 
-    public function postApproval($params)
+    public function postApproval($params, $depth)
     {
         $id = DB::table('timesheet_rtoapprovals') -> insertGetID(['approval' => $params['approval'], 'employeeID' => $params['employeeID'], 'requestID' => $params['requestID']]);
               $response = $this -> getSpecificTable('timesheet_rtoapprovals', 'approvalID', $id);
         
-        $response -> check = $this -> checkApprovals($params['requestID']);
+        $temp  = $this -> checkApprovals($params['requestID'], $depth);
+        $response ->check = $temp['status'];
+        $response ->emailSupervisor = $temp['emailSupervisor'];
         return $response;
     }
 
@@ -125,11 +127,16 @@ class RTO extends Model
         return $response;
     }
 
-    private function checkApprovals($requestID)
+    private function checkApprovals($requestID, $depth)
     {
         $approvals = DB::table('timesheet_rtoapprovals')->select('approval')->where('requestID', '=', $requestID)->get();
         $status = null;
-
+        $emailSupervisor = false;
+        $emailTop = 0;
+        if ($depth == 0)
+        {
+            $emailTop = 1;
+        }
         if (!isset($approvals[0]))
         {
             $status = 'pending';
@@ -141,9 +148,15 @@ class RTO extends Model
                     $status = 'denied';
                 }
 
-                else if ($approvals[0] -> approval == 'approved')
+                else if ($approvals[0] -> approval == 'approved' && $emailTop == 0)
                 {
                     $status = 'pending';
+                    $emailSupervisor = true;
+                }
+                else if ($approvals[0] -> approval == 'approved' && $emailTop == 1)
+                {
+                    $status = 'approved';
+                    $emailSupervisor = false;
                 }
                 else 
                 {
@@ -172,7 +185,13 @@ class RTO extends Model
                         "status" => $status
                         );
 
-        $response = $this -> editRTO($params);
+        $response['status'] = $this -> editRTO($params);
+
+        $response['emailSupervisor'] = $emailSupervisor;
+
+
+        
+
         return $response;
 
     }

@@ -15,14 +15,23 @@ use App\Models\User;
 
 class MailController extends Controller
 {
-	public function send(Request $request){
+	public function send(Request $request, $recipientID, $subject, $body){
 
 		//include_once("C:\inetpub\wwwroot\quantiam\resources\emails/email.php");
 
-
+		if (!$recipientID )
+		{
 		$recipientID = $request -> input('employeeID');
 		$targetEmail = (new User($recipientID)) -> email;
 		$realEmail = $targetEmail;
+		$body = $request -> input("body");
+		$subject = $request -> input ('subject');
+		}
+		else 
+		{
+			$targetEmail = (new User($recipientID)) -> email;
+			$realEmail = $targetEmail;
+		}
 
 		$mail = new \PHPMailer(true);
 
@@ -47,8 +56,8 @@ class MailController extends Controller
 			$targetEmail = "christopher.petrone@quantiam.com";
 			$mail->addAddress($targetEmail);
 
-			$mail->Subject = $request -> input ('subject');
-			$mail->Body    =  $request -> input("body");
+			$mail->Subject = $subject;
+			$mail->Body    =  $body;
 			$mail->AltBody = "This is the body in plain text for non-HTML mail clients";
 			$mail->IsHTML(true);
 

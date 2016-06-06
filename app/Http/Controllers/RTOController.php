@@ -143,6 +143,14 @@ class RTOController extends Controller
 	{	
 		$approval = $request -> input("approval");
 		$employeeID = $request -> user -> employeeID;
+		if ($request -> user -> depth  > 0)
+		{
+			$supervisorObj = $request -> user -> supervisors[count( $request -> user -> supervisors) -1];
+		}
+		else
+		{
+			 $supervisorObj = $request -> user;
+		}
 
 		$params = array(
 			"approval" => $approval,
@@ -153,12 +161,22 @@ class RTOController extends Controller
 		$employeeID = $this -> rto -> getRTOdata($requestID) -> employeeID;
 		$employeeDepth = (new User($employeeID)) -> depth;
 
-		 ($employeeDepth > $request -> user -> depth)
+		if($employeeDepth > $supervisorObj -> depth || $supervisorObj -> depth == 0)
 		{
-			$response = $this -> rto -> postApproval($params);
+			$response = $this -> rto -> postApproval($params, $supervisorObj -> depth);
 			$response -> name = $request -> user -> name;
+
+			if ($response -> emailSupervisor == true)
+			{
+				app('App\Http\Controllers\MailController')->send($request, $supervisorObj -> employeeID, "test", "test");
+			}
+			else {
+
+			}
+
+
 			return response() -> json($response, 200);
-		} else 
+		} else
 		{
 			return response() -> json(['error' => 'Unauthorized to approve this request'], 401);
 		}
