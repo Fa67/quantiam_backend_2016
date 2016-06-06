@@ -100,6 +100,8 @@ class RTOController extends Controller
 	{
 		$userInput = $request -> all();
 		$userInput['requestID'] = $request_id;
+
+		$permission = $this -> rto -> checkRtoPermission($request_id, false);
 		
 		try
 		{
