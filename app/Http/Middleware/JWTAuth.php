@@ -40,7 +40,6 @@ class JWTAuth
 			
             // Store user object under $request->user
             $request -> user = $user;
-		
             return $next($request);
         }
         else

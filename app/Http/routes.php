@@ -51,6 +51,9 @@ Route::group(['middleware' => 'authuser'], function()
 	Route::get('/user/{user_id}', 'userController@specificUser');
 	
 	Route::get('/u/rtobank/', 'TimesheetController@rto_allotment');
+
+	
+Route::post('/user/move', 'userController@moveUser');
 	
 
 });
@@ -67,6 +70,6 @@ Route::get('/user/{user_id}/getSupervisors', 'RTOController@getSupervisors');
 Route::post('/user/new', 'userController@newUser');
 Route::post('/user/', 'userController@searchUsers');
 Route::put('/user/{employee_id}', 'userController@editUser');
-Route::put('/hierarchy/{employee_id}', 'userController@moveUser');
+
 
 
