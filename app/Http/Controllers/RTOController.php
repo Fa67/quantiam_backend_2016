@@ -160,7 +160,7 @@ class RTOController extends Controller
 
 		$employeeID = $this -> rto -> getRTOdata($requestID) -> employeeID;
 		$employeeDepth = (new User($employeeID)) -> depth;
-		
+
 		if($employeeDepth > $supervisorObj -> depth || $supervisorObj -> depth == 0)
 		{
 			$response = $this -> rto -> postApproval($params, $supervisorObj -> depth);
@@ -211,7 +211,7 @@ class RTOController extends Controller
 
 		else
 		{
-			$response = $this -> rto -> deleteApproval($approvalID);
+			$response = $this -> rto -> deleteApproval($approvalID, $request -> user -> depth);
 		}
 
 		return response() -> json($response, 200);

@@ -117,13 +117,13 @@ class RTO extends Model
             return $response; 
     }
 
-    public function deleteApproval($approvalID)
+    public function deleteApproval($approvalID, $depth)
     {
         $tableRow = DB::table('timesheet_rtoapprovals') -> where ('approvalID', '=', $approvalID) ;
        $requestID = $tableRow -> value('requestID');
                            $tableRow -> delete();
 
-        $response = $this -> checkApprovals($requestID);
+        $response = ($this -> checkApprovals($requestID, $depth))['status'];
         return $response;
     }
 
@@ -149,7 +149,7 @@ class RTO extends Model
                     $status = 'pending';
                     $emailSupervisor = true;
                 }
-                else if ($approvals[0] -> approval == 'approved' && $depth == 1)
+                else if ($approvals[0] -> approval == 'approved' && $depth == 0)
                 {
                     $status = 'approved';
                     $emailSupervisor = false;
