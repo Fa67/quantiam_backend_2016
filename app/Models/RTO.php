@@ -185,9 +185,6 @@ class RTO extends Model
 
         $response['emailSupervisor'] = $emailSupervisor;
 
-
-        
-
         return $response;
 
     }

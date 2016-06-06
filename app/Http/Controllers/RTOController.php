@@ -142,25 +142,25 @@ class RTOController extends Controller
 	public function postApproval(Request $request, $requestID)
 	{	
 		$approval = $request -> input("approval");
-		$employeeID = $request -> user -> employeeID;
+		$supervisorObj = $request -> user;
 		if ($request -> user -> depth  > 0)
 		{
-			$supervisorObj = $request -> user -> supervisors[count( $request -> user -> supervisors) -1];
+			$nextSupervisorObj = $supervisorObj -> supervisors[count( $request -> user -> supervisors) -1];
 		}
 		else
 		{
-			 $supervisorObj = $request -> user;
+			$nextSupervisorObj = $supervisorObj;
 		}
+	
 
 		$params = array(
 			"approval" => $approval,
-			"employeeID" => $employeeID,
+			"employeeID" => $supervisorObj -> employeeID,
 			"requestID" => $requestID);
-
 
 		$employeeID = $this -> rto -> getRTOdata($requestID) -> employeeID;
 		$employeeDepth = (new User($employeeID)) -> depth;
-
+		
 		if($employeeDepth > $supervisorObj -> depth || $supervisorObj -> depth == 0)
 		{
 			$response = $this -> rto -> postApproval($params, $supervisorObj -> depth);
@@ -168,7 +168,7 @@ class RTOController extends Controller
 
 			if ($response -> emailSupervisor == true)
 			{
-				app('App\Http\Controllers\MailController')->send($request, $supervisorObj -> employeeID, "test", "test");
+				app('App\Http\Controllers\MailController')->send($request, $nextSupervisorObj -> employeeID, "test", "test");
 			}
 			else {
 
