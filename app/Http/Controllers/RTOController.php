@@ -190,7 +190,8 @@ class RTOController extends Controller
 
 			if ($response -> emailSupervisor == true)
 			{
-				app('App\Http\Controllers\MailController')->send($request, $nextSupervisorObj -> employeeID, "New Time-off Request awaiting final approval", "<a href='localhost/frontend/app/#/rto'>Click Here</a>");
+				$rto_url = getenv(RTO_URL);
+				app('App\Http\Controllers\MailController')->send($request, $nextSupervisorObj -> employeeID, "New Time-off Request awaiting final approval", "<a href=".$rto_url.$requestID.">Click Here</a>");
 			}
 			else {
 
