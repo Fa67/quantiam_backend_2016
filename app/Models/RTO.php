@@ -132,11 +132,7 @@ class RTO extends Model
         $approvals = DB::table('timesheet_rtoapprovals')->select('approval')->where('requestID', '=', $requestID)->get();
         $status = null;
         $emailSupervisor = false;
-        $emailTop = 0;
-        if ($depth == 0)
-        {
-            $emailTop = 1;
-        }
+
         if (!isset($approvals[0]))
         {
             $status = 'pending';
@@ -148,12 +144,12 @@ class RTO extends Model
                     $status = 'denied';
                 }
 
-                else if ($approvals[0] -> approval == 'approved' && $emailTop == 0)
+                else if ($approvals[0] -> approval == 'approved' && $depth > 0)
                 {
                     $status = 'pending';
                     $emailSupervisor = true;
                 }
-                else if ($approvals[0] -> approval == 'approved' && $emailTop == 1)
+                else if ($approvals[0] -> approval == 'approved' && $depth == 1)
                 {
                     $status = 'approved';
                     $emailSupervisor = false;
