@@ -35,7 +35,7 @@ class JWTAuth
         {   
             $employeeID = $token -> getClaim('employeeID');
             //Call User model to create a new user Object
-            $user = new User(4 , true);
+            $user = new User($employeeID, true);
 			
 			
             // Store user object under $request->user
