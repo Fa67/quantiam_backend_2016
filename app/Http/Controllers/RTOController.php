@@ -102,15 +102,19 @@ class RTOController extends Controller
 		$userInput['requestID'] = $request_id;
 
 		$permission = $this -> rto -> checkRtoPermission($request_id, false);
-		
-		try
+		if ($permission)
 		{
-			$response = $this -> rto -> requestTime($userInput);
-			return response() -> json($response, 200);
-		}catch(\Exception $e){
-			return response() -> json(['error' => $e]);
+			try
+			{
+				$response = $this -> rto -> requestTime($userInput);
+				return response() -> json($response, 200);
+			}catch(\Exception $e){
+				return response() -> json(['error' => $e]);
+			}
 		}
-
+		else {
+			return response() -> json(['error' => "cannot delete time request after approval has been posted"], 401)
+		}
 	}
 
 	public function editRTOtime(Request $request)
@@ -126,12 +130,12 @@ class RTOController extends Controller
 
 			}catch (\Exception $e)
 			{
-				return response() -> json(['error' => $e], 418);
+				return response() -> json(['error' => $e], 401);
 			}
 		}
 		else 
 		{
-			return response() -> json (['error' => "Cannot edit after an approval has been posted"], 418);
+			return response() -> json (['error' => "Cannot edit after an approval has been posted"], 401);
 		}
 	}
 
