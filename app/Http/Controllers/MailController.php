@@ -15,11 +15,10 @@ use App\Models\User;
 
 class MailController extends Controller
 {
-	public function send(Request $request, $recipientID, $subject, $body){
+	public function send(Request $request, $recipientID = null, $subject = null, $body = null){
 
-		//include_once("C:\inetpub\wwwroot\quantiam\resources\emails/email.php");
 
-		if (!$recipientID )
+		if ($recipientID == null )
 		{
 		$recipientID = $request -> input('employeeID');
 		$targetEmail = (new User($recipientID)) -> email;
