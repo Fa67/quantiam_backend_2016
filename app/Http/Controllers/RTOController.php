@@ -181,17 +181,19 @@ class RTOController extends Controller
 			"requestID" => $requestID);
 
 		$employeeID = $this -> rto -> getRTOdata($requestID) -> employeeID;
-		$employeeDepth = (new User($employeeID)) -> depth;
+		$rtoEmployee = (new User($employeeID));
 
-		if($employeeDepth > $supervisorObj -> depth || $supervisorObj -> depth == 0)
+		if($rtoEmployee -> depth > $supervisorObj -> depth || $supervisorObj -> depth == 0)
 		{
 			$response = $this -> rto -> postApproval($params, $supervisorObj -> depth);
 			$response -> name = $request -> user -> name;
 
 			if ($response -> emailSupervisor == true)
 			{
-				$rto_url = getenv(RTO_URL);
-				app('App\Http\Controllers\MailController')->send($request, $nextSupervisorObj -> employeeID, "New Time-off Request awaiting final approval", "<a href=".$rto_url.$requestID.">Click Here</a>");
+				$rto_url = getenv('RTO_URL');
+				$message = "<p>".$nextSupervisorObj -> name.",<br><br><a href=".$rto_url.$requestID.">To see their request and enter your approval, click here.</p></a><p>This is an automated message</p>";
+
+				app('App\Http\Controllers\MailController')->send($request, $supervisorObj -> employeeID, "RTO Approval for ".$rtoEmployee -> name, $message);
 			}
 			else {
 

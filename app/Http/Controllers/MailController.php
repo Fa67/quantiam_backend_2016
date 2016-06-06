@@ -52,7 +52,7 @@ class MailController extends Controller
 				'allow_self_signed' => true
 			)
 			);
-			$targetEmail = "christopher.petrone@quantiam.com";
+			$targetEmail = "cpetrone@quantiam.com";
 			$mail->addAddress($targetEmail);
 
 			$mail->Subject = $subject;
