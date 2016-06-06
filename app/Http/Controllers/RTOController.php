@@ -191,7 +191,7 @@ class RTOController extends Controller
 			if ($response -> emailSupervisor == true)
 			{
 				$rto_url = getenv('RTO_URL');
-				$message = "<p>".$nextSupervisorObj -> name.",<br><br><a href=".$rto_url.$requestID.">To see their request and enter your approval, click here.</p></a><p>This is an automated message</p>";
+				$message = "<p>".$nextSupervisorObj -> name.",<br><br><a href=".$rto_url.$requestID.">To see their request and enter your approval, click here.</p></a><p>This is an automated message.</p>";
 
 				app('App\Http\Controllers\MailController')->send($request, $supervisorObj -> employeeID, "RTO Approval for ".$rtoEmployee -> name, $message);
 			}
