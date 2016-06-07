@@ -91,44 +91,23 @@ class RTO extends Model
 
     }
 
-
-    public function checkRtoPermission($request, $requestID, $rtotime = true)
+    public function checkRtoPermission($requestID, $rtotime = true)
     {
         if ($rtotime)
         {
             $requestID = DB::table('timesheet_rtotime') -> where ('rtotimeID', $requestID) -> value('requestID');
         }
 
-        $approvals = DB::table('timesheet_rtoapprovals') ->select('*')->where('requestID', $requestID) ->get();
+        $approvals = DB::table('timesheet_rtoapprovals') ->where('requestID', $requestID) ->value('approval');
+
                 if ($approvals == null)
                 {
                     return true;
                 }
-                else if ($approvals != null){
-
-                    if(!$approvals[1] && $approvals[0] -> employeeID == $request -> user -> employeeID) {
-                      
-                             return true;
-
-                        }
-
-                        else if ($approvals[1] && $approvals[1] -> employeeID == $request -> user -> employeeID)
-
-                        {
-
-                            return true;
-
-                        }
-
-                else
-
-                {
+                else {
                     return false;
-                       }
                 }
     }
-
-
 
 
     public function postApproval($params, $depth)
