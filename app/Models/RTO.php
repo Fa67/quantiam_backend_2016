@@ -104,6 +104,9 @@ class RTO extends Model
                 {
                     return true;
                 }
+                else if ($approvals[0] -> employeeID == $request -> user -> employeeID) {
+                    return true;
+                }
                 else {
                     return false;
                 }
