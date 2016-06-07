@@ -99,8 +99,7 @@ class RTO extends Model
             $requestID = DB::table('timesheet_rtotime') -> where ('rtotimeID', $requestID) -> value('requestID');
         }
 
-        $approvals = DB::table('timesheet_rtoapprovals') ->where('requestID', $requestID) ->value('approval');
-
+        $approvals = DB::table('timesheet_rtoapprovals') ->select('*')->where('requestID', $requestID) ->get();
                 if ($approvals == null)
                 {
                     return true;
