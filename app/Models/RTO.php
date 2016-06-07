@@ -104,11 +104,26 @@ class RTO extends Model
                 {
                     return true;
                 }
-                else if ($approvals[0] -> employeeID == $request -> user -> employeeID) {
-                    return true;
+                else if ($approvals[0]){
+
+                    if($approvals[0]  -> employeeID == $request -> user -> employeeID) {
+                             return true;
+                       }
+                       else 
+                       {
+                        return false;
+                       }
                 }
-                else {
-                    return false;
+                else if ($approvals[1])
+                {
+
+                    if($approvals[1]  -> employeeID == $request -> user -> employeeID) {
+                             return true;
+                       }
+                       else 
+                       {
+                        return false;
+                       }
                 }
     }
 
