@@ -153,7 +153,7 @@ class RTO extends Model
 
         if (!isset($approvals[0]))
         {
-            $status = 'pending';
+            $status = 'new';
         }
         else if (isset ($approvals[0]) && !isset($approvals[1]))
         {

@@ -85,14 +85,22 @@ class RTOController extends Controller
 
 	public function deleteRTO(Request $request, $request_id)
 	{
-		try
+		$permission = $this -> rto -> checkRtoPermission ($request_id, false);
+		if ($permission)
 		{
-			$response = $this -> rto -> deleteRTO($request_id);
-			return response() -> json(['success' => $response], 200);
+			try
+			{
+				$response = $this -> rto -> deleteRTO($request_id);
+				return response() -> json(['success' => $response], 200);
+			}
+			catch (\Exception $e)
+			{
+				return response() -> json (['error' => $e]);
+			}
 		}
-		catch (\Exception $e)
+		else 
 		{
-			return response() -> json (['error' => $e]);
+			return response() -> json(["error" => "cannot delete rto after posted approval"], 403);
 		}
 	}
 
@@ -113,7 +121,7 @@ class RTOController extends Controller
 			}
 		}
 		else {
-			return response() -> json(['error' => "cannot delete time request after approval has been posted"], 401);
+			return response() -> json(['error' => "cannot delete time request after approval has been posted"], 403);
 		}
 	}
 
@@ -135,7 +143,7 @@ class RTOController extends Controller
 		}
 		else 
 		{
-			return response() -> json (['error' => "Cannot edit after an approval has been posted"], 401);
+			return response() -> json (['error' => "Cannot edit after an approval has been posted"], 403);
 		}
 	}
 
@@ -193,7 +201,7 @@ class RTOController extends Controller
 				$rto_url = getenv('RTO_URL');
 				$message = "<p>".$nextSupervisorObj -> name.",<br><br><a href=".$rto_url.$requestID.">To see their request and enter your approval, click here.</p></a><p>This is an automated message.</p>";
 
-				app('App\Http\Controllers\MailController')->send($request, $supervisorObj -> employeeID, "RTO Approval for ".$rtoEmployee -> name, $message);
+				app('App\Http\Controllers\MailController')->send($request, $nextSupervisorObj -> employeeID, "RTO Approval for ".$rtoEmployee -> name, $message);
 			}
 			else {
 
