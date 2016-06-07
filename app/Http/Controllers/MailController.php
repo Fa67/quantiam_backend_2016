@@ -17,19 +17,16 @@ class MailController extends Controller
 {
 	public function send(Request $request, $recipientID = null, $subject = null, $body = null){
 
-
 		if ($recipientID == null )
 		{
 		$recipientID = $request -> input('employeeID');
 		$targetEmail = (new User($recipientID)) -> email;
-		$realEmail = $targetEmail;
 		$body = $request -> input("body");
 		$subject = $request -> input ('subject');
 		}
 		else 
 		{
 			$targetEmail = (new User($recipientID)) -> email;
-			$realEmail = $targetEmail;
 		}
 
 		$mail = new \PHPMailer(true);
@@ -41,8 +38,9 @@ class MailController extends Controller
 
 			$mail->Host = getenv('MAIL_HOST');  // this is the exchange mail  server 
 			$mail->SMTPAuth = true;                               // Enable SMTP authentication
-			$mail->Username = 'cpetrone';                 // SMTP username
-			$mail->Password = 'test';                           // SMTP password 
+			$mail->From = 'Quantiam Apps';                 // SMTP username
+			$mail->Username = getenv('emailUser');
+			$mail->Password = getenv('emailPass');                           // SMTP password 
 			$mail->SMTPSecure = 'tls';                            // Enable TLS encryption, `ssl` also accepted
 			$mail->Port = getenv('MAIL_PORT');                                    // TCP port to connect to
 			$mail->SMTPOptions = array(
@@ -52,7 +50,6 @@ class MailController extends Controller
 				'allow_self_signed' => true
 			)
 			);
-			$targetEmail = "cpetrone@quantiam.com";
 			$mail->addAddress($targetEmail);
 
 			$mail->Subject = $subject;
@@ -62,7 +59,7 @@ class MailController extends Controller
 
 
 
-			$mail->setFrom('Christopher.Petrone@quantiam.com', 'Quantiam Apps');
+			$mail->setFrom(getenv('emailUser').'@quantiam.com','Quantiam Apps');
 
 		if(!$mail->Send()) 
 		{
