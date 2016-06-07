@@ -57,6 +57,7 @@ Route::group(['middleware' => 'authuser'], function()
 
 	
 Route::post('/user/move', 'userController@moveUser');
+Route::post('/user/tree', 'userController@viewTree');
 	
 
 });

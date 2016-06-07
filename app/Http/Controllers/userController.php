@@ -97,6 +97,14 @@ class userController extends Controller
 		dd($nodeToMove.' moved under '.$nodeParent);
 	}
 
+
+	public function viewTree(Request $request)
+	{
+		$tree = Nest::where($request->input('idtag'), $request -> input('idvalue')) -> first() -> getDescendantsAndSelf() -> toHierarchy();
+
+		return response() -> json($tree);
+	}
+
 	public function identifyUser(Request $request)
 	{
        		$token = $request->header('authorization');
