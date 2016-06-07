@@ -15,7 +15,7 @@ class TimesheetController extends Controller
   
  function rto_existing_absences(Request $request){
  
-$timeofftypes = array('cto','pto','vacation'); 
+$timeofftypes = array('cto','pto','vacation','unpaid'); 
 
 $input = $request->all();
 
