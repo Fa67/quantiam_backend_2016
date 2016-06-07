@@ -50,7 +50,10 @@ Route::group(['middleware' => 'authuser'], function()
 	Route::get('/user/', 'userController@identifyUser');
 	Route::get('/user/{user_id}', 'userController@specificUser');
 	
+	
+	
 	Route::get('/u/rtobank/', 'TimesheetController@rto_allotment');
+	Route::post('/rto/existingabsences/', 'TimesheetController@rto_existing_absences');
 
 	
 Route::post('/user/move', 'userController@moveUser');

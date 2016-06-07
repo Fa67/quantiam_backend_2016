@@ -11,6 +11,34 @@ use DB;
 class TimesheetController extends Controller
 {
   
+  
+  
+ function rto_existing_absences(Request $request){
+ 
+$timeofftypes = array('cto','pto','vacation'); 
+
+$input = $request->all();
+
+	 if(isset($input['dateArray']))
+	 {
+	 $query = 
+	 DB::table('hours')
+	->select(['firstname','lastname','type','date','hours'])
+	->join('employees', 'employees.employeeid', '=', 'hours.employeeid')
+	->whereIn('date', $input['dateArray'])
+	->whereIn('type',$timeofftypes)
+	 ->get();
+	 
+	 return $query;
+	 
+	 }
+	 else
+	 {
+			return response () -> json(['error' => 'Missing expected argument "dateArray" '], 400);
+	 }
+	 
+ }
+
 
 
 // really old function converted to laravel, needs a user specific option. 
