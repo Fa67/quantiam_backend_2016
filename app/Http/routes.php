@@ -41,10 +41,24 @@ Route::group(['middleware' => 'authuser'], function()
 	Route::put('/rto/requestTime', 'RTOController@editRTOtime');
 	Route::delete('/rto/time/{rtotime_id}', 'RTOController@deleteRTOTime');
 
-	Route::put('/rto/approval/{approval_id}', 'RTOController@editApproval');
-	Route::post('/rto/{request_id}/approval', 'RTOController@postApproval');
+	Route::put('/approval/{approval_id}', 'RTOController@editApproval');
+	Route::post('/approval/{request_id}', 'RTOController@postApproval');
+	Route::delete('/approval/{approval_id}', 'RTOController@deleteApproval');
 
 	Route::post('/mail/send', 'MailController@send');
+
+	Route::get('/user/', 'userController@identifyUser');
+	Route::get('/user/{user_id}', 'userController@specificUser');
+	
+	
+	
+	Route::get('/u/rtobank/', 'TimesheetController@rto_allotment');
+	Route::post('/rto/existingabsences/', 'TimesheetController@rto_existing_absences');
+
+	
+Route::post('/user/move', 'userController@moveUser');
+Route::post('/user/tree', 'userController@viewTree');
+	
 
 });
 // Request existing RTOs
@@ -57,9 +71,9 @@ Route::put('/rto/request/{request_id}/approval/{approval_id}', 'RTOController@up
 Route::get('/user/{user_id}/getSubordinates', 'RTOController@getSubordinates');
 Route::get('/user/{user_id}/getSupervisors', 'RTOController@getSupervisors');
 
-
-Route::get('/user/{employee_id}', 'userController@userInfo');
 Route::post('/user/new', 'userController@newUser');
 Route::post('/user/', 'userController@searchUsers');
 Route::put('/user/{employee_id}', 'userController@editUser');
-Route::put('/hierarchy/{employee_id}', 'userController@moveUser');
+
+
+

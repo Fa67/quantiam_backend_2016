@@ -13,6 +13,8 @@ use DB;
 use Baum\Node;
 use Baum\Extensions\Query\Builder; 
 
+use Lcobucci\JWT\Parser;
+
 class userController extends Controller
 {
 
@@ -65,12 +67,12 @@ class userController extends Controller
 	}
 
 
-	public function userInfo($employee_id)
+	public function userInfo($employee_id, $truth = true)
 	{
 		$employeeID = $employee_id;
 
-		$response = new User($employeeID, true);
-		dd($response);
+		$response = new User($employeeID, $truth);
+		return $response;
 	}
 
 
@@ -89,6 +91,37 @@ class userController extends Controller
 
 	public function moveUser(Request $request)
 	{
-		dd('shmeerp');
+		$nodeToMove = Nest::where($request -> input('idtag'), '=', $request -> input('employeeID'))->first();
+		$nodeParent = Nest::where($request -> input('idtag'), '=', $request -> input('newSupervisorID')) -> first();
+		$nodeToMove -> makeChildOf ($nodeParent);
+		dd($nodeToMove.' moved under '.$nodeParent);
+	}
+
+
+	public function viewTree(Request $request)
+	{
+		$tree = Nest::where($request->input('idtag'), $request -> input('idvalue')) -> first() -> getDescendantsAndSelf() -> toHierarchy();
+
+		return response() -> json($tree);
+	}
+
+	public function identifyUser(Request $request)
+	{
+       		$token = $request->header('authorization');
+        		$token = str_replace('Bearer ', '', $token); //  Removes "Bearer " from token
+        		$token = (new Parser())->parse((string) $token); // Parses from a string
+
+        		$employeeID = $token -> getClaim('employeeID');
+		
+		$response = $this -> userInfo($employeeID, true);
+
+		return response() -> json($response, 200);
+	}
+
+	public function specificUser($employeeID)
+	{
+		$response = $this -> userInfo($employeeID, true);
+
+		return response() -> json($response, 200);
 	}
 }

@@ -41,10 +41,13 @@ class RTO extends Model
     }
 
 
-    private function editRTO($approval)
+    private function editRTO($params)
     {
-        DB::table('timesheet_rto')  -> where    ('requestID', $approval -> requestID)
-                                    -> update   (['status' => $approval -> approval, 'reason' => $approval -> reason]);
+        DB::table('timesheet_rto')  -> where('requestID', $params['requestID'])
+                                    -> update($params);
+
+        $response = $params['status'];
+        return $response;
     
     }
 
@@ -73,7 +76,6 @@ class RTO extends Model
         DB::table('timesheet_rtotime')  ->where('rtotimeID', $requestInfo['rtotimeID'])
                                         ->update($requestInfo);
         $response = $this -> getSpecificTable('timesheet_rtotime', 'rtotimeID', $requestInfo['rtotimeID']);
-        dd($response);
    
         return $response;   
     }
@@ -89,13 +91,37 @@ class RTO extends Model
 
     }
 
-
-    public function postApproval($user, $requestID)
+    public function checkRtoPermission($requestID, $rtotime = true)
     {
-        $id = DB::table('timesheet_rtoapprovals') -> insertGetID(['approval' => $user -> approval, 'employeeID' => $user -> employeeID, 'requestID' => $requestID]);
-/*        $response = $this -> getSpecificTable('timesheet_rtoapprovals', 'approvalID', $id);
-        $response['approvalID'] = $id;*/
-        return $id;
+        if ($rtotime)
+        {
+            $requestID = DB::table('timesheet_rtotime') -> where ('rtotimeID', $requestID) -> value('requestID');
+        }
+
+        $approvals = DB::table('timesheet_rtoapprovals') ->where('requestID', $requestID) ->value('approval');
+
+                if ($approvals == null)
+                {
+                    return true;
+                }
+                else if ($approvals[0] -> employeeID == $request -> user -> employeeID) {
+                    return true;
+                }
+                else {
+                    return false;
+                }
+    }
+
+
+    public function postApproval($params, $depth)
+    {
+        $id = DB::table('timesheet_rtoapprovals') -> insertGetID(['approval' => $params['approval'], 'employeeID' => $params['employeeID'], 'requestID' => $params['requestID']]);
+              $response = $this -> getSpecificTable('timesheet_rtoapprovals', 'approvalID', $id);
+        
+        $temp  = $this -> checkApprovals($params['requestID'], $depth);
+        $response ->check = $temp['status'];
+        $response ->emailSupervisor = $temp['emailSupervisor'];
+        return $response;
     }
 
 
@@ -110,6 +136,78 @@ class RTO extends Model
             $this -> editRTO($response);
 
             return $response; 
+    }
+
+    public function deleteApproval($approvalID, $depth)
+    {
+        $tableRow = DB::table('timesheet_rtoapprovals') -> where ('approvalID', '=', $approvalID) ;
+       $requestID = $tableRow -> value('requestID');
+                           $tableRow -> delete();
+
+        $response = ($this -> checkApprovals($requestID, $depth))['status'];
+        return $response;
+    }
+
+    private function checkApprovals($requestID, $depth)
+    {
+        $approvals = DB::table('timesheet_rtoapprovals')->select('approval')->where('requestID', '=', $requestID)->get();
+        $status = null;
+        $emailSupervisor = false;
+
+        if (!isset($approvals[0]))
+        {
+            $status = 'new';
+        }
+        else if (isset ($approvals[0]) && !isset($approvals[1]))
+        {
+                 if ($approvals[0] -> approval == 'denied')
+                {
+                    $status = 'denied';
+                }
+
+                else if ($approvals[0] -> approval == 'approved' && $depth > 0)
+                {
+                    $status = 'pending';
+                    $emailSupervisor = true;
+                }
+                else if ($approvals[0] -> approval == 'approved' && $depth == 0)
+                {
+                    $status = 'approved';
+                    $emailSupervisor = false;
+                }
+                else 
+                {
+                    return "improper approval format";
+                }
+        }
+       else
+        {
+              if ($approvals[0] -> approval == 'denied' || $approvals[1] -> approval == 'denied')
+              {
+                     $status = 'denied';
+              }
+              else if ($approvals[1] -> approval == 'approved' && $approvals[1] -> approval == 'approved')
+              {
+                    $status = 'approved';
+              }
+        }
+
+        if ($status == null)
+        {
+            $status = 'pending';
+        }
+
+        $params = array (
+                        "requestID" => $requestID,
+                        "status" => $status
+                        );
+
+        $response['status'] = $this -> editRTO($params);
+
+        $response['emailSupervisor'] = $emailSupervisor;
+
+        return $response;
+
     }
 
 
@@ -169,7 +267,14 @@ class RTO extends Model
                         ->select('*')
                         ->where('timesheet_rtoapprovals.requestID', '=', $requestID)
                         ->get();
-                                        
+        
+
+        // Attach supervisor name to approvals object.
+        foreach($approvals as $obj)
+        {
+            $name = DB::table('employees')->select('firstname', 'lastname')->where('employeeID', '=', $obj->employeeID)->first();
+            $obj -> name = $name -> firstname." ".$name->lastname;
+        }
                         //Sorts through table and creates an $obj of each row
                             foreach($tableData as $obj)
                         {

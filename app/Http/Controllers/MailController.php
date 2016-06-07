@@ -11,11 +11,23 @@ Use App\Resources\Views\Emails;
 
 use Mail;
 
+use App\Models\User;
+
 class MailController extends Controller
 {
-	public function send(){
+	public function send(Request $request, $recipientID = null, $subject = null, $body = null){
 
-		//include_once("C:\inetpub\wwwroot\quantiam\resources\emails/email.php");
+		if ($recipientID == null )
+		{
+		$recipientID = $request -> input('employeeID');
+		$targetEmail = (new User($recipientID)) -> email;
+		$body = $request -> input("body");
+		$subject = $request -> input ('subject');
+		}
+		else 
+		{
+			$targetEmail = (new User($recipientID)) -> email;
+		}
 
 		$mail = new \PHPMailer(true);
 
@@ -26,28 +38,28 @@ class MailController extends Controller
 
 			$mail->Host = getenv('MAIL_HOST');  // this is the exchange mail  server 
 			$mail->SMTPAuth = true;                               // Enable SMTP authentication
-			$mail->Username = 'cpetrone';                 // SMTP username
-			$mail->Password = 'test';                           // SMTP password 
+			$mail->From = 'Quantiam Apps';                 // SMTP username
+			$mail->Username = getenv('emailUser');
+			$mail->Password = getenv('emailPass');                           // SMTP password 
 			$mail->SMTPSecure = 'tls';                            // Enable TLS encryption, `ssl` also accepted
 			$mail->Port = getenv('MAIL_PORT');                                    // TCP port to connect to
-/*			$mail->SMTPOptions = array(
+			$mail->SMTPOptions = array(
 			'ssl' => array(
 				'verify_peer' => false,
 				'verify_peer_name' => false,
 				'allow_self_signed' => true
 			)
-			);*/
+			);
+			$mail->addAddress($targetEmail);
 
-			$mail->addAddress('cpetrone@quantiam.com', 'thishfoadshnfdskafdsa');
-
-			$mail->Subject = "Here is the subject";
-			$mail->Body    = 'C:\inetpub\wwwroot\quantiam\resources\emails/email.php';
+			$mail->Subject = $subject;
+			$mail->Body    =  $body;
 			$mail->AltBody = "This is the body in plain text for non-HTML mail clients";
 			$mail->IsHTML(true);
 
 
 
-			$mail->setFrom('Christopher.Petrone@quantiam.com', 'Quantiam Apps');
+			$mail->setFrom(getenv('emailUser').'@quantiam.com','Quantiam Apps');
 
 		if(!$mail->Send()) 
 		{

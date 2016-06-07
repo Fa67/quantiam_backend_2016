@@ -54,16 +54,13 @@ class RTOController extends Controller
 	{
 		try {
 			$response = $this -> rto -> getRTOdata($requestID);
-			return response() -> json ([$response], 200);
+			return response() -> json ($response, 200);
 			
 		} catch (\Exception $e)
 		{
 			return response() -> json (['error' => $e], 400);
 		}
 	}
-
-
-
 
 	public function requestSpecific($requestID)
 	{
@@ -88,72 +85,131 @@ class RTOController extends Controller
 
 	public function deleteRTO(Request $request, $request_id)
 	{
-		try
+		$permission = $this -> rto -> checkRtoPermission ($request_id, false);
+		if ($permission)
 		{
-			$response = $this -> rto -> deleteRTO($request_id);
-			return response() -> json(['success' => $response], 200);
+			try
+			{
+				$response = $this -> rto -> deleteRTO($request_id);
+				return response() -> json(['success' => $response], 200);
+			}
+			catch (\Exception $e)
+			{
+				return response() -> json (['error' => $e]);
+			}
 		}
-		catch (\Exception $e)
+		else 
 		{
-			return response() -> json (['error' => $e]);
+			return response() -> json(["error" => "cannot delete rto after posted approval"], 403);
 		}
 	}
 
 	public function requestTime(Request $request, $request_id)
 	{
-		$userInput = json_decode(($request -> input), true);
+		$userInput = $request -> all();
 		$userInput['requestID'] = $request_id;
-		
-		try
-		{
-			$response = $this -> rto -> requestTime($userInput);
-			return response() -> json($response, 200);
-		}catch(\Exception $e){
-			return response() -> json(['error' => $e]);
-		}
 
+		$permission = $this -> rto -> checkRtoPermission($request_id, false);
+		if ($permission)
+		{
+			try
+			{
+				$response = $this -> rto -> requestTime($userInput);
+				return response() -> json($response, 200);
+			}catch(\Exception $e){
+				return response() -> json(['error' => $e]);
+			}
+		}
+		else {
+			return response() -> json(['error' => "cannot delete time request after approval has been posted"], 403);
+		}
 	}
 
 	public function editRTOtime(Request $request)
 	{	
-		$userInput = json_decode(($request -> input), true);
+		$userInput = $request -> all();
+		$permission = $this -> rto -> checkRtoPermission($userInput ['rtotimeID']);
+		if ($permission)
+		{
+			try
+			{
+				$response = $this -> rto -> editRTOtime($userInput);
+				return response() -> json($response, 200);
 
-		try
+			}catch (\Exception $e)
+			{
+				return response() -> json(['error' => $e], 401);
+			}
+		}
+		else 
 		{
-			$reponse = $this -> rto -> editRTOtime($userInput);
-			dd($response);
-		}catch (\Exception $e)
-		{
-			return response() -> json(['error' => $e]);
+			return response() -> json (['error' => "Cannot edit after an approval has been posted"], 403);
 		}
 	}
 
 	public function deleteRTOTime(Request $request, $rtotime_id)
 	{
-		try
+
+		$permission = $this -> rto -> checkRtoPermission($rtotime_id);
+		if ($permission)
 		{
-			$response = $this -> rto -> deleteRTOTime($rtotime_id);
-			return response() -> json (['success' => $response], 200);
+			try
+			{
+				$response = $this -> rto -> deleteRTOTime($rtotime_id);
+				return response() -> json (['success' => $response], 200);
+			}
+			catch (\Exception $e)
+			{
+				return response() -> json(['error' => $e]);
+			}
 		}
-		catch (\Exception $e)
+		else 
 		{
-			return response() -> json(['error' => $e]);
+			return response() -> json(['error' => "Cannot delete after an approval has been posted"], 418);
 		}
 	}
 
 	public function postApproval(Request $request, $requestID)
 	{	
-		$request -> user -> approval = 'approved';
+		$approval = $request -> input("approval");
+		$supervisorObj = $request -> user;
+		if ($request -> user -> depth  > 0)
+		{
+			$nextSupervisorObj = $supervisorObj -> supervisors[count( $request -> user -> supervisors) -1];
+		}
+		else
+		{
+			$nextSupervisorObj = $supervisorObj;
+		}
+	
+
+		$params = array(
+			"approval" => $approval,
+			"employeeID" => $supervisorObj -> employeeID,
+			"requestID" => $requestID);
 
 		$employeeID = $this -> rto -> getRTOdata($requestID) -> employeeID;
-		$employeeDepth = (new User($employeeID)) -> depth;
+		$rtoEmployee = (new User($employeeID));
 
-		if ($employeeDepth > $request -> user -> depth)
+		if($rtoEmployee -> depth > $supervisorObj -> depth || $supervisorObj -> depth == 0)
 		{
-			$id = $this -> rto -> postApproval($request -> user, $requestID);
-			dd($id);
-			return response() -> json(['approval' => 'Aproval ID: '.$id], 200);
-		} else 
+			$response = $this -> rto -> postApproval($params, $supervisorObj -> depth);
+			$response -> name = $request -> user -> name;
+
+			if ($response -> emailSupervisor == true)
+			{
+				$rto_url = getenv('RTO_URL');
+				$message = "<p>".$nextSupervisorObj -> name.",<br><br><a href=".$rto_url.$requestID.">To see their request and enter your approval, click here.</p></a><p>This is an automated message.</p>";
+
+				app('App\Http\Controllers\MailController')->send($request, $nextSupervisorObj -> employeeID, "RTO Approval for ".$rtoEmployee -> name, $message);
+			}
+			else {
+
+			}
+
+
+			return response() -> json($response, 200);
+		} else
 		{
 			return response() -> json(['error' => 'Unauthorized to approve this request'], 401);
 		}
@@ -176,6 +232,24 @@ class RTOController extends Controller
 		}
 
 	}
+
+	public function deleteApproval(Request $request, $approvalID)
+	{	
+		$approvalEmployeeID = DB::table('timesheet_rtoapprovals')->where('approvalID', '=', $approvalID)->value('employeeID');
+
+		if ($request -> user -> employeeID != $approvalEmployeeID)
+		{
+			return response() -> json(["error" => "Unauthorized"], 401);
+		}
+
+		else
+		{
+			$response = $this -> rto -> deleteApproval($approvalID, $request -> user -> depth);
+		}
+
+		return response() -> json($response, 200);
+	}
+	
 
 	public function createUserToken(Request $request)
 	{
