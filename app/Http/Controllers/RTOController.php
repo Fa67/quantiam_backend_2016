@@ -205,6 +205,8 @@ class RTOController extends Controller
 
 				app('App\Http\Controllers\MailController')->send($request, $nextSupervisorObj -> employeeID, "RTO Approval for ".$rtoEmployee -> name, $message);
 			}
+
+			
 			// Email employee upon approval/denial
 			if ($response -> check == "approved" || $response -> check == "denied")
 			{
