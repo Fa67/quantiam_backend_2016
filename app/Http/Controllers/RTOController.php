@@ -85,7 +85,7 @@ class RTOController extends Controller
 
 	public function deleteRTO(Request $request, $request_id)
 	{
-		$permission = $this -> checkRtoPermission ($request_id, false);
+		$permission = $this -> rto -> checkRtoPermission ($request_id, false);
 		if ($permission)
 		{
 			try
@@ -109,7 +109,7 @@ class RTOController extends Controller
 		$userInput = $request -> all();
 		$userInput['requestID'] = $request_id;
 
-		$permission = $this -> checkRtoPermission($request_id, false);
+		$permission = $this -> rto -> checkRtoPermission($request_id, false);
 		if ($permission)
 		{
 			try
@@ -128,7 +128,7 @@ class RTOController extends Controller
 	public function editRTOtime(Request $request)
 	{	
 		$userInput = $request -> all();
-		$permission = $this -> checkRtoPermission($userInput ['rtotimeID']);
+		$permission = $this -> rto -> checkRtoPermission($userInput ['rtotimeID']);
 		if ($permission)
 		{
 			try
@@ -146,45 +146,6 @@ class RTOController extends Controller
 			return response() -> json (['error' => "Cannot edit after an approval has been posted"], 403);
 		}
 	}
-
-
-
-    public function checkRtoPermission(Request $request, $requestID, $rtotime = true)
-    {
-        if ($rtotime)
-        {
-            $requestID = DB::table('timesheet_rtotime') -> where ('rtotimeID', $requestID) -> value('requestID');
-        }
-
-        $approvals = DB::table('timesheet_rtoapprovals') ->where('requestID', $requestID) ->value('approval');
-
-                if ($approvals == null)
-                {
-                    return true;
-                }
-                else if ($approvals != null){
-
-                    if(!$approvals[1] && $approvals[0] -> employeeID == $request -> user -> employeeID) {
-                      
-                             return true;
-
-                       	}
-
-                       	else if ($approvals[1] && $approvals[1] -> employeeID == $request -> user -> employeeID)
-
-                       	{
-
-                        	return true;
-
-                       	}
-
-          		else
-
-              	{
-              		return false;
-                       }
-                }
-    }
 
 
 
