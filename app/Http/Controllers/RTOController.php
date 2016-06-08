@@ -121,7 +121,7 @@ class RTOController extends Controller
 			}
 		}
 		else {
-			return response() -> json(['error' => "cannot delete time request after approval has been posted"], 403);
+			return response() -> json(['error' => "cannot post time request after approval has been posted"], 403);
 		}
 	}
 
