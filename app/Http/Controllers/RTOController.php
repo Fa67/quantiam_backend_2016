@@ -205,9 +205,16 @@ class RTOController extends Controller
 
 				app('App\Http\Controllers\MailController')->send($request, $nextSupervisorObj -> employeeID, "RTO Approval for ".$rtoEmployee -> name, $message);
 			}
-			else {
+			
+			// Email employee upon approval/denial
+			if ($response -> status == "approved" || $response -> status == "denied")
+			{
+				$rto_url = getenv('RTO_URL');
+				$message = "<p>".$rtoEmployee -> name.",<br><br><a href=".$rto_url.$requestID.">Your request for time off has been <b>".$response -> status."</b>.</p></a><p>This is an automated message.</p>";
 
+				app('App\Http\Controllers\MailController')->send($request, $rtoEmployee -> employeeID, "Time Off Request  ".$response -> status, $message);
 			}
+			
 
 
 			return response() -> json($response, 200);
