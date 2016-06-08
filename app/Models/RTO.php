@@ -91,23 +91,39 @@ class RTO extends Model
 
     }
 
-    public function checkRtoPermission($requestID, $rtotime = true)
+
+    public function checkRtoPermission($request, $requestID, $rtotime = true)
     {
+        $approvalEmployee = new User($request -> user -> employeeID);
+
         if ($rtotime)
         {
             $requestID = DB::table('timesheet_rtotime') -> where ('rtotimeID', $requestID) -> value('requestID');
         }
 
-        $approvals = DB::table('timesheet_rtoapprovals') ->where('requestID', $requestID) ->value('approval');
+        $requestingEmployee = new User(DB::table('timesheet_rto')->where('requestID', $requestID)->value('employeeID'));
+        $approvals = DB::table('timesheet_rtoapprovals')  ->select('*')->where('requestID', '=', $requestID) ->get();
+		
 
-                if ($approvals == null)
-                {
-                    return true;
-                }
-                else {
-                    return false;
-                }
+            if ($approvals == null)
+            {
+                return true;
+            }
+	else if (isset($approvals[0]) && !isset($approvals[1]) &&  $approvalEmployee -> depth < $requestingEmployee -> depth)
+	{
+		return true;
+	}
+	else if (isset($approvals[1])&& $approvalEmployee -> depth < ($requestingEmployee -> depth - 1))
+	{
+		return true;
+	}
+	else 
+	{
+		return false;
+	}
     }
+
+
 
 
     public function postApproval($params, $depth)
