@@ -113,10 +113,6 @@ class RTO extends Model
 	{
 		return true;
 	}
-	else if (isset($approvals[1])&& $approvalEmployee -> depth < ($requestingEmployee -> depth - 1))
-	{
-		return true;
-	}
 	else 
 	{
 		return false;
