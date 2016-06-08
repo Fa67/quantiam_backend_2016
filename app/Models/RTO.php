@@ -215,6 +215,7 @@ class RTO extends Model
 
         $response['emailSupervisor'] = $emailSupervisor;
 
+
         return $response;
 
     }
@@ -352,5 +353,22 @@ class RTO extends Model
         $result['data'] = $dataObj -> data;
 
         return $result;
+    }
+
+    public function notifyApprovers($request, $requestID)
+    {
+        $approvalEmployeeIDs = DB::table('timesheet_rtoapprovals')->where('requestID', $requestID)->pluck('employeeID');
+        $deletedRequests = DB::table('timesheet_rto')->join('timesheet_rtotime', 'timesheet_rto.requestID', '=', 'timesheet_rtotime.requestID')->select('timesheet_rtotime.rtotimeID', 'timesheet_rtotime.date', 'timesheet_rtotime.hours', 'timesheet_rtotime.type')->where('timesheet_rto.requestID', '=', $requestID)->get();
+
+        $message = $request -> user -> name." has deleted their request for time off bearing your approval.";
+
+
+        foreach ($approvalEmployeeIDs as $recipientID)
+        {
+                $rto_url = getenv('RTO_URL');
+                $message = "</p>".$message."</p><p>This is an automated message.</p>";
+                app('App\Http\Controllers\MailController')->send($request, $recipientID, "Time Off Request Deleted ", $message);
+        }
+
     }
 }

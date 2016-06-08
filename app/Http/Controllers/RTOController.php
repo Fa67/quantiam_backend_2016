@@ -85,9 +85,9 @@ class RTOController extends Controller
 
 	public function deleteRTO(Request $request, $request_id)
 	{
-		$permission = $this -> rto -> checkRtoPermission ($request, $request_id, false);
-		if ($permission)
-		{
+
+		$this -> rto -> notifyApprovers($request, $request_id);
+
 			try
 			{
 				$response = $this -> rto -> deleteRTO($request_id);
@@ -97,11 +97,7 @@ class RTOController extends Controller
 			{
 				return response() -> json (['error' => $e]);
 			}
-		}
-		else 
-		{
-			return response() -> json(["error" => "cannot delete rto after posted approval"], 403);
-		}
+
 	}
 
 	public function requestTime(Request $request, $request_id)
