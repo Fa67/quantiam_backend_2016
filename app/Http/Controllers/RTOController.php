@@ -85,7 +85,7 @@ class RTOController extends Controller
 
 	public function deleteRTO(Request $request, $request_id)
 	{
-		$permission = $this -> rto -> checkRtoPermission ($request_id, false);
+		$permission = $this -> rto -> checkRtoPermission ($request, $request_id, false);
 		if ($permission)
 		{
 			try
@@ -108,10 +108,10 @@ class RTOController extends Controller
 	{
 		$userInput = $request -> all();
 		$userInput['requestID'] = $request_id;
-/*
-		$permission = $this -> rto -> checkRtoPermission($request_id, false);
+
+		$permission = $this -> rto -> checkRtoPermission($request, $request_id, false);
 		if ($permission)
-		{*/
+		{
 			try
 			{
 				$response = $this -> rto -> requestTime($userInput);
@@ -119,18 +119,18 @@ class RTOController extends Controller
 			}catch(\Exception $e){
 				return response() -> json(['error' => $e]);
 			}
-/*		}
+		}
 		else {
 			return response() -> json(['error' => "cannot post time request after approval has been posted"], 403);
-		}*/
+		}
 	}
 
 	public function editRTOtime(Request $request)
 	{	
 		$userInput = $request -> all();
-/*		$permission = $this -> rto -> checkRtoPermission($userInput ['rtotimeID']);
+		$permission = $this -> rto -> checkRtoPermission($request, $userInput ['rtotimeID']);
 		if ($permission)
-		{*/
+		{
 			try
 			{
 				$response = $this -> rto -> editRTOtime($userInput);
@@ -140,11 +140,11 @@ class RTOController extends Controller
 			{
 				return response() -> json(['error' => $e], 401);
 			}
-/*		}
+		}
 		else 
 		{
 			return response() -> json (['error' => "Cannot edit after an approval has been posted"], 403);
-		}*/
+		}
 	}
 
 
@@ -152,9 +152,9 @@ class RTOController extends Controller
 	public function deleteRTOTime(Request $request, $rtotime_id)
 	{
 
-/*		$permission = $this -> rto -> checkRtoPermission($rtotime_id);
+		$permission = $this -> rto -> checkRtoPermission($request, $rtotime_id);
 		if ($permission)
-		{*/
+		{
 			try
 			{
 				$response = $this -> rto -> deleteRTOTime($rtotime_id);
@@ -164,11 +164,11 @@ class RTOController extends Controller
 			{
 				return response() -> json(['error' => $e]);
 			}
-/*		}
+		}
 		else 
 		{
 			return response() -> json(['error' => "Cannot delete after an approval has been posted"], 418);
-		}*/
+		}
 	}
 
 	public function postApproval(Request $request, $requestID)
