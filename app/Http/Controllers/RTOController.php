@@ -152,8 +152,8 @@ class RTOController extends Controller
 	public function deleteRTOTime(Request $request, $rtotime_id)
 	{
 
-		$permission = $this -> rto -> checkRtoPermission($rtotime_id);
-/*		if ($permission)
+/*		$permission = $this -> rto -> checkRtoPermission($rtotime_id);
+		if ($permission)
 		{*/
 			try
 			{
