@@ -55,9 +55,11 @@ Route::group(['middleware' => 'authuser'], function()
 	Route::get('/u/rtobank/', 'TimesheetController@rto_allotment');
 	Route::post('/rto/existingabsences/', 'TimesheetController@rto_existing_absences');
 
-	
+
+Route::post('/user/new', 'userController@newUser');
 Route::post('/user/move', 'userController@moveUser');
 Route::post('/user/tree', 'userController@viewTree');
+
 	
 
 });
@@ -71,7 +73,6 @@ Route::put('/rto/request/{request_id}/approval/{approval_id}', 'RTOController@up
 Route::get('/user/{user_id}/getSubordinates', 'RTOController@getSubordinates');
 Route::get('/user/{user_id}/getSupervisors', 'RTOController@getSupervisors');
 
-Route::post('/user/new', 'userController@newUser');
 Route::post('/user/', 'userController@searchUsers');
 Route::put('/user/{employee_id}', 'userController@editUser');
 

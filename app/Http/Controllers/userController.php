@@ -78,7 +78,16 @@ class userController extends Controller
 
     public function newUser(Request $request)
 	{
-		dd($request -> all());
+		// Create new position in employees table.
+		$params = $request -> all();
+			$email = $request -> firstname . "." . $request -> lastname . "@" . getenv('MAIL_SUFFIX');
+			$params['email'] = $email;
+
+		DB::table('employees')->insert($params);
+
+		dd(DB::table('employees') -> select('*')->where('employeeID', '=', $request -> employeeID)->get());
+
+
 	}
 
 
