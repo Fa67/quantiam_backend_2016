@@ -25,23 +25,27 @@ class RequestResponseLogger
 
     public function terminate($request)
     {
+        
+
         $params = array(
                 "method" => $request -> method(),
                 "requestURL" => $request -> fullUrl(),
-                "params" => ($request -> all()),
                 );
 
-        if ($request -> user)
+        if ($request -> has('user'))
         {
 
              $params["userID"] = $request -> user -> employeeID;
         }
 
-        if (isset($params['params']['username']) || isset($params['params']['pass']))
+        if ($request -> has('pass'))
         {
-            $params['params'] = "User Credentials";
+            $params['params'] = "Login Credentials";
         }
-        $params['params'] = json_encode($params['params']);
+        else
+        {
+            $params['params'] = json_encode($request -> all());
+        }
 
         DB::table('activity_log')->insert($params);
 
