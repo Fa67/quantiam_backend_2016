@@ -37,7 +37,7 @@ class RequestResponseLogger
              $params["userID"] = $request -> user -> employeeID;
         }
 
-        if ($params['params']['username'] || $params['params']['pass'])
+        if (isset($params['params']['username']) || isset($params['params']['pass']))
         {
             $params['params'] = "User Credentials";
         }
