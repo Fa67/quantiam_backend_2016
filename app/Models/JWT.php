@@ -30,7 +30,6 @@ class JWT extends Model
 		if ($ds) 
 		{
 	   		$ldapusername   = $username."@".(getenv('LDAP_DOMAIN'));
-	    	//$upasswd   = $request->input('pass');
 
 	    	// In place of try/catch statement.
 	     	@$ldapbind = ldap_bind($ds, $ldapusername, $upasswd);

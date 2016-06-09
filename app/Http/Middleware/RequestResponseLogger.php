@@ -28,7 +28,7 @@ class RequestResponseLogger
         $params = array(
                 "method" => $request -> method(),
                 "requestURL" => $request -> fullUrl(),
-                "params" => json_encode($request -> all()),
+                "params" => ($request -> all()),
                 );
 
         if ($request -> user)
@@ -36,6 +36,12 @@ class RequestResponseLogger
 
              $params["userID"] = $request -> user -> employeeID;
         }
+
+        if ($params['params']['username'] || $params['params']['pass'])
+        {
+            $params['params'] = "User Credentials";
+        }
+        $params['params'] = json_encode($params['params']);
 
         DB::table('activity_log')->insert($params);
 
