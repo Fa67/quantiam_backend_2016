@@ -60,6 +60,11 @@ Route::post('/user/new', 'userController@newUser');
 Route::post('/user/move', 'userController@moveUser');
 Route::post('/user/tree', 'userController@viewTree');
 
+//comment routes
+
+Route::get('/comment/', 'CommentController@getComments');
+Route::post('/comment/', 'CommentController@createComment');
+
 	
 
 });

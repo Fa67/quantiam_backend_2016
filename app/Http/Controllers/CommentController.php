@@ -46,9 +46,19 @@ class CommentController extends Controller
 	
 	$input['comment_employee_id'] = $request->user->employeeID;
 			
-	$query = DB::table('comments')->insertGetId($input);
+	$commentID = DB::table('comments')->insertGetId($input);
 	
-	return response() -> json(['success' => 'Comment '.$query.' was successfully created', 'commentID' => $query], 200);
+	
+	$query = DB::table('comments')
+			->select('*')
+			->join('employees', 'employees.employeeid', '=', 'comments.comment_employee_id')
+			->where('comment_entry_id', '=', $commentID)
+			->orderBy('comment_datetime', 'desc')
+			->get();
+	
+
+	
+	return response() -> json($query, 200);
 	
 	
 	}
@@ -73,6 +83,7 @@ class CommentController extends Controller
 			
 			$query = DB::table('comments')
 			->select('*')
+			->join('employees', 'employees.employeeid', '=', 'comments.comment_employee_id')
 			->where('comment_path', '=', $input['path'])
 			->orderBy('comment_datetime', 'desc')
 			->get();
