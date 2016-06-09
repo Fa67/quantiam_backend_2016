@@ -101,7 +101,6 @@ class userController extends Controller
 	public function viewTree(Request $request)
 	{
 		$tree = Nest::where($request->input('idtag'), $request -> input('idvalue')) -> first() -> getDescendantsAndSelf() -> toHierarchy();
-
 		return response() -> json($tree);
 	}
 

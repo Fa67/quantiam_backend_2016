@@ -64,11 +64,12 @@ class MailController extends Controller
 
 		if(!$mail->Send()) 
 		{
-		        $error_message = "Mailer Error: " . $mail->ErrorInfo;
+		       	$error_message = "Mailer Error: " . $mail->ErrorInfo;
+		 	return response() -> json(['error' => $error_message]);
 		} else 
 		{
-		        $error_message = "Successfully sent!";
+			$error_message = "Successfully sent!";
+			return response() -> json(['success' => $error_message]);
 		}
-		return response() -> json(['error' => $error_message]);
 	}
 }
