@@ -46,7 +46,7 @@ class RequestResponseLogger
 
         if ($request -> has('pass'))
         {
-            $params['params'] = "Login Credentials";
+            $params['params'] = (json_encode("Login Credentials"));
         }
         else
         {
