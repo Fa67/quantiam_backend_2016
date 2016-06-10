@@ -78,7 +78,7 @@ class userController extends Controller
 	public function getUsers(Request $request)
 	{
 		$response = DB::table('employees')->leftjoin('hierarchy', 'hierarchy.employeeID', '=', 'employees.employeeID')->get();
-		
+		return (json_decode(json_encode(($response)), true));
 		return response() -> json($response, 200);
 	}
 
