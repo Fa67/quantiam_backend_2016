@@ -17,6 +17,7 @@ class MailController extends Controller
 {
 	public function send(Request $request, $recipientID = null, $subject = null, $body = null){
 
+		dd($request -> all()." ".$recipientID);
 		if ($recipientID == null )
 		{
 		$recipientID = $request -> input('employeeID');
@@ -50,7 +51,7 @@ class MailController extends Controller
 				'allow_self_signed' => true
 			)
 			);
-			
+
 			$mail->addAddress($targetEmail);
 
 			$mail->Subject = $subject;
