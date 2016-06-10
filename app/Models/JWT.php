@@ -46,7 +46,7 @@ class JWT extends Model
 				$signer = new Sha256();
 
 				$token = (new Builder())->setIssuer($_SERVER['HTTP_HOST']) // Configures the issuer (iss claim)
-						                ->setAudience($_SERVER['HTTP_ORIGIN']) // Configures the audience (aud claim)
+						          //      ->setAudience($_SERVER['HTTP_ORIGIN']) // Configures the audience (aud claim)
 						                ->setId('4f1g23a12aa', true) // Configures the id (jti claim), replicating as a header item
 						                ->setIssuedAt(time()) // Configures the time that the token was issue (iat claim)
 						                //->setNotBefore(time() + 1200) // Configures the time that the token can be used (nbf claim)
