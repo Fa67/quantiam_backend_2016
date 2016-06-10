@@ -26,11 +26,11 @@ class CommentController extends Controller
 	$validate = array('comment_path', 'comment_text'); //expected fields. 
 	
 	if($input){
-		foreach($input as $key => $value)
+		foreach($validate as $key )
 		{
 		
 		
-			if(!in_array($key, $validate))
+			if(!array_key_exists($key, $input))
 			{
 				return response() -> json(['error' => $key.' was not sent as a parameter'], 400);
 			}		

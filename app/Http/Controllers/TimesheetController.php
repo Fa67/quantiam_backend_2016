@@ -13,6 +13,73 @@ class TimesheetController extends Controller
   
   
   
+  function addAbsence ($userID, $type, $hours, $date){
+  
+  
+	if(!$userID || !$type || !$hours)
+	{
+  
+		return array('error' => 'Missing expected arguments'); 
+	}
+	
+	$project_conversion = array('pto' => 6, 'vacation' => 2, 'unpaid' => 4, 'cto' =>3);
+	
+	
+	$input = array(
+	
+	'employeeID' => $userID,
+	'type' => $type,
+	'hours' => $hours,
+	'date' => $date,
+	'projectID' => $project_conversion[$type]
+	
+	);
+  
+  	$entryID = DB::table('hours')->insertGetId($input);
+  
+	return array('success' => $entryID.' - '.$hours.' hours of '.$type.' was created for employee '.$userID.' on '.$date.'' ); 
+  
+  
+  }
+  
+  function addAbsenceRequest(Request $request){
+  
+  $input = $request->all();
+
+
+  
+  $validate = array('userID', 'type', 'hours', 'date'); //expected fields. 
+	
+	if($input){
+		foreach($validate as $key)
+		{
+		
+		
+			if(!array_key_exists($key, $input) || $input[$key] == null)
+			{
+				return response() -> json(['error' => $key.' was not sent as a parameter or was empty'], 400);
+			}		
+		
+		}
+	}
+	else
+	{
+		return response() -> json(['error' => 'Please include the expected body arguments for this request.'], 400);
+		
+	}
+  
+  $action = $this->addAbsence($input['userID'], $input['type'], $input['hours'], $input['date']);
+  
+  //dd($action);
+			
+			if(isset($action['error'])){
+			return response() -> json(['error' => $action['error']], 400);
+			}
+			
+	return response() -> json(['success' => $action['success']], 200);
+  
+  }
+  
  function rto_existing_absences(Request $request){
  
 $timeofftypes = array('cto','pto','vacation','unpaid'); 

@@ -51,9 +51,11 @@ Route::group(['middleware' => 'authuser'], function()
 	Route::get('/user/{user_id}', 'userController@specificUser');
 	
 	
-	
+	//Timesheet Controller
 	Route::get('/u/rtobank/', 'TimesheetController@rto_allotment');
 	Route::post('/rto/existingabsences/', 'TimesheetController@rto_existing_absences');
+	Route::post('/timesheet/absencehours', 'TimesheetController@addAbsenceRequest');
+	
 
 
 Route::post('/user/new', 'userController@newUser');
