@@ -14,7 +14,7 @@ class User extends Model
     {
     	$this -> employeeID	= $input;
     	$this -> getUserData();
-       
+
         if($hierarchy)
         {
         $this -> getSupervisors();
@@ -66,7 +66,6 @@ class User extends Model
     private function getUserData()
     {
     	$id = $this -> employeeID;
-
        	$temparray = array();
     	$employeeData = DB::table('employees')->select('*')
 					    					  ->where('employeeid', '=', $id)

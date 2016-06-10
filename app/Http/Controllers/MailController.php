@@ -17,10 +17,9 @@ class MailController extends Controller
 {
 	public function send(Request $request, $recipientID = null, $subject = null, $body = null){
 
-		dd($request -> all()." ".$recipientID);
 		if ($recipientID == null )
 		{
-		$recipientID = $request -> input('employeeID');
+		$recipientID = $request -> input('recipientID');
 		$targetEmail = (new User($recipientID)) -> email;
 		$body = $request -> input("body");
 		$subject = $request -> input ('subject');
