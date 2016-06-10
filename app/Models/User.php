@@ -27,8 +27,6 @@ class User extends Model
 
     public function getSubordinates()
     {
-
-       
         $subordinates = Nest::where('employeeID', '=', $this -> employeeID) -> first() -> getDescendants();
 
         $response = array();
@@ -49,7 +47,7 @@ class User extends Model
 
     public function getSupervisors()
     {
-        $ancestors = Nest::where('employeeID', '=', $this -> employeeID) -> first() -> getAncestors();
+       $ancestors = Nest::where('employeeID', '=', $this -> employeeID) -> first() -> getAncestors();
 
         $response = array();
         foreach($ancestors as $obj)

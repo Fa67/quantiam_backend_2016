@@ -78,21 +78,28 @@ class userController extends Controller
 	public function getUsers(Request $request)
 	{
 		$response = DB::table('employees')->leftjoin('hierarchy', 'hierarchy.employeeID', '=', 'employees.employeeID')->get();
-		return (json_decode(json_encode(($response)), true));
-		return response() -> json($response, 200);
+		$response =  (json_decode(json_encode(($response)), true));
+		
+		return ($response);
 	}
 
 
     public function newUser(Request $request)
 	{
-		// Create new position in employees table.
-		$params = $request -> all();
-			$email = $request -> firstname . "." . $request -> lastname . "@" . getenv('MAIL_SUFFIX');
-			$params['email'] = $email;
+		if ($request -> root == false)
+		{
+			$newUser = Nest::create(['employeeID' => $request -> employeeID]);
+			$parent = Nest::where('employeeID', '=', $request -> supervisorID) -> first();
 
-		DB::table('employees')->insert($params);
+			$newUser -> makeChildOf($parent);
 
-		dd(DB::table('employees') -> select('*')->where('employeeID', '=', $request -> employeeID)->get());
+			dd($newUser . " created with supervisor " . $parent);
+		}
+		else 
+		{
+			$newRoot = Nest::create(['employeeID' => $request -> employeeID]);
+			dd("New root created with employeeID = ".$request -> employeeID);
+		}
 
 
 	}
