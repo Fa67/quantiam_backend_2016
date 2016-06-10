@@ -371,4 +371,22 @@ class RTO extends Model
         }
 
     }
+    function addAbsence ($userID, $type, $hours, $date){}
+    public function storeRtotimeData($requestID, $employeeID)
+    {
+        // Get $type, $hours, and $date for all Rtotime requests.
+
+        $rtotimes = DB::table('timesheet_rtotime')->select('type', 'hours', 'date')->where('requestID', '=', $requestID)->get();
+
+        foreach($rtotimes as $obj)
+        {
+            $type = $obj -> type;
+            $hours = $obj -> hours;
+            $date = $obj -> date;
+
+             return app('App\Http\Controllers\TimesheetController')-> addAbsence ($employeeID, $type, $hours, $date);
+        }
+
+        
+    }
 }

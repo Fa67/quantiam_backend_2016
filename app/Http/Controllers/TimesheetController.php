@@ -16,7 +16,7 @@ class TimesheetController extends Controller
   function addAbsence ($userID, $type, $hours, $date){
   
   
-	if(!$userID || !$type || !$hours)
+	if(!$userID || !$type || !$hours || !$date)
 	{
   
 		return array('error' => 'Missing expected arguments'); 

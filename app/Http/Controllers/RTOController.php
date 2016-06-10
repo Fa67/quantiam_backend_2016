@@ -211,6 +211,10 @@ class RTOController extends Controller
 
 				app('App\Http\Controllers\MailController')->send($request, $rtoEmployee -> employeeID, "Time Off Request ".$response -> check, $message);
 			}
+			if ($response -> check == "approved")
+			{
+				$response -> logged = $this -> rto -> storeRtotimeData($requestID, $employeeID);
+			}
 			
 
 
