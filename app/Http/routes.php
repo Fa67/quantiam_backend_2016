@@ -66,6 +66,7 @@ Route::get('/users', 'userController@getUsers');
 
 Route::get('/comment/', 'CommentController@getComments');
 Route::post('/comment/', 'CommentController@createComment');
+Route::delete('/comment/{commentID}', 'CommentController@deleteComment');
 
 	
 
