@@ -123,8 +123,16 @@ class userController extends Controller
 
 	public function viewTree(Request $request)
 	{
-		$tree = Nest::where($request->input('idtag'), $request -> input('idvalue')) -> first() -> getDescendantsAndSelf() -> toHierarchy();
-		return response() -> json($tree);
+		if ($request -> idvalue)
+		{
+			$tree = Nest::where($request->input('idtag'), $request -> input('idvalue')) -> first() -> getDescendantsAndSelf() -> toHierarchy();
+		}
+		else 
+		{
+			$tree = Nest::where('parent_id', '=', null)->first()->getDescendantsAndSelf();
+		}
+
+		return $tree;
 	}
 
 	public function identifyUser(Request $request)
