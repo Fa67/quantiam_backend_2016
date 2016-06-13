@@ -63,7 +63,7 @@ class User extends Model
         return;
     }
 	
-	private function getGroups()
+	public function getGroups()
 	{
 	
 		$query = DB::table('group_members')

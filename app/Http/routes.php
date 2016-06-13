@@ -70,7 +70,11 @@ Route::get('/comment/', 'CommentController@getComments');
 Route::post('/comment/', 'CommentController@createComment');
 Route::delete('/comment/{commentID}', 'CommentController@deleteComment');
 
-	
+
+// group routes
+
+Route::delete('group/member', 'userController@removeUserGroup');
+
 
 });
 // Request existing RTOs
