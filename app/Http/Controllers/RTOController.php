@@ -247,7 +247,9 @@ class RTOController extends Controller
 	{	
 		$approvalData = DB::table('timesheet_rtoapprovals') -> where ('approvalID', $approvalID) -> first();
 
-		$status = DB::table('timesheet_rto') -> where ('requestID', $approvalData -> requestID) -> value('status');
+		$rtoData = DB::table('timesheet_rto') -> where ('requestID', $approvalData -> requestID) -> first();
+		$status = $rtoData -> status;
+
 		if ($status != 'pending')
 		{
 			$approvals = DB::table('timesheet_rtoapprovals') -> select('employeeID') -> where ('requestID', '=', $approvalData -> requestID) -> get();
@@ -257,8 +259,13 @@ class RTOController extends Controller
 			{
 				return array("error" => "cannot delete approval after second approval is posted.");
 			}
+			else
+			{
+				$rtoEmployeeID = $rtoData -> employeeID;
+				$this -> rto -> unstoreRtotimeData($approvalData -> requestID, $rtoEmployeeID);
+			}
 		}
-			
+
 			$approvalEmployeeID = $approvalData -> employeeID;
 
 			if ($request -> user -> employeeID != $approvalEmployeeID)

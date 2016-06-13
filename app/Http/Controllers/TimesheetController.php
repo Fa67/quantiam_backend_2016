@@ -37,7 +37,29 @@ class TimesheetController extends Controller
   
   	$entryID = DB::table('hours')->insertGetId($input);
   
-	return array('success' => $entryID.' - '.$hours.' hours of '.$type.' was created for employee '.$userID.' on '.$date.'' ); 
+	return array(['success' => $entryID.' - '.$hours.' hours of '.$type.' was created for employee '.$userID.' on '.$date.''], 200 ); 
+  
+  
+  }  
+  // Added by Chris on 13/06/2016
+  function removeAbsence ($userID, $type, $hours, $date){
+  
+  
+	if(!$userID || !$type || !$hours || !$date)
+	{
+  
+		return array('error' => 'Missing expected arguments'); 
+	}
+	
+	
+
+  	DB::table('hours')	->where('employeeid', '=', $userID)
+  				->where('type', '=', $type)
+  				->where('hours', '=', $hours)
+  				->where('date', '=', $date)
+  				->delete();
+  
+	return array(['success' => "deleted associated times for ".$userID], 200 ); 
   
   
   }
