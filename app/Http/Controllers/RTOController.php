@@ -245,19 +245,34 @@ class RTOController extends Controller
 
 	public function deleteApproval(Request $request, $approvalID)
 	{	
-		$approvalEmployeeID = DB::table('timesheet_rtoapprovals')->where('approvalID', '=', $approvalID)->value('employeeID');
+		$approvalData = DB::table('timesheet_rtoapprovals') -> where ('approvalID', $approvalID) -> first();
 
-		if ($request -> user -> employeeID != $approvalEmployeeID)
+		$status = DB::table('timesheet_rto') -> where ('requestID', $approvalData -> requestID) -> value('status');
+		if ($status != 'pending')
 		{
-			return response() -> json(["error" => "Unauthorized"], 401);
-		}
+			$approvals = DB::table('timesheet_rtoapprovals') -> select('employeeID') -> where ('requestID', '=', $approvalData -> requestID) -> get();
+			$mgmtEmployeeID = $approvals[1] -> employeeID;
 
-		else
-		{
-			$response = $this -> rto -> deleteApproval($approvalID, $request -> user -> depth);
+			if ($mgmtEmployeeID != $request -> user -> employeeID)
+			{
+				return array("error" => "cannot delete approval after second approval is posted.");
+			}
 		}
+			
+			$approvalEmployeeID = $approvalData -> employeeID;
 
-		return response() -> json($response, 200);
+			if ($request -> user -> employeeID != $approvalEmployeeID)
+			{
+				return response() -> json(["error" => "Unauthorized"], 401);
+			}
+
+			else
+			{
+				$response = $this -> rto -> deleteApproval($approvalID, $request -> user -> depth);
+			}
+
+			return response() -> json($response, 200);
+		
 	}
 	
 
