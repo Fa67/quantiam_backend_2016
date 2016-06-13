@@ -61,7 +61,7 @@ Route::group(['middleware' => 'authuser'], function()
 Route::post('/user/new', 'userController@newUser');
 Route::post('/user/move', 'userController@moveUser');
 Route::post('/user/tree', 'userController@viewTree');
-Route::put('/user', 'userController@editUser');
+Route::put('/user/edit', 'userController@editUser');
 // Load/search all users
 Route::get('/users', 'userController@getUsers');
 
