@@ -108,7 +108,7 @@ class userController extends Controller
 	public function editUser($params)
 	{
 		DB::('employees')	->where('email', $params -> email)
-					->update($params -> key => $params -> value);
+					->update([$params -> key => $params -> value]);
 
 		return array(['success' => 'Changed '.$params['key'].' to '.$params['value']], 200);
 
