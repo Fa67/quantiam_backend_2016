@@ -111,11 +111,6 @@ class userController extends Controller
 		$key = ($params['key']);
 		$value = $params['value'];
 
-		if ($key == 'employeeID')
-		{
-			$key = 'employeeid';
-		}
-
 		if ($key == 'ldap_username' || $key == 'email')
 		{
 			return response() -> json(['error' => 'Cannot edit ' . $key], 403);
