@@ -19,6 +19,7 @@ class User extends Model
         {
         $this -> getSupervisors();
         $this -> getSubordinates();
+		$this -> getGroups();
         }
 
     	return $this;
@@ -61,6 +62,20 @@ class User extends Model
 
         return;
     }
+	
+	private function getGroups()
+	{
+	
+		$query = DB::table('group_members')
+		->join('group', 'group_members.group_id', '=', 'group.group_id')
+		->where('employeeid', '=', $this-> employeeID)
+		->get();
+		
+		$this->groups = $query;
+		return;
+	
+	
+	}
 
 
     private function getUserData()
