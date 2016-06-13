@@ -105,9 +105,12 @@ class userController extends Controller
 	}
 
 
-	public function editUser(Request $request, $employee_id)
+	public function editUser($params)
 	{
-		dd(Nest::where('employeeID', '=', $employee_id)->first());
+		DB::('employees')	->where('email', $params['email'])
+					->update($params['key'] => $params['value']);
+
+		return array(['success' => 'Changed '.$params['key'].' to '.$params['value']], 200);
 
 	}
 
@@ -154,6 +157,8 @@ class userController extends Controller
 
 		return response() -> json($response, 200);
 	}
+
+
 	
 	
 	
