@@ -19,10 +19,29 @@ class User extends Model
         {
         $this -> getSupervisors();
         $this -> getSubordinates();
-		$this -> getGroups();
+        $this -> getGroups();
         }
 
     	return $this;
+
+    }
+
+    public function  checkGroupMembership($groupID)
+    {
+
+
+        foreach($this->groups as $group)
+        {
+
+            if($group->group_id == $groupID)
+            {
+
+                return true;
+            }
+
+        }
+
+        return false; 
 
     }
 

@@ -31,6 +31,15 @@ class RTOController extends Controller
 		$params = ($request -> all());
 		$params = json_decode((json_encode($params)));
 
+		if($request->user->checkGroupMembership(4))
+		{
+
+		 $ids = DB::table("employees") -> whereNotNull ('employeeid', null) -> pluck('employeeid');
+
+			$results = $this -> rto -> getSubRTO($ids, $params);	
+			return response()->json($results,200);
+
+		}
 
 		foreach($request->user->subordinates as $obj)
 		{
@@ -42,7 +51,8 @@ class RTOController extends Controller
 			$results = $this -> rto -> getSubRTO($idstofetch, $params);	
 			return response() -> json ($results, 200);
 
-		}catch (\Exception $e)
+		}
+		catch (\Exception $e)
 		{
 			return response() -> json(['error' => $e], 400);
 		}
