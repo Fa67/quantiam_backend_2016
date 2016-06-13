@@ -150,88 +150,17 @@ function rto_allotment($time_travel_date = null){
 		
 		$return_array[$obj->employee_id]['alloted'][$obj->year]['vacation'] = $obj->vacation;
 		$return_array[$obj->employee_id]['alloted'][$obj->year]['pto'] = $obj->pto;
-		$return_array[$obj->employee_id]['alloted'][$obj->year]['ppl'] = $obj->ppl;
-		
+	
 		$employee_list[] = $obj->employee_id;
 		
 		
-													}
+	}
 													
 												
 													
 
-	try 
-	{
-
-
-
-	///////////////////////// PPL /////////////////
-
-
-	/// Get all taken 2015 and 2014 hours spent currently. 
-	$query = 
-	DB::select("
-
-	SELECT 
-
-
-	year(date) as year,
-	sum(hours) as sum, 
-	employeeid
-
-
-	 FROM quantiam.hours  where projectid = 1 and year(date) > 2014 and legacy is null ".$date_string."
-
-	group by year(date), employeeid;
-	");
-
-
-
-	foreach($query as $obj)
-	{
-		$return_array[$obj->employeeid]['used'][$obj->year]['ppl'] = $obj->sum;
-
-	}
-
-
-													
-	for ($year = 2015; $year <= $year_cap; $year++) 
-	{
-												
-
-				// check carry overs
-				foreach ($return_array as $employee_id => $temp_array)
-				{
-
-												
-						$previous_year = $year - 1;			
-
-												
-						if($return_array[$employee_id]['carry_over'][$previous_year]['ppl'])
-						{
-						$return_array[$employee_id]['remaining']['ppl'] = $return_array[$employee_id]['alloted'][$year]['ppl'] - $return_array[$employee_id]['used'][$year]['ppl'] + $return_array[$employee_id]['carry_over'][$previous_year]['ppl'];
-						$return_array[$employee_id]['carry_over'][$year]['ppl'] = $return_array[$employee_id]['remaining']['ppl'] ;
-						}
-						else
-						{
-						$return_array[$employee_id]['remaining']['ppl'] = $return_array[$employee_id]['alloted'][$year]['ppl'] - $return_array[$employee_id]['used'][$year]['ppl'];
-						$return_array[$employee_id]['carry_over'][$year]['ppl'] = $return_array[$employee_id]['remaining']['ppl'] ;
-						}
-						
-				
-				}
-	}
-
-
-			//	print_r($ppl_usage);
-	////////////////////////////////////////////////////////////////////
-
-	}
-	catch (Exception $e)
-	{
-
-
-	}
+	
+	
 	////////////////////////////////////////  PTO   ///////////////////////////////////
 	try 
 	{
