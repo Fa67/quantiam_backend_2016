@@ -73,7 +73,8 @@ Route::delete('/comment/{commentID}', 'CommentController@deleteComment');
 
 // group routes
 
-Route::delete('group/member', 'userController@removeUserGroup');
+Route::delete('group/{groupID}/user/{userID}', 'GroupController@removeUserFromGroup');
+Route::post('group/{groupID}/user/{userID}', 'GroupController@addUserToGroup');
 
 
 });

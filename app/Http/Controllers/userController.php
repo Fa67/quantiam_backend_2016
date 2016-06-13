@@ -157,29 +157,6 @@ class userController extends Controller
 	
 	
 	
-	
-	public function removeUserGroup(Request $request)
-	{
-		$input = $request->all();
-		//dd($input);
-		
-		if(isset($input['groupID']) && isset($input['userID']))
-		{	
-		$query = DB::table('group_members')
-		->where('employeeid', '=', $input['userID'])
-		->where('group_id', '=', $input['groupID'])
-		->delete();
-	
-	
-			return response() -> json(['success' => 'User '.$input['userID'].' was removed from group '.$input['groupID'].''], 200);
-		}
-		else
-		{
-			return response() -> json(['error' => 'You did not provide the correct parameters'], 400);
-		}
-		
-	
-	}
 
 	
 	
