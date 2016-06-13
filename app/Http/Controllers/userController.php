@@ -111,6 +111,18 @@ class userController extends Controller
 		$key = ($params['key']);
 		$value = $params['value'];
 
+		if ($key == 'ldap_username' || $key == 'email')
+		{
+			return response() -> json(['error' => 'Cannot edit ' . $key], 403);
+		}
+		else if ($key == 'compensation')
+		{
+			if ($value != 'Temporary' || $value != 'Hourly' || $value != 'Salary')
+			{
+				return response() -> json(['error' => "Improper input for compensation: '".$value."'"], 400);
+			}
+		}
+
 		DB::table('employees')->where('email', $params['email'])
 					->update([$key => $value]);
 
