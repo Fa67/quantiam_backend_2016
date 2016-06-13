@@ -70,11 +70,22 @@ Route::get('/comment/', 'CommentController@getComments');
 Route::post('/comment/', 'CommentController@createComment');
 Route::delete('/comment/{commentID}', 'CommentController@deleteComment');
 
+// group routes 
 
-// group routes
+
+//Route::get('group/{groupID}', GroupController@GroupInfo);
+//Route::post('group/', GroupController@GroupCreation);
+//Route::put('group/{groupID}', GroupController@GroupEdit);
+//Route::delete('group/{groupID}',GroupController@GroupDelete);
+
+
+// group member routes
 
 Route::delete('group/{groupID}/user/{userID}', 'GroupController@removeUserFromGroup');
 Route::post('group/{groupID}/user/{userID}', 'GroupController@addUserToGroup');
+
+
+
 
 
 });
