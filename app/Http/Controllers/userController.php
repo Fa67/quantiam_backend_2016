@@ -111,6 +111,11 @@ class userController extends Controller
 		$key = ($params['key']);
 		$value = $params['value'];
 
+		if ($key == 'employeeID')
+		{
+			$key = 'employeeid';
+		}
+
 		if ($key == 'ldap_username' || $key == 'email')
 		{
 			return response() -> json(['error' => 'Cannot edit ' . $key], 403);
@@ -125,6 +130,7 @@ class userController extends Controller
 
 		DB::table('employees')->where('email', $params['email'])
 					->update([$key => $value]);
+
 
 		return response() -> json (['success' => 'Changed '.$params['key'].' to '.$params['value']], 200);
 
