@@ -74,6 +74,7 @@ Route::delete('/comment/{commentID}', 'CommentController@deleteComment');
 // group routes 
 
 
+Route::get('grouplist', 'GroupController@GroupList');
 //Route::get('group/{groupID}', GroupController@GroupInfo);
 //Route::post('group/', GroupController@GroupCreation);
 //Route::put('group/{groupID}', GroupController@GroupEdit);

@@ -48,11 +48,19 @@ class GroupController extends Controller
 			if(isset($groupID) && isset($userID))
 			{	
 		
+			try{
+			
 			$query = DB::table('group_members')
 			->insert(['employeeid' => $userID, 'group_id' => $groupID]);
+			
+			return response() -> json(['success' => 'User '.$userID.' was added to group '.$groupID.''], 200);
+			}
+			catch(\PDOException $e)
+			{
+			return response() -> json(['error' => $e], 400);
+			}
 		
-		
-				return response() -> json(['success' => 'User '.$userID.' was added to group '.$groupID.''], 200);
+				
 			}
 			else
 			{
@@ -61,6 +69,16 @@ class GroupController extends Controller
 			
 		
 		}
+		
+	public function groupList(Request $request) {
+	
+	$query = DB::table('group') ->get();
+	
+	
+	
+				return response() -> json($query, 200);
+	
+	}
 
 	
 }
