@@ -263,7 +263,14 @@ class RTOController extends Controller
 		if ($status != 'pending')
 		{
 			$approvals = DB::table('timesheet_rtoapprovals') -> select('employeeID') -> where ('requestID', '=', $approvalData -> requestID) -> get();
-			$mgmtEmployeeID = $approvals[1] -> employeeID;
+			if (isset($approvals[1]))
+			{
+				$mgmtEmployeeID = $approvals[1] -> employeeID;
+			}
+			else
+			{
+				$mgmtEmployeeID = $approvals[0] -> employeeID;
+			}
 
 			if ($mgmtEmployeeID != $request -> user -> employeeID)
 			{

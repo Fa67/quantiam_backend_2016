@@ -165,7 +165,7 @@ class RTO extends Model
 
         if (!isset($approvals[0]))
         {
-            $status = 'new';
+            $status = 'pending';
         }
         else if (isset ($approvals[0]) && !isset($approvals[1]))
         {
@@ -176,13 +176,19 @@ class RTO extends Model
 
                 else if ($approvals[0] -> approval == 'approved' && $depth > 0)
                 {
-                    $status = 'pending';
-                    $emailSupervisor = true;
+                    if ($this -> checkPto($requestID))
+                    {
+                        $status = 'approved';
+                    }
+                    else
+                        {
+                        $status = 'pending';
+                        $emailSupervisor = true;
+                    }
                 }
                 else if ($approvals[0] -> approval == 'approved' && $depth == 0)
                 {
                     $status = 'approved';
-                    $emailSupervisor = false;
                 }
                 else 
                 {
@@ -220,7 +226,26 @@ class RTO extends Model
 
     }
 
+    private function checkPto($requestID)
+    {       // Returns true if all rto time requests are pto (and <4 hours)
+            $rtoTimeTypes = DB::table('timesheet_rtotime') ->select('hours', 'type') -> where ('requestID', '=', $requestID) -> get();
 
+            foreach ($rtoTimeTypes as $obj)
+            {
+                if ($obj -> type != 'pto')
+                {
+                    return false;
+                }
+                else if ($obj -> type == 'pto')
+                {
+                    if ($obj -> hours > 4)
+                    {
+                        return false;
+                    }
+                }
+            }
+            return true;
+    }
     // Used to pull a specified table with a given id name and number.
     private function getSpecificTable($tablename, $idname, $idnumber)
     {
@@ -371,7 +396,7 @@ class RTO extends Model
         }
 
     }
-    
+
     public function storeRtotimeData($requestID, $employeeID)
     {
         // Get $type, $hours, and $date for all Rtotime requests.
