@@ -139,7 +139,7 @@ class userController extends Controller
 		$nodeToMove -> makeChildOf ($nodeParent);
 		
 
-		return response() -> json(['Supervisor' => $request -> input('newSupervisorID')], 200);
+		return response() -> json(['supervisor' =>$this -> userInfo($request -> input('newSupervisorID', false)) -> name], 200);
 	}
 
 
