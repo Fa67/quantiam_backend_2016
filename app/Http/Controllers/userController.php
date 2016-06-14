@@ -137,7 +137,9 @@ class userController extends Controller
 		$nodeToMove = Nest::where('employeeID', '=', $request -> input('employeeID'))->first();
 		$nodeParent = Nest::where('employeeID', '=', $request -> input('newSupervisorID')) -> first();
 		$nodeToMove -> makeChildOf ($nodeParent);
-		dd($nodeToMove.' moved under '.$nodeParent);
+		
+
+		return response() -> json(['Supervisor' => $request -> input('newSupervisorID')], 200);
 	}
 
 
