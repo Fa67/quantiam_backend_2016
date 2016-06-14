@@ -117,7 +117,7 @@ class userController extends Controller
 		}
 		else if ($key == 'compensation')
 		{
-			if ($value != 'Temporary' || $value != 'Hourly' || $value != 'Salary')
+			if (!($value == 'Temporary' || $value == 'Hourly' || $value == 'Salary'))
 			{
 				return response() -> json(['error' => "Improper input for compensation: '".$value."'"], 400);
 			}
