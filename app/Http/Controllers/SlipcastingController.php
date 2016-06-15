@@ -13,7 +13,7 @@ class SlipcastingController extends Controller
         $slipcastID = '2016-06-07';
 
         //-- Load csv data from file & explode into array of lines --
-    	$csvData = file_get_contents('C:\inetpub\wwwroot\quantiam_api\storage\slipcasting\\'.$slipcastID.'.csv');
+    	$csvData = file_get_contents('C:\inetpub\wwwroot\quantiam_api\storage\slipcasting\toluenedata\\'.$slipcastID.'.csv');
         $lines = explode(PHP_EOL, $csvData);
         $arrays = array();
 
