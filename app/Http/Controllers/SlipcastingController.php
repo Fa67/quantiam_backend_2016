@@ -11,9 +11,9 @@ class SlipcastingController extends Controller
     function getcsv(Request $request)
     {
         $slipcastID = $request -> input('slipcastID');
-        
+
         //-- Load csv data from file & explode into array of lines --
-    	$csvData = file_get_contents('C:\inetpub\wwwroot\quantiam_api\storage\slipcasting\toluenedata\\'.$slipcastID.'.csv');
+    	$csvData = file_get_contents('C:\inetpub\wwwroot\api\storage\slipcasting\toluenedata\\'.$slipcastID.'.csv');
         $lines = explode(PHP_EOL, $csvData);
         $arrays = array();
 
