@@ -8,9 +8,8 @@ use App\Http\Requests;
 
 class SlipcastingController extends Controller
 {
-    function getcsv()
+    function getcsv($slipcastID)
     {
-        $slipcastID = '2016-06-07';
 
         //-- Load csv data from file & explode into array of lines --
     	$csvData = file_get_contents('C:\inetpub\wwwroot\quantiam_api\storage\slipcasting\toluenedata\\'.$slipcastID.'.csv');
