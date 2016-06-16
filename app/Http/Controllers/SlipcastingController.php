@@ -12,8 +12,14 @@ class SlipcastingController extends Controller
 {
     public function getcsv(Request $request)
     {
-        $response = new Slipcasting(['slipcastID' => $request -> input('slipcastID')]);
+        try
+        {
+            $response = new Slipcasting($request -> input('slipcastID'));
+            return response() -> json ($response -> tolueneData, 200);
+        } catch (\Exception $e)
+        {
+            return response() -> json (['error' => "could not find toluene data"], 404);
+        }
 
-        return response() -> json ($response -> csvData, 200);
     }
 }

@@ -60,8 +60,7 @@ class MailController extends Controller
 			$mail->IsHTML(true);
 
 
-
-			$mail->setFrom(getenv('emailUser').'@quantiam.com','Quantiam Apps');
+			$mail->setFrom(getenv('emailUser').getenv('MAIL_SUFFIX'),'Quantiam Apps');
 
 		if(!$mail->Send()) 
 		{

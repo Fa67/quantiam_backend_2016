@@ -6,23 +6,28 @@ use Illuminate\Database\Eloquent\Model;
 
 use App\Http\Requests;
 
+use DB;
+
 class Slipcasting extends Model
 {
 
-    function __construct(array $attributes)
-    {   $this -> slipcastID = $attributes['slipcastID'];
-        $this -> getcsvData();
+    function __construct($slipcastID = null)
+    {
 
+
+        if($slipcastID) {
+            $this -> slipcastID = $slipcastID;
+            $this->tolueneData = $this->getcsvData($slipcastID);
+        }
         return $this;
 
     }
 
 
-    function getcsvData()
+    function getcsvData($slipcastID)
     {
         //-- Load csv data from file & explode into array of lines --
-                                    // C:\inetpub\wwwroot\quantiam_api\..\..
-        $csvData = file_get_contents(__DIR__.'/../../storage/slipcasting/toluenedata/'.$this -> slipcastID.'.csv');
+        $csvData = file_get_contents(__DIR__.'/../../storage/slipcasting/toluenedata/'.$slipcastID.'.csv');
         $lines = explode(PHP_EOL, $csvData);
         $arrays = array();
 
@@ -65,6 +70,11 @@ class Slipcasting extends Model
             }
 
         }
-        $this -> csvData = $response;
+        return $response;
+    }
+
+    function getSlipcast($slipcastID)
+    {
+
     }
 }
