@@ -59,8 +59,7 @@ class MailController extends Controller
 			$mail->AltBody = "This is the body in plain text for non-HTML mail clients";
 			$mail->IsHTML(true);
 
-
-			$mail->setFrom(getenv('emailUser').getenv('MAIL_SUFFIX'),'Quantiam Apps');
+			$mail->setFrom(getenv('emailUser').getenv('MAIL_SUFFIX'),'Quantiam Apps', TRUE);
 
 		if(!$mail->Send()) 
 		{

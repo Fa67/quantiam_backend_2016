@@ -101,6 +101,7 @@ Route::put('/rto/request/{request_id}/approval/{approval_id}', 'RTOController@up
 Route::get('/user/{user_id}/getSubordinates', 'RTOController@getSubordinates');
 Route::get('/user/{user_id}/getSupervisors', 'RTOController@getSupervisors');
 
-Route::get('/csv', 'SlipcastingController@getcsv');
+Route::get('/csv', 'SlipcastingController@tolueneData');
+Route::get('/slip', 'SlipcastingController@slipData');
 
 

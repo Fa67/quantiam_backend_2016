@@ -75,6 +75,11 @@ class Slipcasting extends Model
 
     function getSlipcast($slipcastID)
     {
+        $manu_slipcasting = DB::table('manu_slipcasting')   -> select ('manu_slipcasting_profile_id', 'manu_slip_id', 'datetime', 'room_temp_at_cast AS room_temp', 'slip_temp_at_cast AS slip_temp') -> where('manu_slipcasting_id', '=', $slipcastID) -> first();
+        $manu_operators = DB::table('manu_slipcasting_operators') -> join('employees', 'employees.employeeid', '=', 'manu_slipcasting_operators.operator_id')
+                            -> select('employees.firstname', 'employees.lastname', 'manu_slipcasting_operators.operator_id AS employeeID') -> where('manu_slipcasting_operators.manu_slipcasting_id', '=', $slipcastID) -> get();
+        ($manu_slipcasting -> operators = $manu_operators);
 
+        return $manu_slipcasting;
     }
 }

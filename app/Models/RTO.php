@@ -159,8 +159,8 @@ class RTO extends Model
 
     private function checkApprovals($requestID, $depth)
     {
-        $approvals = DB::table('timesheet_rtoapprovals')->select('approval')->where('requestID', '=', $requestID)->get();
-        $status = null;
+        $approvals = DB::table('timesheet_rtoapprovals')->select('*')->where('requestID', '=', $requestID)->get();
+        $status = 'pending';
         $emailSupervisor = false;
 
         if (!isset($approvals[0]))
@@ -174,7 +174,7 @@ class RTO extends Model
                     $status = 'denied';
                 }
 
-                else if ($approvals[0] -> approval == 'approved' && $depth > 0)
+                else if ($approvals[0] -> approval == 'approved' && ((new User ($approvals[0] -> employeeID)) -> depth) > 0)
                 {
                     if ($this -> checkPto($requestID))
                     {
@@ -186,7 +186,7 @@ class RTO extends Model
                         $emailSupervisor = true;
                     }
                 }
-                else if ($approvals[0] -> approval == 'approved' && $depth == 0)
+                else if ($approvals[0] -> approval == 'approved' && ((new User ($approvals[0] -> employeeID)) -> depth) == 0)
                 {
                     $status = 'approved';
                 }
@@ -207,10 +207,6 @@ class RTO extends Model
               }
         }
 
-        if ($status == null)
-        {
-            $status = 'pending';
-        }
 
         $params = array (
                         "requestID" => $requestID,
