@@ -11,14 +11,18 @@ class Slipcasting extends Model
 
     function __construct(array $attributes)
     {   $this -> slipcastID = $attributes['slipcastID'];
-        $this -> csvData = $this -> getcsvData;
+        $this -> getcsvData();
+
+        return $this;
+
     }
 
 
     function getcsvData()
     {
         //-- Load csv data from file & explode into array of lines --
-        $csvData = file_get_contents('C:\inetpub\wwwroot\api\storage\slipcasting\toluenedata\\'.$this -> slipcastID.'.csv');
+                                    // C:\inetpub\wwwroot\quantiam_api\..\..
+        $csvData = file_get_contents(__DIR__.'/../../storage/slipcasting/toluenedata/'.$this -> slipcastID.'.csv');
         $lines = explode(PHP_EOL, $csvData);
         $arrays = array();
 
@@ -28,7 +32,7 @@ class Slipcasting extends Model
         }
         //-- Create object to store response on.
         $response = app() -> make('stdClass');
-        $response -> title = $slipcastID;
+        $response -> title = $this -> slipcastID;
         $response -> dataset = array();
 
         $columnCnt = count($arrays[14]);
@@ -61,7 +65,6 @@ class Slipcasting extends Model
             }
 
         }
-
-        return response() -> json ($response);
+        $this -> csvData = $response;
     }
 }

@@ -14,6 +14,6 @@ class SlipcastingController extends Controller
     {
         $response = new Slipcasting(['slipcastID' => $request -> input('slipcastID')]);
 
-        return response() -> json (["csv data:" => $response], 200);
+        return response() -> json ($response -> csvData, 200);
     }
 }
