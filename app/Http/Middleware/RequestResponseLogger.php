@@ -33,10 +33,11 @@ class RequestResponseLogger
                 );
 
         // Check to see if method contr
-        if ($request -> has('user'))
+
+        if ($request -> user)
         {
              try { 
-                $params["userID"] = $request -> user -> employeeID;
+                $params["userID"] = $request -> user -> employeeid;
             } catch (\Exception $e)
             {
             }

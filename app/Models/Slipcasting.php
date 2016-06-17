@@ -16,7 +16,19 @@ class Slipcasting extends Model
 
 
         if($slipcastID) {
-            $this -> slipcastID = $slipcastID;
+            $this->slipcastID = $slipcastID;
+
+
+            $slipdata = $this->getSlipcast($slipcastID);
+
+            foreach($slipdata as $key => $value)
+            {
+                $this -> $key = $value;
+
+
+            }
+
+
             $this->tolueneData = $this->getcsvData($slipcastID);
         }
         return $this;
@@ -27,7 +39,7 @@ class Slipcasting extends Model
     function getcsvData($slipcastID)
     {
         //-- Load csv data from file & explode into array of lines --
-        $csvData = file_get_contents(__DIR__.'/../../storage/slipcasting/toluenedata/'.$slipcastID.'.csv');
+        $csvData = file_get_contents(__DIR__.'/../../storage/slipcasting/toluenedata/QMSC-'.$slipcastID.'.csv');
         $lines = explode(PHP_EOL, $csvData);
         $arrays = array();
 
@@ -74,8 +86,8 @@ class Slipcasting extends Model
     }
 
     function getSlipcast($slipcastID)
-    {
-        $manu_slipcasting = DB::table('manu_slipcasting')   -> select ('manu_slipcasting_profile_id', 'manu_slip_id', 'datetime', 'room_temp_at_cast AS room_temp', 'slip_temp_at_cast AS slip_temp') -> where('manu_slipcasting_id', '=', $slipcastID) -> first();
+    {   // 'manu_slip_id',
+        $manu_slipcasting = DB::table('manu_slipcasting')   -> select ('manu_slipcasting_profile_id',  'datetime', 'room_temp_at_cast AS room_temp', 'slip_temp_at_cast AS slip_temp') -> where('manu_slipcasting_id', '=', $slipcastID) -> first();
         $manu_operators = DB::table('manu_slipcasting_operators') -> join('employees', 'employees.employeeid', '=', 'manu_slipcasting_operators.operator_id')
                             -> select('employees.firstname', 'employees.lastname', 'manu_slipcasting_operators.operator_id AS employeeID') -> where('manu_slipcasting_operators.manu_slipcasting_id', '=', $slipcastID) -> get();
         ($manu_slipcasting -> operators = $manu_operators);

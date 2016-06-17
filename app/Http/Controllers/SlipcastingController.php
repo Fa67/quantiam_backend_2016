@@ -32,7 +32,8 @@ class SlipcastingController extends Controller
 
     public function slipData()
     {
-        $response = $this -> slipcast -> getSlipcast($this -> slipcasting_id);
-        dd($response);
+        $response = new Slipcasting ($this -> slipcasting_id);
+
+        return response() -> json($response);
     }
 }
