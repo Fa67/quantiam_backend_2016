@@ -207,7 +207,6 @@ class RTO extends Model
               }
         }
 
-
         $params = array (
                         "requestID" => $requestID,
                         "status" => $status
@@ -396,7 +395,7 @@ class RTO extends Model
     public function storeRtotimeData($requestID, $employeeID)
     {
         // Get $type, $hours, and $date for all Rtotime requests.
-
+        $response = array();
         $rtotimes = DB::table('timesheet_rtotime')->select('type', 'hours', 'date')->where('requestID', '=', $requestID)->get();
 
         foreach($rtotimes as $obj)
@@ -405,13 +404,16 @@ class RTO extends Model
             $hours = $obj -> hours;
             $date = $obj -> date;
 
-             return app('App\Http\Controllers\TimesheetController')-> addAbsence ($employeeID, $type, $hours, $date);
+             $response[] = app('App\Http\Controllers\TimesheetController')-> addAbsence ($employeeID, $type, $hours, $date);
         }
+        return $response;
+
     }
 
         public function unstoreRtotimeData($requestID, $employeeID)
     {
         // Get $type, $hours, and $date for all Rtotime requests.
+        $response = array();
 
         $rtotimes = DB::table('timesheet_rtotime')->select('type', 'hours', 'date')->where('requestID', '=', $requestID)->get();
 
@@ -421,7 +423,9 @@ class RTO extends Model
             $hours = $obj -> hours;
             $date = $obj -> date;
 
-             return app('App\Http\Controllers\TimesheetController')-> removeAbsence ($employeeID, $type, $hours, $date);
+             $response [] =  app('App\Http\Controllers\TimesheetController')-> removeAbsence ($employeeID, $type, $hours, $date);
         }
+
+        return $response;
     }
 }

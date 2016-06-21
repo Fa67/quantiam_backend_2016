@@ -104,4 +104,6 @@ Route::get('/user/{user_id}/getSupervisors', 'RTOController@getSupervisors');
 Route::get('/csv', 'SlipcastingController@tolueneData');
 Route::get('/slip', 'SlipcastingController@slipData');
 
+Route::post('/slip/steel', 'SlipcastingController@slipData');
+
 

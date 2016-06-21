@@ -214,13 +214,23 @@ class RTOController extends Controller
 
 
 			// Email employee upon approval/denial
-			if ($response -> check == "approved" || $response -> check == "denied")
+			if ($response -> check == "approved")
 			{
 				$rto_url = getenv('RTO_URL');
 				$message = "<p>".$rtoEmployee -> name.",<br><br><a href=".$rto_url.$requestID.">Your request for time off has been <b>".$response -> check."</b>.</p></a><p>This is an automated message.</p>";
 
 				app('App\Http\Controllers\MailController')->send($request, $rtoEmployee -> employeeID, "Time Off Request ".$response -> check, $message);
 			}
+
+			else if ($response -> check == "denied")
+			{
+				$rto_url = getenv('RTO_URL');
+				$message = "<p>".$rtoEmployee -> name.",<br><br><a href=".$rto_url.$requestID.">Sorry, but your request for time off has been denied by a supervisor.  Click here to see information about your request.</b>.</p></a><p>This is an automated message.</p>";
+
+				app('App\Http\Controllers\MailController')->send($request, $rtoEmployee -> employeeID, "Time Off Request ".$response -> check, $message);
+
+			}
+
 			if ($response -> check == "approved")
 			{
 				$response -> logged = $this -> rto -> storeRtotimeData($requestID, $employeeID);
