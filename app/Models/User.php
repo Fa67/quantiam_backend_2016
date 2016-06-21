@@ -116,7 +116,7 @@ class User extends Model
         $temp = Nest::where('employeeID', '=', $this -> employeeID) -> first();
 
         $this -> depth = $temp -> depth;
-        $this -> id = $temp -> id;
+        $this -> tag = $temp -> tag;
 
     return;
     }
