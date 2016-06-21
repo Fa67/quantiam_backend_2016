@@ -117,6 +117,7 @@ class User extends Model
 
         $this -> depth = $temp -> depth;
         $this -> id = $temp -> id;
+        $this -> tag = $temp -> tag;
 
     return;
     }
@@ -133,7 +134,6 @@ class User extends Model
     		
     	} catch (\Exception $e)
     	{
-    		dd($e);
     		return response() -> json(['error' => $e], 400);
     	}
     }
