@@ -70,13 +70,13 @@ class userController extends Controller
 	public function userInfo($employee_id, $truth = true)
 	{
 		$response = new User($employee_id, $truth);
-		
+
 		return $response;
 	}
 
 	public function getUsers(Request $request)
 	{
-		$response = DB::table('employees')->leftjoin('hierarchy', 'hierarchy.employeeID', '=', 'employees.employeeID')->get();
+		$response = DB::table('hierarchy')->leftjoin('employees', 'hierarchy.employeeID', '=', 'employees.employeeID')->get();
 		$response =  (json_decode(json_encode(($response)), true));
 		
 		return ($response);
