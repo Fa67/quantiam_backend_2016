@@ -134,8 +134,8 @@ class userController extends Controller
 
 	public function moveUser(Request $request)
 	{
-		$nodeToMove = Nest::where('employeeID', '=', $request -> input('employeeID'))->first();
-		$nodeParent = Nest::where('employeeID', '=', $request -> input('newSupervisorID')) -> first();
+		$nodeToMove = Nest::where('id', '=', $request -> input('employeeID'))->first();
+		$nodeParent = Nest::where('id', '=', $request -> input('newSupervisorID')) -> first();
 		$nodeToMove -> makeChildOf ($nodeParent);
 		
 

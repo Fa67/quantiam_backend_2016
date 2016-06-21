@@ -113,7 +113,10 @@ class User extends Model
     		}
     	}
     	$this -> name = $this->firstname.' '.$this->lastname;
-        $this -> depth = Nest::where('employeeID', '=', $this -> employeeID) -> value('depth');
+        $temp = Nest::where('employeeID', '=', $this -> employeeID) -> first();
+
+        $this -> depth = $temp -> depth;
+        $this -> tag = $temp -> tag;
 
     return;
     }
