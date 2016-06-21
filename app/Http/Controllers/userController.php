@@ -69,9 +69,8 @@ class userController extends Controller
 
 	public function userInfo($employee_id, $truth = true)
 	{
-		$employeeID = $employee_id;
-
-		$response = new User($employeeID, $truth);
+		$response = new User($employee_id, $truth);
+		dd($response);
 		return $response;
 	}
 
