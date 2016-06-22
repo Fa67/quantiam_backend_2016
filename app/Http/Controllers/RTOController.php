@@ -30,6 +30,7 @@ class RTOController extends Controller
 		$idstofetch = array($request->user->employeeid);
 		$params = ($request -> all());
 		$params = json_decode((json_encode($params)));
+		
 		if($request->user->checkGroupMembership(4))
 		{
 

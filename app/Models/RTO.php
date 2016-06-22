@@ -357,8 +357,11 @@ class RTO extends Model
                                 ->whereIn('employeeID', $idstofetch)
                                 ->pluck('requestID'); // Requests column of requestID || for scalability, consider using chunk();
 
+        
+
         $tableData = DB::table('timesheet_rto') ->join('employees', 'timesheet_rto.employeeID', '=', 'employees.employeeID')
                                                 ->select('timesheet_rto.*', 'employees.firstname', 'employees.lastname')
+                                                ->whereIn('timesheet_rto.requestID', $requestIDarray)
                                                 ->orderBy('timesheet_rto.created')
                                                 ->get();
 /*
