@@ -122,8 +122,20 @@ class userController extends Controller
 			}
 		}
 
+		if ($key == 'employeeid')
+		{
+			$current_id = DB::table('employees')->where('email', '=', $params['email'])->value('employeeid');
+
+			$node = Nest::where('employeeID', '=', $current_id)->first();
+
+			$node -> employeeID = $value;
+			$node -> save();
+		}
+
+		
+
 		DB::table('employees')->where('email', $params['email'])
-					->update([$key => $value]);
+			->update([$key => $value]);
 
 
 		return response() -> json (['success' => 'Changed '.$params['key'].' to '.$params['value']], 200);
