@@ -30,14 +30,12 @@ class RTOController extends Controller
 		$idstofetch = array($request->user->employeeid);
 		$params = ($request -> all());
 		$params = json_decode((json_encode($params)));
-
 		if($request->user->checkGroupMembership(4))
 		{
 
 		 $ids = DB::table("employees") -> whereNotNull ('employeeid', null) -> pluck('employeeid');
-
-			$results = $this -> rto -> getSubRTO($ids, $params);	
-			return response()->json($results,200);
+			$results = $this -> rto -> getSubRTO($ids, $params);
+			return $results;
 
 		}
 

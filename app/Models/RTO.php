@@ -327,7 +327,7 @@ class RTO extends Model
 
     public function getSubRTO($idstofetch, $params)
     { 
-        $status = $params -> status;
+ /*       $status = $params -> status;
         $employeeID = $params -> employeeID;
         $firstDate = $params -> firstDate;
         $lastDate = $params -> lastDate;
@@ -348,10 +348,10 @@ class RTO extends Model
         }
         if($perPage == null)
         {
-            $perPage = 15;
+            $perPage = 30;
         }
         
-        $result['draw'] = $page;
+        $result['draw'] = $page;*/
         
         $requestIDarray = DB::table('timesheet_rto')
                                 ->whereIn('employeeID', $idstofetch)
@@ -359,8 +359,9 @@ class RTO extends Model
 
         $tableData = DB::table('timesheet_rto') ->join('employees', 'timesheet_rto.employeeID', '=', 'employees.employeeID')
                                                 ->select('timesheet_rto.*', 'employees.firstname', 'employees.lastname')
-                                                ->orderBy('created');
-
+                                                ->orderBy('timesheet_rto.created')
+                                                ->get();
+/*
         $result['recordsTotal'] = $tableData -> count();
 
                                      $tableData ->whereIn('timesheet_rto.requestID', $requestIDarray)
@@ -369,10 +370,9 @@ class RTO extends Model
                                                 ->whereBetween('created', [$firstDate, $lastDate]);
         $result['recordsFiltered'] = $tableData -> count();
         $dataArray = $tableData ->simplePaginate($perPage)->toJson();
-        $dataObj = json_decode($dataArray);
-        $result['data'] = $dataObj -> data;
+        $dataObj = json_decode($dataArray);*/
 
-        return $result;
+        return $tableData;
     }
 
     public function notifyApprovers($request, $requestID)

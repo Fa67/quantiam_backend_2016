@@ -85,7 +85,12 @@ class userController extends Controller
 
     public function newUser(Request $request)
 	{
-		if ($request -> root == false)
+		if ($request -> root == true || $request -> root == 'true')
+		{
+			$newRoot = Nest::create(['employeeID' => $request -> employeeID, 'tag' => $request -> tag]);
+			$response = ("New root created with employeeID = ".$request -> employeeID);
+		}
+		else
 		{
 			$newUser = Nest::create(['employeeID' => $request -> employeeID]);
 			$parent = Nest::where('employeeID', '=', $request -> supervisorID) -> first();
@@ -93,11 +98,6 @@ class userController extends Controller
 			$newUser -> makeChildOf($parent);
 
 			dd($newUser . " created with supervisor " . $parent);
-		}
-		else 
-		{
-			$newRoot = Nest::create(['employeeID' => $request -> employeeID]);
-			dd("New root created with employeeID = ".$request -> employeeID);
 		}
 
 
