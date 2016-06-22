@@ -126,13 +126,18 @@ class userController extends Controller
 		{
 			$current_id = DB::table('employees')->where('email', '=', $params['email'])->value('employeeid');
 
+			// Change ID in hierarchy
 			$node = Nest::where('employeeID', '=', $current_id)->first();
 
 			$node -> employeeID = $value;
 			$node -> save();
+
+			// Change ID in groups
+
+			DB::table('group_members')->where('employeeid', $current_id)-> update(['employeeid' => $value]);
 		}
 
-		
+
 
 		DB::table('employees')->where('email', $params['email'])
 			->update([$key => $value]);
