@@ -203,6 +203,11 @@ class RTOController extends Controller
 			$response = $this -> rto -> postApproval($params, $supervisorObj -> depth);
 			$response -> name = $request -> user -> name;
 
+			if (isset($response -> error))
+			{
+				return response() -> json(['Error' => 'Approval already posted'], 400);
+			}
+
 			if ($response -> emailSupervisor == true)
 			{
 				$rto_url = getenv('RTO_URL');
