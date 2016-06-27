@@ -130,18 +130,20 @@ class RTO extends Model
             $id = DB::table('timesheet_rtoapprovals') -> insertGetID(['approval' => $params['approval'], 'employeeID' => $params['employeeID'], 'requestID' => $params['requestID']]);
             $response = $this -> getSpecificTable('timesheet_rtoapprovals', 'approvalID', $id);
 
+            $temp  = $this -> checkApprovals($params['requestID'], $depth);
+
+            $response ->check = $temp['status'];
+            $response ->emailSupervisor = $temp['emailSupervisor'];
 
         }
         else
         {
             $response = App() -> make('stdClass');
             $response -> error = 'Request has already been ' . $status;
+            $response ->check = $status;
+            $response ->emailSupervisor = false;
         }
 
-        $temp  = $this -> checkApprovals($params['requestID'], $depth);
-
-        $response ->check = $temp['status'];
-        $response ->emailSupervisor = $temp['emailSupervisor'];
 
         return $response;
     }
