@@ -7,3 +7,6 @@ Homestead.json
 git_sync.php
 composer.lock
 web.config
+*.csv
+*.txt
+*.mss

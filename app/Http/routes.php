@@ -87,6 +87,7 @@ Route::delete('group/{groupID}/user/{userID}', 'GroupController@removeUserFromGr
 Route::post('group/{groupID}/user/{userID}', 'GroupController@addUserToGroup');
 
 
+// 
 
 
 
@@ -106,5 +107,10 @@ Route::get('/slip', 'SlipcastingController@slipData');
 Route::get('/humidity', 'SlipcastingController@humidityData');
 
 Route::post('/slip/steel', 'SlipcastingController@slipData');
+
+
+
+
+Route::get('slipcasting/list','SlipcastingController@slipDataList');
 
 
