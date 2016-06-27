@@ -37,7 +37,7 @@ class SlipcastingController extends Controller
 
         return response() -> json($response);
     }
-<<<<<<< Updated upstream
+
 
     public function humidityData()
     {
@@ -46,7 +46,7 @@ class SlipcastingController extends Controller
 
         return response() -> json($response, 418);
     }
-=======
+
 	
 	public function slipDataList (Request $request)
 	{
@@ -163,7 +163,5 @@ class SlipcastingController extends Controller
 	
 	
 	}
-	
-	
->>>>>>> Stashed changes
+
 }
