@@ -94,7 +94,7 @@ class Slipcasting extends Model
 
         return $manu_slipcasting;
     }
-<<<<<<< Updated upstream
+
 
     function getHumidityData($slipcastID)
     {
@@ -127,11 +127,5 @@ class Slipcasting extends Model
         return $response;
 
     }
-=======
-	
-	
-	
-	
-	
->>>>>>> Stashed changes
+
 }
