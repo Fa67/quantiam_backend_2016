@@ -130,15 +130,19 @@ class RTO extends Model
             $id = DB::table('timesheet_rtoapprovals') -> insertGetID(['approval' => $params['approval'], 'employeeID' => $params['employeeID'], 'requestID' => $params['requestID']]);
             $response = $this -> getSpecificTable('timesheet_rtoapprovals', 'approvalID', $id);
 
-            $temp  = $this -> checkApprovals($params['requestID'], $depth);
-            $response ->check = $temp['status'];
-            $response ->emailSupervisor = $temp['emailSupervisor'];
 
         }
         else
         {
-            $response = array('Error' => 'Request has already been ' . $status);
+            $response = App() -> make('stdClass');
+            $response -> error = 'Request has already been ' . $status;
         }
+
+        $temp  = $this -> checkApprovals($params['requestID'], $depth);
+        
+        $response ->check = $temp['status'];
+        $response ->emailSupervisor = $temp['emailSupervisor'];
+
         return $response;
     }
 
@@ -198,10 +202,6 @@ class RTO extends Model
                 else if ($approvals[0] -> approval == 'approved' && ((new User ($approvals[0] -> employeeID)) -> depth) == 0)
                 {
                     $status = 'approved';
-                }
-                else 
-                {
-                    return "improper approval format";
                 }
         }
        else
