@@ -36,4 +36,12 @@ class SlipcastingController extends Controller
 
         return response() -> json($response);
     }
+
+    public function humidityData()
+    {
+
+        $response = $this -> slipcast -> getHumidityData($this -> slipcasting_id);
+
+        return response() -> json($response, 418);
+    }
 }

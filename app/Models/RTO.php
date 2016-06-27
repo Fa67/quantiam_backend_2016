@@ -118,18 +118,27 @@ class RTO extends Model
 		return false;
 	}
     }
-
-
-
+  
 
     public function postApproval($params, $depth)
-    {
-        $id = DB::table('timesheet_rtoapprovals') -> insertGetID(['approval' => $params['approval'], 'employeeID' => $params['employeeID'], 'requestID' => $params['requestID']]);
-              $response = $this -> getSpecificTable('timesheet_rtoapprovals', 'approvalID', $id);
-        
-        $temp  = $this -> checkApprovals($params['requestID'], $depth);
-        $response ->check = $temp['status'];
-        $response ->emailSupervisor = $temp['emailSupervisor'];
+    {   // Check if request has already been approved/denied:
+        $status = DB::table('timesheet_rto')->where('requestID', '=', $params['requestID'])->value('status');
+
+        if ($status == 'pending')
+        {
+
+            $id = DB::table('timesheet_rtoapprovals') -> insertGetID(['approval' => $params['approval'], 'employeeID' => $params['employeeID'], 'requestID' => $params['requestID']]);
+            $response = $this -> getSpecificTable('timesheet_rtoapprovals', 'approvalID', $id);
+
+            $temp  = $this -> checkApprovals($params['requestID'], $depth);
+            $response ->check = $temp['status'];
+            $response ->emailSupervisor = $temp['emailSupervisor'];
+
+        }
+        else
+        {
+            $response = array('Error' => 'Request has already been ' . $status);
+        }
         return $response;
     }
 
@@ -357,7 +366,7 @@ class RTO extends Model
                                 ->whereIn('employeeID', $idstofetch)
                                 ->pluck('requestID'); // Requests column of requestID || for scalability, consider using chunk();
 
-        
+
 
         $tableData = DB::table('timesheet_rto') ->join('employees', 'timesheet_rto.employeeID', '=', 'employees.employeeID')
                                                 ->select('timesheet_rto.*', 'employees.firstname', 'employees.lastname')

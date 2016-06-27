@@ -94,4 +94,36 @@ class Slipcasting extends Model
 
         return $manu_slipcasting;
     }
+
+    function getHumidityData($slipcastID)
+    {
+        $txt_file = file_get_contents(__DIR__ . "/../../storage/humidity/QMSC-".$slipcastID.".txt");
+
+        $rows = explode("\r\n", $txt_file);
+        $response = app() -> make('stdClass');
+        // Grab units
+
+        $response -> title = "QMSC-" . $slipcastID;
+        $response -> temp = "Celsius";
+        $response -> humidity = "%RH";
+        $response -> dp = "(Dew Point) Celsius";
+        $response -> data = array();
+
+        for($i = 6; $i < count($rows) -1; $i++)
+        {
+            $tempRow = preg_split('/[\s]+/', $rows[$i]);
+
+            
+            $tempObj = app() -> make('stdClass');
+                $tempObj -> time = $tempRow[0].' '.$tempRow[1]. ' '.$tempRow[2];
+                $tempObj -> temp = $tempRow[3];
+                $tempObj -> humidity = $tempRow[4];
+                $tempObj -> dp = $tempRow[5];
+
+            $response -> data[] = $tempObj;
+        }
+
+        return $response;
+
+    }
 }
