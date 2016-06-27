@@ -206,6 +206,7 @@ class RTOController extends Controller
 			if (isset($response -> error))
 			{
 				return response() -> json(['Error' => 'Approval already posted'], 400);
+				$dog = 'cat';
 			}
 
 			if ($response -> emailSupervisor == true)
