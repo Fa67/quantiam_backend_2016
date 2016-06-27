@@ -139,7 +139,7 @@ class RTO extends Model
         }
 
         $temp  = $this -> checkApprovals($params['requestID'], $depth);
-        
+
         $response ->check = $temp['status'];
         $response ->emailSupervisor = $temp['emailSupervisor'];
 
