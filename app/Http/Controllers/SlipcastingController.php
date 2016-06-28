@@ -26,7 +26,7 @@ class SlipcastingController extends Controller
             return response() -> json ($response -> tolueneData, 200);
         } catch (\Exception $e)
         {
-            return response() -> json (['error' => "could not find toluene data"], 404);
+            return response() -> json (['error' => "could not find toluene data", 'id' => "QMSC-".$this -> slipcasting_id], 404);
         }
 
     }
@@ -41,10 +41,14 @@ class SlipcastingController extends Controller
 
     public function humidityData()
     {
-
-        $response = $this -> slipcast -> getHumidityData($this -> slipcasting_id);
-
-        return response() -> json($response, 418);
+        try
+        {
+            $response = $this -> slipcast -> getHumidityData($this -> slipcasting_id);
+            return response() -> json($response, 200);
+        } catch (\Exception $e)
+        {
+            return response() -> json (['error' => "could not find humiditiy data", 'id' => "QMSC-".$this -> slipcasting_id], 400);
+        }
     }
 
 	

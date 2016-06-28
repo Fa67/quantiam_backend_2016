@@ -103,8 +103,7 @@ class Slipcasting extends Model
         $rows = explode("\r\n", $txt_file);
         $response = app() -> make('stdClass');
         // Grab units
-   // dd($rows);
-        $response -> title = $slipcastID;
+        $response -> title = substr($rows[1], 5);
 
         $labels = [3 => 'Temp', 4 => 'Humidity', 5 => 'Dew Point'];
         $units = [3 => 'C', 4 => '%RH', 5 => 'C'];
