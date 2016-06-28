@@ -103,26 +103,45 @@ class Slipcasting extends Model
         $rows = explode("\r\n", $txt_file);
         $response = app() -> make('stdClass');
         // Grab units
-
+   // dd($rows);
         $response -> title = "QMSC-" . $slipcastID;
-        $response -> temp = "Celsius";
-        $response -> humidity = "%RH";
-        $response -> dp = "(Dew Point) Celsius";
-        $response -> data = array();
 
-        for($i = 6; $i < count($rows) -1; $i++)
-        {
-            $tempRow = preg_split('/[\s]+/', $rows[$i]);
+        $labels = [3 => 'Temp', 4 => 'Humidity', 5 => 'Dew Point'];
+        $units = [3 => 'C', 4 => '%RH', 5 => 'C'];
 
-            
-            $tempObj = app() -> make('stdClass');
-                $tempObj -> time = $tempRow[0].' '.$tempRow[1]. ' '.$tempRow[2];
-                $tempObj -> temp = $tempRow[3];
-                $tempObj -> humidity = $tempRow[4];
-                $tempObj -> dp = $tempRow[5];
 
-            $response -> data[] = $tempObj;
+        $response -> dataset = array();
+
+        for ($k = 3; $k <= 5; $k++) {
+            $temp = app()->make('stdClass');
+            $temp->title = $labels[$k];
+            $temp->x_label = 'datetime';
+            $temp->y_label = $units[$k];
+            $temp->data = array();
+            $response->dataset[] = $temp;
+
         }
+
+        for($i = 6; $i < count($rows) - 1; $i++)
+            {
+                for ($k = 0; $k < 3; $k++)
+                {
+                    $tempRow = preg_split('/[\s]+/', $rows[$i]);
+                    $tempObj = app() -> make('stdClass');
+
+                    $tempObj -> x = $tempRow[0].' '.$tempRow[1]. ' '.$tempRow[2];
+                    $tempObj -> y = $tempRow[$k+3];
+
+                    $response  -> dataset[$k] -> data[] = $tempObj;
+
+                }
+
+
+            }
+
+
+
+
 
         return $response;
 

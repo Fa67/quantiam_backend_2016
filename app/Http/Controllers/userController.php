@@ -76,12 +76,17 @@ class userController extends Controller
 
 	public function getUsers(Request $request)
 	{
-		$response = DB::table('employees')->leftjoin('hierarchy', 'hierarchy.employeeID', '=', 'employees.employeeID')->get();
+		$response = DB::table('employees')-> leftjoin('hierarchy', 'hierarchy.employeeID', '=', 'employees.employeeID')->select('*')->groupBy('employees.email')-> get();
 		$response =  (json_decode(json_encode(($response)), true));
 		
 		return ($response);
 	}
+	public function getSupervisors(Request $request)
+	{
+		$response = DB::table('hierarchy') -> join ('employees', 'employees.employeeid', '=', 'hierarchy.employeeID')->get();
 
+		return $response;
+	}
 
     public function newUser(Request $request)
 	{

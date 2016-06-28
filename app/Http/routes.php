@@ -64,6 +64,7 @@ Route::post('/user/tree', 'userController@viewTree');
 Route::put('/user/edit', 'userController@editUser');
 // Load/search all users
 Route::get('/users', 'userController@getUsers');
+Route::get('/supervisors', 'userController@getSupervisors');
 
 //comment routes
 
@@ -87,8 +88,13 @@ Route::delete('group/{groupID}/user/{userID}', 'GroupController@removeUserFromGr
 Route::post('group/{groupID}/user/{userID}', 'GroupController@addUserToGroup');
 
 
-// 
+// slipcasting routes
 
+Route::post('newslipcast', 'SlipcastingController@newRun');
+
+    Route::get('slipcast/{slipcast_id', 'SlipcastingController@getRun');
+    Route::put('slipcast/{slipcast_id}', 'SlipcastingController@editRun');
+    Route::delete('slipcast/{slipcast_id}', 'SlipcastingController@deleteRun');
 
 
 });

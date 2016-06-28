@@ -22,7 +22,7 @@ class SlipcastingController extends Controller
     {
         try
         {
-            $response = new Slipcasting($request -> input('slipcastID'));
+            $response = new Slipcasting($this -> slipcasting_id);
             return response() -> json ($response -> tolueneData, 200);
         } catch (\Exception $e)
         {
