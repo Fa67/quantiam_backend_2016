@@ -104,7 +104,7 @@ class Slipcasting extends Model
         $response = app() -> make('stdClass');
         // Grab units
    // dd($rows);
-        $response -> title = "QMSC-" . $slipcastID;
+        $response -> title = $slipcastID;
 
         $labels = [3 => 'Temp', 4 => 'Humidity', 5 => 'Dew Point'];
         $units = [3 => 'C', 4 => '%RH', 5 => 'C'];
