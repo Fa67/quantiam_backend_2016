@@ -27,22 +27,20 @@ class Slip extends Model
 	function buildSlipObj ($slipID){
 	
 	
-			$query = DB::table('manu_slip')
-			->select('*')
-			->where('slip_id','=',$slipID)
-			->get();
+	
+			$temp = $this->getSlipAtrr($slipID);
+			$temp->recipe = new SlipRecipe($temp->slip_recipe_id);
+			$temp->measured =  $this->getSlipMeasured($slipID);
 			
-			foreach($query as $obj)
-			{
 			
-				foreach($obj as $key => $value)
+				foreach($temp as $key => $value)
 				{
 				
 					$this->$key = $value;
 				}
 			
 			
-			}
+			
 			
 			
 			
@@ -50,5 +48,25 @@ class Slip extends Model
 	
 	}
 	
+	function getSlipAtrr($slipID)
+	{
+			$query = DB::table('manu_slip')
+			->select('*')
+			->where('slip_id','=',$slipID)
+			->get();
+			
+			return $query[0];
+	}
+	
+	function getSlipMeasured ($slipID)
+	{
+	
+		$query = DB::table('manu_slip_measured')
+				->select('*')
+				->where('slip_id','=',$slipID)
+				->get();
+				
+				return $query;
+	}
 	
 }

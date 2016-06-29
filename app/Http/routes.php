@@ -56,45 +56,56 @@ Route::group(['middleware' => 'authuser'], function()
 	Route::post('/rto/existingabsences/', 'TimesheetController@rto_existing_absences');
 	Route::post('/timesheet/absencehours', 'TimesheetController@addAbsenceRequest');
 	
+	//User
+
+	Route::post('/user/new', 'userController@newUser');
+	Route::post('/user/move', 'userController@moveUser');
+	Route::post('/user/tree', 'userController@viewTree');
+	Route::put('/user/edit', 'userController@editUser');
+	// Load/search all users
+	Route::get('/users', 'userController@getUsers');
+	Route::get('/supervisors', 'userController@getSupervisors');
+
+	//Comment
+
+	Route::get('/comment/', 'CommentController@getComments');
+	Route::post('/comment/', 'CommentController@createComment');
+	Route::delete('/comment/{commentID}', 'CommentController@deleteComment');
+
+	//Group
 
 
-Route::post('/user/new', 'userController@newUser');
-Route::post('/user/move', 'userController@moveUser');
-Route::post('/user/tree', 'userController@viewTree');
-Route::put('/user/edit', 'userController@editUser');
-// Load/search all users
-Route::get('/users', 'userController@getUsers');
-Route::get('/supervisors', 'userController@getSupervisors');
-
-//comment routes
-
-Route::get('/comment/', 'CommentController@getComments');
-Route::post('/comment/', 'CommentController@createComment');
-Route::delete('/comment/{commentID}', 'CommentController@deleteComment');
-
-// group routes 
+	Route::get('grouplist', 'GroupController@GroupList');
+	//Route::get('group/{groupID}', GroupController@GroupInfo);
+	//Route::post('group/', GroupController@GroupCreation);
+	//Route::put('group/{groupID}', GroupController@GroupEdit);
+	//Route::delete('group/{groupID}',GroupController@GroupDelete);
 
 
-Route::get('grouplist', 'GroupController@GroupList');
-//Route::get('group/{groupID}', GroupController@GroupInfo);
-//Route::post('group/', GroupController@GroupCreation);
-//Route::put('group/{groupID}', GroupController@GroupEdit);
-//Route::delete('group/{groupID}',GroupController@GroupDelete);
+	//Group Member routes
+
+	Route::delete('group/{groupID}/user/{userID}', 'GroupController@removeUserFromGroup');
+	Route::post('group/{groupID}/user/{userID}', 'GroupController@addUserToGroup');
+
+	//Slip
+	Route::get('slip/{id}','SlipmakingController@getSlip');
+
+	//Slip Recipe 
+	Route::get('slip/recipe/{id}','SlipmakingController@getSlipRecipe');
 
 
-// group member routes
-
-Route::delete('group/{groupID}/user/{userID}', 'GroupController@removeUserFromGroup');
-Route::post('group/{groupID}/user/{userID}', 'GroupController@addUserToGroup');
 
 
-// slipcasting routes
+	//Slipcast
 
-Route::post('newslipcast', 'SlipcastingController@newRun');
+	Route::post('newslipcast', 'SlipcastingController@newRun');
 
-    Route::get('slipcast/{slipcast_id', 'SlipcastingController@getRun');
-    Route::put('slipcast/{slipcast_id}', 'SlipcastingController@editRun');
-    Route::delete('slipcast/{slipcast_id}', 'SlipcastingController@deleteRun');
+	Route::get('slipcast/{slipcast_id', 'SlipcastingController@getRun');
+	Route::put('slipcast/{slipcast_id}', 'SlipcastingController@editRun');
+	Route::delete('slipcast/{slipcast_id}', 'SlipcastingController@deleteRun');
+		
+		
+
 
 
 });
@@ -118,9 +129,5 @@ Route::post('/slip/steel', 'SlipcastingController@slipData');
 
 
 Route::get('slipcasting/list','SlipcastingController@slipDataList');
-
-
-//Slip Recipe 
-Route::get('slip/recipe/{id}','SlipmakingController@getSlipRecipe');
 
 

@@ -12,10 +12,19 @@ class SlipmakingController extends Controller
 {
     //
 	
+	function getSlip($id)
+	{
+		$slip = new Slip($id);
+		return response() -> json($slip, 200);
+	
+	}
+	
+	
+	
 	function getSlipRecipe($id){
 	
-		$slip = new SlipRecipe($id);
-		return response() -> json($slip, 200);
+		$slipRecipe = new SlipRecipe($id);
+		return response() -> json($slipRecipe, 200);
 		
 
 	}
