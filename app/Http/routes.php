@@ -94,17 +94,17 @@ Route::group(['middleware' => 'authuser'], function()
 	Route::get('slip/recipe/{id}','SlipmakingController@getSlipRecipe');
 
 
+Route::post('slipcast', 'SlipcastingController@createSlipcast');
+	Route::get('slipcast/{slipcast_id}', 'SlipcastingController@getRun');
+	Route::put('slipcast/{slipcast_id}', 'SlipcastingController@editSlipcast');
+	Route::delete('slipcast/{slipcast_id}', 'SlipcastingController@deleteSlipcast');
 
+Route::post('slipcast/{slipcast_id}/steel/{inventory_id}', 'SlipcastingController@addSteel');
+	Route::put('slipcast/{slipcast_id}/steel/{steel_id}', 'SlipcastingController@editSteel');
+	Route::delete('slipcast/{slipcast_id}/steel/{steel_id}', 'SlipcastingController@deleteSteel');
 
-	//Slipcast
-
-	Route::post('newslipcast', 'SlipcastingController@newRun');
-
-	Route::get('slipcast/{slipcast_id', 'SlipcastingController@getRun');
-	Route::put('slipcast/{slipcast_id}', 'SlipcastingController@editRun');
-	Route::delete('slipcast/{slipcast_id}', 'SlipcastingController@deleteRun');
-		
-		
+Route::post('slipcast/{slipcast_id}/operator/{operator_id}', 'SlipcastingController@addOperator');
+	Route::delete('slipcast/{slipcast_id}/operator/{operator_id}', 'SlipcastingController@deleteOperator');
 
 
 

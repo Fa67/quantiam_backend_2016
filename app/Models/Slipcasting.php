@@ -146,4 +146,53 @@ class Slipcasting extends Model
 
     }
 
+    function addSteel($slipcast_id, $inventory_id)
+    {
+
+        $id = DB::table('manu_slipcasting_steel')->insert(['inventory_id' => $inventory_id, 'manu_slipcasting_id' => $slipcast_id]);
+
+        return (['Steel with inventory_id: '.$inventory_id.' added to manu_slipcasting_steal for slipcasting run QMSC-'.$slipcast_id]);
+    }
+
+
+
+    function deleteSteel($slipcastID, $steelID)
+    {
+        DB::table('manu_slipcasting')->where('manu_slipcasting_id', '=', $slipcastID);
+    }
+
+
+
+    function editSteel($params, $slipcast_id, $inventory_id)
+    {
+        
+    }
+
+
+
+    function operators()
+    {
+
+    }
+
+
+
+    function removeOperator()
+    {
+
+    }
+
+
+
+    function editSlipcast()
+    {
+
+    }
+
+
+    function createSlipcast()
+    {
+
+    }
+
 }

@@ -188,4 +188,17 @@ class SlipcastingController extends Controller
 	
 	}
 
+    public function addSteel($slipcast_id, $inventory_id)
+    {
+      $response =   $this -> slipcast -> addSteel($slipcast_id, $inventory_id);
+        return response() -> json ($response, 200);
+    }
+
+    public function editSteel(Request $request, $slipcast_id, $inventory_id)
+    {
+        $params = $request -> all();
+        
+        $response = $this -> slipcast -> editSteel($params, $slipcast_id, $inventory_id);
+    }
+
 }
