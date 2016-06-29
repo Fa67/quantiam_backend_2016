@@ -20,13 +20,10 @@ class Slip extends Model
 			$this->buildSlipObj($slipID);
 		}
 	
-	
 	}
 	
 	
 	function buildSlipObj ($slipID){
-	
-	
 	
 			$temp = $this->getSlipAtrr($slipID);
 			$temp->recipe = new SlipRecipe($temp->slip_recipe_id);
@@ -38,14 +35,7 @@ class Slip extends Model
 				
 					$this->$key = $value;
 				}
-			
-			
-			
-			
-			
-			
-			
-	
+
 	}
 	
 	function getSlipAtrr($slipID)

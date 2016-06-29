@@ -70,7 +70,7 @@ class SlipRecipe extends Model
 	function getRecipeComponents ($recipeID){
 	
 			$query = DB::table('manu_slip_recipe_components')
-					->select(['material_id','required_mass','variance','slip_material_name','slip_material_grade'])
+					->select(['material_id','required_mass','variance','slip_material_name','slip_material_grade','slip_material_category'])
 					->join('manu_slip_materials', 'manu_slip_materials.slip_material_id', '=','manu_slip_recipe_components.material_id')
 					->where('slip_recipe_id','=',$recipeID)
 					->get();
