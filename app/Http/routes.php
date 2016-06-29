@@ -120,3 +120,7 @@ Route::post('/slip/steel', 'SlipcastingController@slipData');
 Route::get('slipcasting/list','SlipcastingController@slipDataList');
 
 
+//Slip Recipe 
+Route::get('slip/recipe/{id}','SlipmakingController@getSlipRecipe');
+
+
