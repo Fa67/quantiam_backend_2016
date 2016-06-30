@@ -189,7 +189,9 @@ class Slipcasting extends Model
 
     function editSlipcast($params, $slipcast_id)
     {
-        dd($params, $slipcast_id);
+        DB::table('manu_slipcasting')->where('manu_slipcasting_id', '=', $slipcast_id)->update($params);
+
+        return 'Success';
     }
 
 

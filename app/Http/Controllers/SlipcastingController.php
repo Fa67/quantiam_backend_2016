@@ -235,6 +235,14 @@ class SlipcastingController extends Controller
 	{
 		$params = $request -> all();
 
+		foreach ($params as $key => $value)
+		{
+			if (!$value)
+			{
+				unset($params[$key]);
+			}
+		}
+
 		$response = $this -> slipcast -> editSlipcast($params, $slipcast_id);
 
 		return response() -> json($response, 200);
