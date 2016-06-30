@@ -156,16 +156,19 @@ class Slipcasting extends Model
 
 
 
-    function deleteSteel($slipcastID, $steelID)
+    function deleteSteel($slipcastID, $inventory_id)
     {
-        DB::table('manu_slipcasting')->where('manu_slipcasting_id', '=', $slipcastID);
+        DB::table('manu_slipcasting_steel')->where('manu_slipcasting_id', '=', $slipcastID)->where('inventory_id', '=', $inventory_id)->delete();
+
+        return ('Tube '.$inventory_id.' deleted.');
     }
 
 
 
     function editSteel($params, $slipcast_id, $inventory_id)
     {
-        
+       $response =  DB::table('manu_slipcasting_steel')->where('manu_slipcasting_id', '=', $slipcast_id)->where('inventory_id', '=', $inventory_id)->update($params);
+        return $response;
     }
 
 
@@ -184,15 +187,21 @@ class Slipcasting extends Model
 
 
 
-    function editSlipcast()
+    function editSlipcast($params, $slipcast_id)
     {
-
+        dd($params, $slipcast_id);
     }
 
 
-    function createSlipcast()
+    function createSlipcast($params)
     {
+        $id = DB::table('manu_slipcasting')->insertGetID($params);
 
+        $response = App() -> make('stdClass');
+        $response -> params = $params;
+        $response -> id = $id;
+
+        return $response;
     }
 
 }

@@ -98,7 +98,7 @@ Route::group(['middleware' => 'authuser'], function()
 
 
 Route::post('slipcast', 'SlipcastingController@createSlipcast');
-	Route::get('slipcast/{slipcast_id}', 'SlipcastingController@getRun');
+	Route::get('slipcast/{slipcast_id}', 'SlipcastingController@getSlipcast');
 	Route::put('slipcast/{slipcast_id}', 'SlipcastingController@editSlipcast');
 	Route::delete('slipcast/{slipcast_id}', 'SlipcastingController@deleteSlipcast');
 

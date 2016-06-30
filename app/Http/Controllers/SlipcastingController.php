@@ -190,15 +190,53 @@ class SlipcastingController extends Controller
 
     public function addSteel($slipcast_id, $inventory_id)
     {
-      $response =   $this -> slipcast -> addSteel($slipcast_id, $inventory_id);
-        return response() -> json ($response, 200);
+			$response =   $this -> slipcast -> addSteel($slipcast_id, $inventory_id);
+			return response() -> json ($response, 200);
+
     }
 
     public function editSteel(Request $request, $slipcast_id, $inventory_id)
     {
         $params = $request -> all();
-        
+
         $response = $this -> slipcast -> editSteel($params, $slipcast_id, $inventory_id);
+		return response() -> json(['Message: ' => 'Tube '.$inventory_id.' updated', 'Data:' => $params], 200);
     }
 
+	public function deleteSteel($slipcast_id, $inventory_id)
+	{
+		$response = $this -> slipcast -> deleteSteel($slipcast_id, $inventory_id);
+
+		return response() -> json($response, 200);
+	}
+
+	public function getSlipcast($slipcast_id)
+	{
+		$response = 'hello world its me, johnny and im gonna love you cause you love me and we all love barney';
+	}
+
+	public function createSlipcast(Request $request)
+	{
+		$params = $request -> all();
+
+		if (!$params['datetime'])
+		{
+			unset ($params['datetime']);
+		}
+		
+
+ 		$response = $this -> slipcast -> createSlipcast($params);
+
+		return response() -> json(['Success' => 'created run with id QMSC-'.$response -> id, 'Params: ' => $response -> params], 200);
+	}
+
+	
+	public function editSlipcast(Request $request, $slipcast_id)
+	{
+		$params = $request -> all();
+
+		$response = $this -> slipcast -> editSlipcast($params, $slipcast_id);
+
+		return response() -> json($response, 200);
+	}
 }
