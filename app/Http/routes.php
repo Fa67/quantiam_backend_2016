@@ -55,6 +55,9 @@ Route::group(['middleware' => 'authuser'], function()
 	Route::get('/u/rtobank/', 'TimesheetController@rto_allotment');
 	Route::post('/rto/existingabsences/', 'TimesheetController@rto_existing_absences');
 	Route::post('/timesheet/absencehours', 'TimesheetController@addAbsenceRequest');
+	Route::get('/timesheet/holidaylist', 'TimesheetController@getHolidayList');
+	Route::post('/timesheet/holiday', 'TimesheetController@addHoliday');
+	Route::delete('/timesheet/holiday/{id}', 'TimesheetController@removeHoliday');
 	
 	//User
 

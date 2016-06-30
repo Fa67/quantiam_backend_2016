@@ -398,9 +398,9 @@ function rto_allotment($time_travel_date = null){
 	function addHoliday (Request $request)
 	{
 	
-		$input = $request=>all();
+		$input = $request->all();
 		
-		if(!isset($input['holidayname']) & !isset($input['date']))
+		if(isset($input['holidayname']) && isset($input['date']))
 		{	
 		
 		$insert = array('holidayname'=>$input['holidayname'], 'date'=>$input['date']);
