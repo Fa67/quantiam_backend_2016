@@ -381,4 +381,56 @@ function rto_allotment($time_travel_date = null){
 
 
 
+	
+	function getHolidayList (Request $request)
+	{
+	
+			$query = DB::table('timesheet_holidays')
+			->select('*')
+			->get();
+			
+			return response() -> json($query, 200);
+	
+	
+	
+	}
+	
+	function addHoliday (Request $request)
+	{
+	
+		$input = $request=>all();
+		
+		if(!isset($input['holidayname']) & !isset($input['date']))
+		{	
+		
+		$insert = array('holidayname'=>$input['holidayname'], 'date'=>$input['date']);
+		
+		$query =  DB::table('timesheet_holidays')
+			->insertGetId($insert);
+			
+		$insert['entryid']=$query;
+			
+			return response() -> json($insert, 200);
+		}
+		else
+		{
+		
+		return response() -> json(['error'=>'missing expected input'], 400);
+		}
+	
+	
+	}
+	
+	
+	function removeHoliday ($holidayID)
+	{
+	
+		DB::table('timesheet_holidays')
+			->where('entryid','=',$holidayID)
+			->delete();
+			
+			return;
+	
+	}
+	
 }
