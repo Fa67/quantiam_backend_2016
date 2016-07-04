@@ -11,12 +11,7 @@ Use DB;
 
 class SlipcastingController extends Controller
 {
-    public function __construct(Request $request)
-    {
-        $this -> slipcasting_id = substr($request -> input("slipcastID"), 5);
-
-        $this -> slipcast = new Slipcasting();
-    }
+   
 
     public function tolueneData(Request $request)
     {
@@ -31,13 +26,7 @@ class SlipcastingController extends Controller
 
     }
 
-    public function slipData()
-    {
-        $response = new Slipcasting ($this -> slipcasting_id);
-
-        return response() -> json($response);
-    }
-
+   
 
     public function humidityData()
     {
@@ -188,9 +177,24 @@ class SlipcastingController extends Controller
 	
 	}
 
+	
+	public function addOperator($slipcastID, $operatorID)
+	{
+		$response =   (new Slipcasting ()) -> addOperator($slipcastID, $operatorID);
+			return response() -> json ($response, 200);
+	
+	}
+	
+	public function removeOperator($slipcastID, $operatorID)
+	{
+		$response =   (new Slipcasting ()) -> removeOperator($slipcastID, $operatorID);
+			return response() -> json ($response, 200);
+	
+	}
+	
     public function addSteel($slipcast_id, $inventory_id)
     {
-			$response =   $this -> slipcast -> addSteel($slipcast_id, $inventory_id);
+			$response =   (new Slipcasting ()) -> addSteel($slipcast_id, $inventory_id);
 			return response() -> json ($response, 200);
 
     }
@@ -205,14 +209,15 @@ class SlipcastingController extends Controller
 
 	public function deleteSteel($slipcast_id, $inventory_id)
 	{
-		$response = $this -> slipcast -> deleteSteel($slipcast_id, $inventory_id);
+		$response = (new Slipcasting ()) -> deleteSteel($slipcast_id, $inventory_id);
 
 		return response() -> json($response, 200);
 	}
 
-	public function getSlipcast($slipcast_id)
+	public function getSlipcast($slipcastID)
 	{
-		$response = 'hello world its me, johnny and im gonna love you cause you love me and we all love barney';
+		return (new Slipcasting($slipcastID));
+		
 	}
 
 	public function createSlipcast(Request $request)
@@ -230,6 +235,7 @@ class SlipcastingController extends Controller
 		return response() -> json(['Success' => 'created run with id QMSC-'.$response -> id, 'Params: ' => $response -> params], 200);
 	}
 
+
 	
 	public function editSlipcast(Request $request, $slipcast_id)
 	{
@@ -243,7 +249,7 @@ class SlipcastingController extends Controller
 			}
 		}
 
-		$response = $this -> slipcast -> editSlipcast($params, $slipcast_id);
+		$response = (new Slipcasting ()) -> editSlipcast($params, $slipcast_id);
 
 		return response() -> json($response, 200);
 	}

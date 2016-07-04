@@ -28,8 +28,10 @@ class Slipcasting extends Model
 
             }
 
-
-            $this->tolueneData = $this->getcsvData($slipcastID);
+			$this->steel = $this->getSteel($slipcastID);
+			$this->operators = $this->getOperators($slipcastID);
+		//  $this->profile = $this->getProfile();
+         // $this->tolueneData = $this->getcsvData($slipcastID);
         }
         return $this;
 
@@ -88,9 +90,8 @@ class Slipcasting extends Model
     function getSlipcast($slipcastID)
     {   // 'manu_slip_id',
         $manu_slipcasting = DB::table('manu_slipcasting')   -> select ('manu_slipcasting_profile_id',  'datetime', 'room_temp_at_cast AS room_temp', 'slip_temp_at_cast AS slip_temp') -> where('manu_slipcasting_id', '=', $slipcastID) -> first();
-        $manu_operators = DB::table('manu_slipcasting_operators') -> join('employees', 'employees.employeeid', '=', 'manu_slipcasting_operators.operator_id')
-                            -> select('employees.firstname', 'employees.lastname', 'manu_slipcasting_operators.operator_id AS employeeID') -> where('manu_slipcasting_operators.manu_slipcasting_id', '=', $slipcastID) -> get();
-        ($manu_slipcasting -> operators = $manu_operators);
+        
+	
 
         return $manu_slipcasting;
     }
@@ -146,9 +147,24 @@ class Slipcasting extends Model
 
     }
 
-    function addSteel($slipcast_id, $inventory_id)
-    {
+   
+	function getSteel ($slipcastID)
+	{
+		$query = DB::table('manu_slipcasting_steel')
+		->select('*')
+		->where('manu_slipcasting_id','=',$slipcastID)
+		->get();
 
+		return $query;
+
+	}
+
+	
+	
+	
+   function addSteel($slipcast_id, $inventory_id)
+    {
+		
         $id = DB::table('manu_slipcasting_steel')->insert(['inventory_id' => $inventory_id, 'manu_slipcasting_id' => $slipcast_id]);
 
         return (['Steel with inventory_id: '.$inventory_id.' added to manu_slipcasting_steal for slipcasting run QMSC-'.$slipcast_id]);
@@ -173,16 +189,43 @@ class Slipcasting extends Model
 
 
 
-    function operators()
+    function getOperators($slipcastID)
     {
 
+		$manu_operators = DB::table('manu_slipcasting_operators') -> join('employees', 'employees.employeeid', '=', 'manu_slipcasting_operators.operator_id')
+                            -> select('employees.firstname', 'employees.lastname', 'manu_slipcasting_operators.operator_id AS employeeID') -> where('manu_slipcasting_operators.manu_slipcasting_id', '=', $slipcastID) -> get();
+        return $manu_operators;
+	
     }
 
 
-
-    function removeOperator()
+	  function addOperator($slipcastID, $operatorID)
     {
+		$params = array('manu_slipcasting_id' => $slipcastID, 'operator_id' => $operatorID);
+		
+		$id = DB::table('manu_slipcasting_operators')
+		->insertGetID($params);
+		
+		$manu_operators = DB::table('manu_slipcasting_operators') -> join('employees', 'employees.employeeid', '=', 'manu_slipcasting_operators.operator_id')
+		-> select('employees.firstname', 'employees.lastname', 'manu_slipcasting_operators.operator_id AS employeeID')
+		-> where('manu_slipcasting_operators.manu_slipcasting_id', '=', $slipcastID)
+		-> where('manu_slipcasting_operators.operator_id', '=', $operatorID)
+		-> first();
+        
+		return $manu_operators;
+	
+		
+    }
+	
 
+    function removeOperator($slipcastID, $operatorID)
+    {
+		$query = DB::table('manu_slipcasting_operators')
+		->where('manu_slipcasting_id', '=',$slipcastID)
+		->where('operator_id', '=',$operatorID)
+		->delete();
+		
+		return true;
     }
 
 
