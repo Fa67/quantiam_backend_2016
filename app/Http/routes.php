@@ -138,4 +138,12 @@ Route::post('/slip/steel', 'SlipcastingController@slipData');
 
 Route::get('slipcasting/list','SlipcastingController@slipDataList');
 
+Route::get('furnace','FurnaceController@FurnaceRun');
 
+Route::get('/furnacerun/{furnacerunid}/steel','FurnaceController@furnacesteelrun');
+
+Route::get('/furnacerun/{furnacerunid}/operator','FurnaceController@furnaceoperatorrun');
+
+Route::get('/furnacerun/{furnacerunid}/properties','FurnaceController@furnacepropertiesrun');
+
+Route::get('/furnacerun/{furnacerunid}','FurnaceController@buildFurnaceRun');
