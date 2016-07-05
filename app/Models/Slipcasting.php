@@ -6,6 +6,9 @@ use Illuminate\Database\Eloquent\Model;
 
 use App\Http\Requests;
 
+
+Use App\Models\SlipcastingProfile;
+
 use DB;
 
 class Slipcasting extends Model
@@ -16,26 +19,34 @@ class Slipcasting extends Model
 
 
         if($slipcastID) {
-            $this->slipcastID = $slipcastID;
-
-
-            $slipdata = $this->getSlipcast($slipcastID);
-
-            foreach($slipdata as $key => $value)
-            {
-                $this -> $key = $value;
-
-
-            }
-
-			$this->steel = $this->getSteel($slipcastID);
-			$this->operators = $this->getOperators($slipcastID);
-		//  $this->profile = $this->getProfile();
-         // $this->tolueneData = $this->getcsvData($slipcastID);
+            $this->buildSlipcastObj($slipcastID,null);
         }
         return $this;
 
     }
+	
+	function buildSlipcastObj($slipcastID,$graphs = null)
+	{
+	
+		
+		$temp = $this->getSlipcast($slipcastID);
+		
+		foreach($temp as $key=>$value)
+		{
+			$this->$key = $value;
+		
+		}
+		$this->steel = $this->getSteel($slipcastID);
+		$this->operators = $this->getOperators($slipcastID);
+		$this->profile = new SlipcastingProfile($this->manu_slipcasting_profile_id);
+		
+		if($graphs)
+		{
+			$this->tolueneData = $this->getcsvData($slipcastID);
+		
+		}
+	
+	}
 
 
     function getcsvData($slipcastID)
@@ -89,7 +100,8 @@ class Slipcasting extends Model
 
     function getSlipcast($slipcastID)
     {   // 'manu_slip_id',
-        $manu_slipcasting = DB::table('manu_slipcasting')   -> select ('manu_slipcasting_profile_id',  'datetime', 'room_temp_at_cast AS room_temp', 'slip_temp_at_cast AS slip_temp') -> where('manu_slipcasting_id', '=', $slipcastID) -> first();
+        $manu_slipcasting = DB::table('manu_slipcasting')   ->
+		select ('*') -> where('manu_slipcasting_id', '=', $slipcastID) -> first();
         
 	
 

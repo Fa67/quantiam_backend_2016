@@ -81,6 +81,17 @@ class userController extends Controller
 		
 		return ($response);
 	}
+	public function getUserListActive(Request $request)
+	{
+		$response = DB::table('employees')
+		->select('*')
+		->whereNull('leavedate')
+		-> get();
+		
+		
+		return response() -> json($repsonse, 200);
+	}
+	
 	public function getSupervisors(Request $request)
 	{
 		$response = DB::table('hierarchy') -> join ('employees', 'employees.employeeid', '=', 'hierarchy.employeeID')->get();

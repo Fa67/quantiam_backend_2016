@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 
 Use App\Models\Slipcasting;
+
+
 Use DB;
 
 class SlipcastingController extends Controller
@@ -253,4 +255,8 @@ class SlipcastingController extends Controller
 
 		return response() -> json($response, 200);
 	}
+
+	
+
+	
 }

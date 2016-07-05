@@ -67,6 +67,7 @@ Route::group(['middleware' => 'authuser'], function()
 	Route::put('/user/edit', 'userController@editUser');
 	// Load/search all users
 	Route::get('/users', 'userController@getUsers');
+	Route::get('/userlistactive', 'userController@getActiveUserList');
 	Route::get('/supervisors', 'userController@getSupervisors');
 
 	//Comment
@@ -111,7 +112,9 @@ Route::group(['middleware' => 'authuser'], function()
 	Route::post('slipcast/{slipcast_id}/operator/{operator_id}', 'SlipcastingController@addOperator');
 	Route::delete('slipcast/{slipcast_id}/operator/{operator_id}', 'SlipcastingController@removeOperator');
 
-
+	//Ramp Profiles
+	
+	Route::get('rampprofile/list/{type}/{active}', 'RampProfileController@getRampProfileList'); //works 7/4/2016
 
 });
 // Request existing RTOs
