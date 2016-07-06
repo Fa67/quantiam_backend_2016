@@ -112,11 +112,17 @@ Route::group(['middleware' => 'authuser'], function()
 	Route::post('slipcast/{slipcast_id}/operator/{operator_id}', 'SlipcastingController@addOperator');
 	Route::delete('slipcast/{slipcast_id}/operator/{operator_id}', 'SlipcastingController@removeOperator');
 
+	//Slipcasting Profile
+	Route::get('slipcast/profile/list/{active}', 'SlipcastingController@getSlipCastProfileList'); //works 2016-7-5
+	
 	//Ramp Profiles
 	
-	Route::get('rampprofile/list/{type}/{active}', 'RampProfileController@getRampProfileList'); //works 7/4/2016
+	Route::get('ramp/profile/list/{type}/{active}', 'RampProfileController@getRampProfileList');
 
 });
+
+
+
 // Request existing RTOs
 // Post new approval.
 Route::post('/rto/request/{request_id}/approval', 'RTOController@postApproval');  //  Post a new row in the timesheet_rtoapprovals table relevant to an existing RTO id.

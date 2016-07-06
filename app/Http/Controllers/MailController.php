@@ -58,7 +58,7 @@ class MailController extends Controller
 			$mail->Body    =  $body;
 			$mail->AltBody = "This is the body in plain text for non-HTML mail clients";
 			$mail->IsHTML(true);
-
+			$mail->SMTPDebug = 1;
 			$mail->setFrom(getenv('emailUser').getenv('MAIL_SUFFIX'),'Quantiam Apps', TRUE);
 
 		if(!$mail->Send()) 
@@ -67,6 +67,8 @@ class MailController extends Controller
 		 	return response() -> json(['error' => $error_message]);
 		} else 
 		{
+		
+	//	dd($targetEmail);
 			$error_message = "Successfully sent!";
 			return response() -> json(['success' => $error_message]);
 		}

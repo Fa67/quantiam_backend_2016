@@ -8,7 +8,7 @@ use DB;
 class SlipcastingProfile extends Model
 {
     //
-	function __construct($slipcastProfileID){
+	function __construct($slipcastProfileID = null){
 	
 	
 			if($slipcastProfileID)
@@ -43,5 +43,25 @@ class SlipcastingProfile extends Model
 			return $query;
 			
 			
+	}
+	
+	
+	function getSlipCastProfileList ($active)
+	{
+	
+		$query = DB::table('manu_slipcasting_profile')
+		->select('*'); // set up intial table
+		
+		
+		
+		if($active == 1)
+		{
+			$query->where('active','=',1); //conditional based on variable presence.
+		}
+	
+		$result = $query->get();
+		
+		return $result;
+		
 	}
 }

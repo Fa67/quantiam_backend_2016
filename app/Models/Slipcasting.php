@@ -10,6 +10,7 @@ use App\Http\Requests;
 Use App\Models\SlipcastingProfile;
 
 use DB;
+use DNS2D;
 
 class Slipcasting extends Model
 {
@@ -39,6 +40,9 @@ class Slipcasting extends Model
 		$this->steel = $this->getSteel($slipcastID);
 		$this->operators = $this->getOperators($slipcastID);
 		$this->profile = new SlipcastingProfile($this->manu_slipcasting_profile_id);
+		$this->datamatrix =  url('/').DNS2D::getBarcodePNGPath("QMSC-".$slipcastID, "DATAMATRIX",8,8);
+		
+		
 		
 		if($graphs)
 		{

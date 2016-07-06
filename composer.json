@@ -11,7 +11,8 @@
         "baum/baum": "~1.1",
         "guzzlehttp/guzzle": "~5.3|~6.0",
         "phpmailer/phpmailer": "~5.2",
-        "swiftmailer/swiftmailer": "^5.4"
+        "swiftmailer/swiftmailer": "^5.4",
+        "milon/barcode": "^5.2"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",

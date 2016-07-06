@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 
 Use App\Models\Slipcasting;
+Use App\Models\SlipcastingProfile;
 
 
 Use DB;
@@ -258,5 +259,11 @@ class SlipcastingController extends Controller
 
 	
 
-	
+	public function getSlipCastProfileList (Request $request, $active)
+	{
+
+		$query = (new SlipcastingProfile())->getSlipCastProfileList($active);
+
+		return response() -> json($query, 200);
+	}
 }
