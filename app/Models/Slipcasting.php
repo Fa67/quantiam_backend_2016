@@ -250,7 +250,7 @@ class Slipcasting extends Model
     {
         DB::table('manu_slipcasting')->where('manu_slipcasting_id', '=', $slipcast_id)->update($params);
 
-        return 'Success';
+        return 'Successfully edited.';
     }
 
 

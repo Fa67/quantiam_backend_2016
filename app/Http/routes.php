@@ -113,7 +113,10 @@ Route::group(['middleware' => 'authuser'], function()
 	Route::delete('slipcast/{slipcast_id}/operator/{operator_id}', 'SlipcastingController@removeOperator');
 
 	//Slipcasting Profile
-	Route::get('slipcast/profile/list/{active}', 'SlipcastingController@getSlipCastProfileList'); //works 2016-7-5
+	Route::get('slipcast/profile/list', 'SlipcastingController@getSlipCastProfileList'); //works 2016-7-5
+	
+	//Slipcasting Table
+	Route::get('slipcast/table/list','SlipcastingController@getSlipcastTableList');
 	
 	//Ramp Profiles
 	

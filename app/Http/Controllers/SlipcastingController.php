@@ -11,6 +11,8 @@ Use App\Models\SlipcastingProfile;
 
 
 Use DB;
+use DNS2D;
+
 
 class SlipcastingController extends Controller
 {
@@ -69,14 +71,14 @@ class SlipcastingController extends Controller
 				->select(['manu_slipcasting.created_datetime','manu_inventory.campaign_id as campaign_id'])
 				->join('manu_slipcasting_profile', 'manu_slipcasting.manu_slipcasting_profile_id', '=', 'manu_slipcasting_profile.manu_slipcasting_profile_id')
 				->join('manu_slipcasting_steel', 'manu_slipcasting_steel.manu_slipcasting_id', '=', 'manu_slipcasting.manu_slipcasting_id')
-				->Leftjoin('manu_slip_recipe', 'manu_slipcasting_steel.slip_id', '=', 'manu_slip_recipe.recipe_id')
+				->Leftjoin('manu_slip_recipe', 'manu_slipcasting.manu_slip_id', '=', 'manu_slip_recipe.recipe_id')
 				->join('manu_inventory', 'manu_slipcasting_steel.inventory_id', '=', 'manu_inventory.manu_inventory_id')
 				->join('manu_campaign', 'manu_inventory.campaign_id', '=', 'manu_campaign.campaign_id');
 
 				
 				
 				// What can we search or filter by?
-				$SearchableConditionals = array('manu_slip_id', 'qti_id');
+				$SearchableConditionals = array('manu_slip_id', 'qti_id','manu_slipcasting.manu_slipcasting_id','manu_slipcasting_steel.inventory_id');
 				$FilterableConditionals = array('campaign_id' => 'manu_campaign.campaign_id');
 			
 						
@@ -84,7 +86,7 @@ class SlipcastingController extends Controller
 				->select(['manu_slipcasting.manu_slipcasting_id', 'inventory_id', 'heat_id', 'manu_slipcasting.datetime', 'campaign_name','manu_slipcasting.manu_slipcasting_profile_id','profile_name', 'manu_slip_recipe.recipe_id', 'manu_slip_recipe.recipe_name', 'manu_campaign.campaign_id'])
 				->join('manu_slipcasting_profile', 'manu_slipcasting.manu_slipcasting_profile_id', '=', 'manu_slipcasting_profile.manu_slipcasting_profile_id')
 				->join('manu_slipcasting_steel', 'manu_slipcasting_steel.manu_slipcasting_id', '=', 'manu_slipcasting.manu_slipcasting_id')
-				->Leftjoin('manu_slip_recipe', 'manu_slipcasting_steel.slip_id', '=', 'manu_slip_recipe.recipe_id')
+				->Leftjoin('manu_slip_recipe', 'manu_slipcasting.manu_slip_id', '=', 'manu_slip_recipe.recipe_id')
 				->join('manu_inventory', 'manu_slipcasting_steel.inventory_id', '=', 'manu_inventory.manu_inventory_id')
 				->join('manu_campaign', 'manu_inventory.campaign_id', '=', 'manu_campaign.campaign_id')
 				->skip($input['start'])
@@ -132,47 +134,55 @@ class SlipcastingController extends Controller
 				//Special Filtering for slipcast needs
 				
 				$omitt = array('inventory_id', 'heat_id','recipe_id','recipe_name');
-				
-				foreach($query as $slipcast)
-				{
-				
-					if($slipcast->manu_slipcasting_id != $last_slipcast_id)
-					{
-						$tempArray = array();
-						
-						
-						foreach($slipcast as $key => $value)
+				try{
+						foreach($query as $slipcast)
 						{
 						
-							if(!in_array($key,$omitt))
+						$datamatrix = url('/').DNS2D::getBarcodePNGPath("QMSC-".$slipcast->inventory_id, "DATAMATRIX",8,8);
+				
+						
+							if($slipcast->manu_slipcasting_id != $last_slipcast_id)
 							{
-								$tempArray[$key] = $value;
+								$tempArray = array();
+								
+								
+								foreach($slipcast as $key => $value)
+								{
+								
+									if(!in_array($key,$omitt))
+									{
+										$tempArray[$key] = $value;
+									}
+									
+								
+								$tempArray['datamatrix'] = $datamatrix;
+								}
+								
+								$tempArray['steel'][] = array( 'id'=>$slipcast->inventory_id,'heat_id'=>$slipcast->heat_id, 'recipe_id' => $slipcast->recipe_id, 'recipe_name' => $slipcast->recipe_name);
+							
+							}
+							else
+							{
+							
+								
+								array_pop($tempObj);
+								
+								
+								$tempArray['steel'][] = array('id'=>$slipcast->inventory_id,'heat_id'=>$slipcast->heat_id, 'recipe_id' => $slipcast->recipe_id, 'recipe_name' => $slipcast->recipe_name);
+								
+								
+							
 							}
 							
-						
-						
+								$tempObj[] = $tempArray;
+							
+							$last_slipcast_id = $slipcast->manu_slipcasting_id;
 						}
-						
-						$tempArray['steel'][] = array('id'=>$slipcast->inventory_id,'heat_id'=>$slipcast->heat_id, 'recipe_id' => $slipcast->recipe_id, 'recipe_name' => $slipcast->recipe_name);
-					
-					}
-					else
-					{
-					
-						
-						array_pop($tempObj);
-							$tempArray['steel'][] = array('id'=>$slipcast->inventory_id,'heat_id'=>$slipcast->heat_id, 'recipe_id' => $slipcast->recipe_id, 'recipe_name' => $slipcast->recipe_name);
-						
-						
-					
-					}
-					$tempObj[] = $tempArray;
-				
-					$last_slipcast_id = $slipcast->manu_slipcasting_id;
-				}
 					
 					
 				$returnObj['aoData'] = $tempObj; 
+				}
+				catch(\Exception  $e){}
 				return response()->json($returnObj, 200);
 	
 	
@@ -243,7 +253,8 @@ class SlipcastingController extends Controller
 	public function editSlipcast(Request $request, $slipcast_id)
 	{
 		$params = $request -> all();
-
+		
+		
 		foreach ($params as $key => $value)
 		{
 			if (!$value)
@@ -254,15 +265,34 @@ class SlipcastingController extends Controller
 
 		$response = (new Slipcasting ()) -> editSlipcast($params, $slipcast_id);
 
-		return response() -> json($response, 200);
+		return response() -> json(['success' => $response], 200);
 	}
 
 	
 
-	public function getSlipCastProfileList (Request $request, $active)
+	public function getSlipCastProfileList (Request $request, $active = null)
 	{
+	
+		$input = $request->all();
+		
+		if(isset($input['active']))
+		{
+		$active = 1; 
+		
+		}
 
 		$query = (new SlipcastingProfile())->getSlipCastProfileList($active);
+
+		return response() -> json($query, 200);
+	}
+	
+	
+	public function getSlipcastTableList (Request $request)
+	{
+
+		$query = DB::table('manu_slipcasting_tables')
+		->select('*')
+		->get();
 
 		return response() -> json($query, 200);
 	}

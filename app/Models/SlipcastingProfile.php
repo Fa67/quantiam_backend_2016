@@ -54,7 +54,7 @@ class SlipcastingProfile extends Model
 		
 		
 		
-		if($active == 1)
+		if($active)
 		{
 			$query->where('active','=',1); //conditional based on variable presence.
 		}
