@@ -1,0 +1,47 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use Illuminate\Http\Request;
+
+use App\Http\Requests;
+
+use App\Models\SlipRecipe;
+use App\Models\Slip;
+
+class SlipController extends Controller
+{
+    //
+	
+	function getSlipList (Request $request, $like = null)
+	{
+		$input = $request->all();
+	
+		if(isset($input['like']))
+		{
+		$like = $input['like'];
+		}
+		
+	   $query = (new Slip())->getSlipList($like);
+	   
+	   	return response() -> json($query, 200);
+	}
+	
+		
+	function getSlip($id)
+	{
+		$slip = new Slip($id);
+		return response() -> json($slip, 200);
+	
+	}
+	
+	
+	
+	function getSlipRecipe($id){
+	
+		$slipRecipe = new SlipRecipe($id);
+		return response() -> json($slipRecipe, 200);
+		
+
+	}
+}

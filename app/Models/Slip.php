@@ -5,6 +5,7 @@ namespace App\models;
 use Illuminate\Database\Eloquent\Model;
 
 use DB; 
+use DNS2D;
 use App\models\SlipRecipe;
 
 class Slip extends Model
@@ -28,13 +29,15 @@ class Slip extends Model
 			$temp = $this->getSlipAtrr($slipID);
 			$temp->recipe = new SlipRecipe($temp->slip_recipe_id);
 			$temp->measured =  $this->getSlipMeasured($slipID);
-			
+			$temp->datamatrix =  url('/').DNS2D::getBarcodePNGPath("QMSB-".$slipID, "DATAMATRIX",8,8);
 			
 				foreach($temp as $key => $value)
 				{
 				
 					$this->$key = $value;
 				}
+				
+			
 
 	}
 	
@@ -57,6 +60,35 @@ class Slip extends Model
 				->get();
 				
 				return $query;
+	}
+	
+	function getSlipList($like)
+	{
+	
+		$query = DB::table('manu_slip')
+				->select(['slip_id']);
+				
+				
+				if($like)
+				{
+				$query->where('slip_id','Like',$like.'%');
+			
+				}
+				
+				$query = $query
+				->take(10)
+				->orderBy('slip_id','desc')
+				->get();
+			
+		$temp = array();
+		foreach($query as $obj)
+		{
+		$temp[] = array('id' => $obj->slip_id, 'text'=>'QMSB-'.$obj->slip_id);
+		
+		}
+		
+		return $temp;
+	
 	}
 	
 }

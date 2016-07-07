@@ -92,10 +92,12 @@ Route::group(['middleware' => 'authuser'], function()
 	Route::post('group/{groupID}/user/{userID}', 'GroupController@addUserToGroup');
 
 	//Slip
-	Route::get('slip/{id}','SlipmakingController@getSlip');
+	Route::get('slip/list','SlipController@getSlipList');
+	Route::get('slip/{id}','SlipController@getSlip');
+	
 
 	//Slip Recipe 
-	Route::get('slip/recipe/{id}','SlipmakingController@getSlipRecipe');
+	Route::get('slip/recipe/{id}','SlipController@getSlipRecipe');
 
 	//Slipcasting
 	Route::post('slipcast', 'SlipcastingController@createSlipcast');
