@@ -12,10 +12,7 @@ class FurnaceController extends Controller
    
    function buildFurnaceRun($furnacerunID)
 	{
-		
 		$fullobject = (new FurnaceRun($furnacerunID));
-	
-			
 		return response() -> json($fullobject, 200);
 	} 
    
@@ -47,6 +44,14 @@ class FurnaceController extends Controller
 	
 		
 		return response() -> json($properties, 200);
+	} 
+	
+	
+	function furnaceprofilerun($furnacerunID)
+	{
+		
+		$profile = (new FurnaceRun()) -> getfurnaceprofile($furnacerunID);
+		return response() -> json($profile, 200);
 	} 
 }
 

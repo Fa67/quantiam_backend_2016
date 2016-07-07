@@ -156,3 +156,5 @@ Route::get('/furnacerun/{furnacerunid}/operator','FurnaceController@furnaceopera
 Route::get('/furnacerun/{furnacerunid}/properties','FurnaceController@furnacepropertiesrun');
 
 Route::get('/furnacerun/{furnacerunid}','FurnaceController@buildFurnaceRun');
+
+Route::get('/furnacerun/{furnacerunid}/profile','FurnaceController@furnaceprofilerun');
