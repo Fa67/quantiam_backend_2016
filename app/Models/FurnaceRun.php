@@ -3,6 +3,7 @@
 namespace App\models;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Models\Ramp;
 use DB;
 use DNS2D;
 
@@ -29,13 +30,14 @@ function buildFurnaceRun($furnacerunID)
 	$this -> steel = $this -> getfurnacesteel ($furnacerunID);
     $this -> operators = $this -> getfurnaceoperator ($furnacerunID);
 	$this -> profile = $this -> getfurnaceprofile($this -> furnace_profile_id);
+	$this -> ramp_profile = $this -> getfurnaceramp ($this -> furnace_profile_id);
     $this -> datamatrix =  url('/').DNS2D::getBarcodePNGPath("QMFR-".$furnacerunID, "DATAMATRIX",8,8);
    	return;
    	
 	}  
 
 	
-function getfurnacesteel($furnacerunID)
+	function getfurnacesteel($furnacerunID)
     {   
         $manu_furnace_runs_steel = DB::table('manu_furnace_runs_steel') 
 		-> where('furnace_run_id', '=', $furnacerunID) 
@@ -44,6 +46,7 @@ function getfurnacesteel($furnacerunID)
 		return $manu_furnace_runs_steel;
     }
 
+	
 	function getfurnaceoperator($furnacerunID)
     {   
         $manu_furnace_runs_operator = DB::table('manu_furnace_runs_operators') 
@@ -53,17 +56,18 @@ function getfurnacesteel($furnacerunID)
 		-> get();
 		return $manu_furnace_runs_operator;
     }
-
+	
 	
 	function getfurnaceproperties($furnacerunID)
     {   
         $manu_furnace_runs_properties = DB::table('manu_furnace_runs') 
 		-> where('furnace_run_id', '=', $furnacerunID) 
-		-> join ('manu_furance','manu_furance.furnace_id', '=', 'manu_furnace_runs.furnace_id')
+		-> join ('manu_furnace','manu_furnace.furnace_id', '=', 'manu_furnace_runs.furnace_id')
 		-> join ('manu_furnace_runs_type','manu_furnace_runs_type.furnace_run_type_id', '=', 'manu_furnace_runs.furnace_run_type_id')
 		-> first();
       	return $manu_furnace_runs_properties;
     }
+	
 	
 	function getfurnaceprofile($profileID)
     {   
@@ -72,5 +76,25 @@ function getfurnacesteel($furnacerunID)
 		-> first();
 		return $manu_furnace_runs_profile;
     }
+	
+	
+	function getfurnaceramp($profileID)
+    {   
+        	
+		$fullramp = (new Ramp($profileID));
+				
+		return $fullramp;
+    }
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 }
 

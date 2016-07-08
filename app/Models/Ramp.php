@@ -32,6 +32,15 @@ class Ramp extends Model
    	
 	}  
 
+		
+	function getrampproperties($rampprofileID)
+    {   
+        $manu_ramp_profile_properties = DB::table('manu_ramp_profile') 
+		-> where('ramp_profile_id', '=', $rampprofileID) 
+		-> first();
+      	return $manu_ramp_profile_properties;
+    }
+
 	
 	function getrampprofilesteps($rampprofileID)
     {   
@@ -43,13 +52,8 @@ class Ramp extends Model
     }
 
 	
-	function getrampproperties($rampprofileID)
-    {   
-        $manu_ramp_profile_properties = DB::table('manu_ramp_profile') 
-		-> where('ramp_profile_id', '=', $rampprofileID) 
-		-> first();
-      	return $manu_ramp_profile_properties;
-    }
-
+	
+	
+	
 }
 
