@@ -149,6 +149,9 @@ Route::post('/slip/steel', 'SlipcastingController@slipData');
 
 Route::get('slipcasting/list','SlipcastingController@slipDataList');
 
+
+//Routes for FurnaceRun Model
+
 Route::get('furnace','FurnaceController@FurnaceRun');
 
 Route::get('/furnacerun/{furnacerunid}/steel','FurnaceController@furnacesteelrun');
@@ -157,6 +160,11 @@ Route::get('/furnacerun/{furnacerunid}/operator','FurnaceController@furnaceopera
 
 Route::get('/furnacerun/{furnacerunid}/properties','FurnaceController@furnacepropertiesrun');
 
+Route::get('/furnacerun/{furnacerunid}/profile','FurnaceController@furnaceprofilerun');
+
 Route::get('/furnacerun/{furnacerunid}','FurnaceController@buildFurnaceRun');
 
-Route::get('/furnacerun/{furnacerunid}/profile','FurnaceController@furnaceprofilerun');
+
+//Routes for Ramp Model
+
+Route::get('/ramp/{rampprofileid}','RampProfileController@buidRampProfile');

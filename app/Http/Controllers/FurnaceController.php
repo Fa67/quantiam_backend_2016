@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Models\FurnaceRun;
 use DB;
+
+
 class FurnaceController extends Controller
 {
    
