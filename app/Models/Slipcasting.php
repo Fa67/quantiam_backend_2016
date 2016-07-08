@@ -168,8 +168,15 @@ class Slipcasting extends Model
 	{
 		$query = DB::table('manu_slipcasting_steel')
 		->select('*')
+		->join('manu_inventory','manu_slipcasting_steel.inventory_id','=','manu_inventory.manu_inventory_id')
 		->where('manu_slipcasting_id','=',$slipcastID)
 		->get();
+		
+		
+		foreach($query as $obj)
+		{
+			$obj->datamatrix =  url('/').DNS2D::getBarcodePNGPath("QMSI-".$obj->inventory_id, "DATAMATRIX",8,8);
+		}
 
 		return $query;
 

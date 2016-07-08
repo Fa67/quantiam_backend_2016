@@ -17,12 +17,7 @@ class SlipController extends Controller
 	{
 		$input = $request->all();
 	
-		if(isset($input['like']))
-		{
-		$like = $input['like'];
-		}
-		
-	   $query = (new Slip())->getSlipList($like);
+	   $query = (new Slip())->getSlipList($input);
 	   
 	   	return response() -> json($query, 200);
 	}

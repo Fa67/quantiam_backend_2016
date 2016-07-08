@@ -123,7 +123,9 @@ Route::group(['middleware' => 'authuser'], function()
 	//Ramp Profiles
 	
 	Route::get('ramp/profile/list/{type}/{active}', 'RampProfileController@getRampProfileList');
-
+	
+	//Steel Routes
+	Route::get('steel/list','SteelController@getSteelList');
 });
 
 

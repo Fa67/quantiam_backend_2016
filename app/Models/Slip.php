@@ -62,14 +62,14 @@ class Slip extends Model
 				return $query;
 	}
 	
-	function getSlipList($like)
+	function getSlipList($params)
 	{
 	
 		$query = DB::table('manu_slip')
 				->select(['slip_id']);
 				
 				
-				if($like)
+				if(isset($params['like']))
 				{
 				$query->where('slip_id','Like',$like.'%');
 			
