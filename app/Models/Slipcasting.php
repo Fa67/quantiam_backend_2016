@@ -164,18 +164,26 @@ class Slipcasting extends Model
     }
 
    
-	function getSteel ($slipcastID)
+	function getSteel ($slipcastID,$inventory_id = null)
 	{
 		$query = DB::table('manu_slipcasting_steel')
 		->select('*')
 		->join('manu_inventory','manu_slipcasting_steel.inventory_id','=','manu_inventory.manu_inventory_id')
-		->where('manu_slipcasting_id','=',$slipcastID)
-		->get();
+		->where('manu_slipcasting_id','=',$slipcastID);
+		
+		if($inventory_id)
+		{
+		
+		$query -> where('inventory_id','=',$inventory_id);
+		}
+		
+		
+		$query = $query->get();
 		
 		
 		foreach($query as $obj)
 		{
-			$obj->datamatrix =  url('/').DNS2D::getBarcodePNGPath("QMSI-".$obj->inventory_id, "DATAMATRIX",8,8);
+			$obj->datamatrix =  url('/').DNS2D::getBarcodePNGPath("QMIS-".$obj->inventory_id, "DATAMATRIX",8,8);
 		}
 
 		return $query;
@@ -188,9 +196,14 @@ class Slipcasting extends Model
    function addSteel($slipcast_id, $inventory_id)
     {
 		
+		
         $id = DB::table('manu_slipcasting_steel')->insert(['inventory_id' => $inventory_id, 'manu_slipcasting_id' => $slipcast_id]);
 
-        return (['Steel with inventory_id: '.$inventory_id.' added to manu_slipcasting_steal for slipcasting run QMSC-'.$slipcast_id]);
+		$steel = $this->getSteel($slipcast_id, $inventory_id);
+		
+		
+		
+        return ($steel[0]);
     }
 
 

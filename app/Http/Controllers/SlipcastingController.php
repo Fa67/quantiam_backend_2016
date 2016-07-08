@@ -216,7 +216,7 @@ class SlipcastingController extends Controller
     {
         $params = $request -> all();
 
-        $response = $this -> slipcast -> editSteel($params, $slipcast_id, $inventory_id);
+        $response = (new Slipcasting ()) -> editSteel($params, $slipcast_id, $inventory_id);
 		return response() -> json(['Message: ' => 'Tube '.$inventory_id.' updated', 'Data:' => $params], 200);
     }
 

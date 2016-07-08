@@ -14,7 +14,7 @@ class Steel extends Model
 	{
 	
 		$query = DB::table('manu_inventory')
-				->select(['manu_inventory_id','heat_id']);
+				->select(['manu_inventory_id','heat_id','rework']);
 				
 				
 				if(isset($params['like']))
@@ -40,7 +40,16 @@ class Steel extends Model
 		$temp = array();
 		foreach($query as $obj)
 		{
-		$temp[] = array('id' => $obj->manu_inventory_id, 'text'=>'QMSI-'.$obj->manu_inventory_id.', '.$obj->heat_id);
+		
+		$rework = null;
+		
+			if($obj->rework)
+			{
+			$rework = 'R:'.$obj->rework;
+			}
+			
+			
+		$temp[] = array('id' => $obj->manu_inventory_id, 'text'=>'QMSI-'.$obj->manu_inventory_id.', '.$obj->heat_id.' '.$rework);
 		
 		}
 		

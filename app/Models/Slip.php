@@ -71,7 +71,7 @@ class Slip extends Model
 				
 				if(isset($params['like']))
 				{
-				$query->where('slip_id','Like',$like.'%');
+				$query->where('slip_id','Like',$params['like'].'%');
 			
 				}
 				
