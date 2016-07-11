@@ -327,8 +327,6 @@ function rto_allotment($time_travel_date = null){
 		$query = 
 	DB::select("SELECT  sum(hours) as sum, employeeid  FROM quantiam.hours where type = 'bank' and employeeid is not null  ".$date_string." 
 		
-		
-		
 		group by employeeid");
 		
 		foreach($query as $obj){
@@ -340,7 +338,7 @@ function rto_allotment($time_travel_date = null){
 
 		
 		// get used hours. 
-		DB::select("SELECT  sum(hours) as sum, employeeid 
+		$query = DB::select("SELECT  sum(hours) as sum, employeeid 
 		
 		FROM quantiam.hours
 
@@ -359,11 +357,12 @@ function rto_allotment($time_travel_date = null){
 													}
 			
 
-			
+		//	dd($used_hour_array);
+		//	dd($banked_hours);
 	foreach($employee_list as $employee_id)
 	{
 			
-				$balance = $banked_hours[$employee_id]-$used_hour_array[$employee_id];
+				$balance = $banked_hours[$employee_id] - $used_hour_array[$employee_id];
 				$return_array[$employee_id]['remaining']['cto'] = $balance;
 								
 	}
@@ -376,6 +375,8 @@ function rto_allotment($time_travel_date = null){
 
 	}
 
+//	dd($return_array[60]);
+	
 	return $return_array;
 	}  
 
