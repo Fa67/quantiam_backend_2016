@@ -29,7 +29,7 @@ class Slipcasting extends Model
 	function buildSlipcastObj($slipcastID,$graphs = null)
 	{
 	
-		
+		$this->identifier =  "QMSC-".$slipcastID;
 		$temp = $this->getSlipcast($slipcastID);
 		
 		foreach($temp as $key=>$value)
@@ -44,6 +44,7 @@ class Slipcasting extends Model
 		$this->profile = new SlipcastingProfile($this->manu_slipcasting_profile_id);
 		}
 		$this->datamatrix =  url('/').DNS2D::getBarcodePNGPath("QMSC-".$slipcastID, "DATAMATRIX",8,8);
+		
 		
 		
 		

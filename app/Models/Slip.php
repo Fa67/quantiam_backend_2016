@@ -26,6 +26,8 @@ class Slip extends Model
 	
 	function buildSlipObj ($slipID){
 	
+	
+			$this->identifier =  "QMSC-".$slipID;
 			$temp = $this->getSlipAtrr($slipID);
 			$temp->recipe = new SlipRecipe($temp->slip_recipe_id);
 			$temp->measured =  $this->getSlipMeasured($slipID);
