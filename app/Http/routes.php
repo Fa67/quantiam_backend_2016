@@ -146,9 +146,9 @@ Route::put('/rto/request/{request_id}/approval/{approval_id}', 'RTOController@up
 Route::get('/user/{user_id}/getSubordinates', 'RTOController@getSubordinates');
 Route::get('/user/{user_id}/getSupervisors', 'RTOController@getSupervisors');
 
-Route::get('/csv', 'SlipcastingController@tolueneData');
+Route::get('slipcast/{id}/toluene', 'SlipcastingController@tolueneData');
 Route::get('/slip', 'SlipcastingController@slipData');
-Route::get('/humidity', 'SlipcastingController@humidityData');
+Route::get('slipcast/{id}/humidity', 'SlipcastingController@humidityData');
 
 Route::post('/slip/steel', 'SlipcastingController@slipData');
 
