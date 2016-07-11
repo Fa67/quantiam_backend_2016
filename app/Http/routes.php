@@ -126,6 +126,12 @@ Route::group(['middleware' => 'authuser'], function()
 	
 	//Steel Routes
 	Route::get('steel/list','SteelController@getSteelList');
+	
+	
+	//Upload Routes
+	
+	Route::post('dropzone/upload','UploadController@dropzoneUpload');
+	
 });
 
 
