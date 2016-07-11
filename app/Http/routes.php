@@ -130,7 +130,8 @@ Route::group(['middleware' => 'authuser'], function()
 	
 	//Upload Routes
 	
-	Route::post('dropzone/upload','DropzoneController@dropzoneUpload');
+	Route::post('dropzone','DropzoneController@dropzoneUpload');
+	Route::get('dropzone/{hash}','DropzoneController@dropzoneUpload');
 	
 });
 

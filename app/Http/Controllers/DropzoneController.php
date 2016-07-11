@@ -8,7 +8,62 @@ use App\Http\Requests;
 
 class DropzoneController extends Controller
 {
-    //
+
+	function __construct(){
+	
+	
+	$this->path = 'uploads/';
+	
+	}
+
+function get_hashed_images ($hash)
+		
+		{
+		
+				if(!$hash)
+				{
+				$return_array['error'] = 'There are missing mandatory arguments.'; 
+				goto end;
+				}	
+				
+				
+				$dir = 	$this->path.$hash;
+				$webpath = url('/').$this->path.$hash;
+					
+				$files = scandir($dir);
+										
+				
+				foreach($files as $file_name)
+				{
+				
+				
+					if(!is_dir($file_name))
+					{
+						
+					$key = preg_replace('/\\.[^.\\s]{3,4}$/', '', $file_name);
+				
+					$image_size = getimagesize($dir.'/'.$file_name);
+					
+						if( $image_size['mime'])
+						{
+						$return_array[$key]['web_path'] =  $webpath.'/'.$file_name;
+						$return_array[$key]['file_name'] =  $file_name;
+						$return_array[$key]['width'] =  $image_size['0'];
+						$return_array[$key]['height'] =  $image_size['1'];
+						$return_array[$key]['mime'] =  $image_size['mime'];
+						}
+					}
+					
+				}
+				
+			
+						
+		
+				return $return_array;
+			
+			
+		}
+	
 	
 	function dropzoneUpload(Request $request )
 	{
@@ -24,7 +79,7 @@ class DropzoneController extends Controller
 					 
 					$tempFile = $_FILES['file']['tmp_name'];          //3             
 					  
-					$targetPath = "uploads/".$hash.'/';  //4
+					$targetPath = $this->path.$hash.'/';  //4
 					 
 					 
 					 if (!file_exists($targetPath)) {
