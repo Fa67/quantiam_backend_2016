@@ -6,19 +6,19 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 
-class UploadController extends Controller
+class DropzoneController extends Controller
 {
     //
 	
 	function dropzoneUpload(Request $request )
 	{
 	
-//	$return_array['request'] = $request ->all();
+				$input = $request ->all();
 	
+				
+				$hash = $input['hash'];
+
 	
-//	dd($_POST);
-		
-	$hash = $_POST['hash'];
 	
 				if (!empty($_FILES)) {
 					 
@@ -42,9 +42,8 @@ class UploadController extends Controller
 				$return_array['post'] = $_POST;
 
 			
-				$return_array['text'] = $text;
-
-				echo json_encode($return_array);
+			
+					return response() -> json($_FILES['file'], 200);
 	
 	
 	}
