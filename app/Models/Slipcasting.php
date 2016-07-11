@@ -39,7 +39,10 @@ class Slipcasting extends Model
 		}
 		$this->steel = $this->getSteel($slipcastID);
 		$this->operators = $this->getOperators($slipcastID);
+		
+		if($this->manu_slipcasting_profile_id){
 		$this->profile = new SlipcastingProfile($this->manu_slipcasting_profile_id);
+		}
 		$this->datamatrix =  url('/').DNS2D::getBarcodePNGPath("QMSC-".$slipcastID, "DATAMATRIX",8,8);
 		
 		
@@ -274,15 +277,29 @@ class Slipcasting extends Model
     }
 
 
-    function createSlipcast($params)
+    function createSlipcast()
     {
+	
+		$params = array();
         $id = DB::table('manu_slipcasting')->insertGetID($params);
 
         $response = App() -> make('stdClass');
-        $response -> params = $params;
         $response -> id = $id;
 
         return $response;
     }
+	
+	function deleteSlipcast($slipcastID){
+	
+	
+	$query =  DB::table('manu_slipcasting')
+	->where('manu_slipcasting_id','=', $slipcastID)
+	->delete();
+	
+	
+	return;
+	
+	
+	}
 
 }

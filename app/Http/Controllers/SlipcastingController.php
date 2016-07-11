@@ -69,11 +69,11 @@ class SlipcastingController extends Controller
 					
 				$queryCount = DB::table('manu_slipcasting')
 				->select(['manu_slipcasting.created_datetime','manu_inventory.campaign_id as campaign_id'])
-				->join('manu_slipcasting_profile', 'manu_slipcasting.manu_slipcasting_profile_id', '=', 'manu_slipcasting_profile.manu_slipcasting_profile_id')
-				->join('manu_slipcasting_steel', 'manu_slipcasting_steel.manu_slipcasting_id', '=', 'manu_slipcasting.manu_slipcasting_id')
+				->Leftjoin('manu_slipcasting_profile', 'manu_slipcasting.manu_slipcasting_profile_id', '=', 'manu_slipcasting_profile.manu_slipcasting_profile_id')
+				->Leftjoin('manu_slipcasting_steel', 'manu_slipcasting_steel.manu_slipcasting_id', '=', 'manu_slipcasting.manu_slipcasting_id')
 				->Leftjoin('manu_slip_recipe', 'manu_slipcasting.manu_slip_id', '=', 'manu_slip_recipe.recipe_id')
-				->join('manu_inventory', 'manu_slipcasting_steel.inventory_id', '=', 'manu_inventory.manu_inventory_id')
-				->join('manu_campaign', 'manu_inventory.campaign_id', '=', 'manu_campaign.campaign_id');
+				->Leftjoin('manu_inventory', 'manu_slipcasting_steel.inventory_id', '=', 'manu_inventory.manu_inventory_id')
+				->Leftjoin('manu_campaign', 'manu_inventory.campaign_id', '=', 'manu_campaign.campaign_id');
 
 				
 				
@@ -84,11 +84,11 @@ class SlipcastingController extends Controller
 						
 				$query  = DB::table('manu_slipcasting')
 				->select(['manu_slipcasting.manu_slipcasting_id', 'inventory_id', 'heat_id', 'manu_slipcasting.datetime', 'campaign_name','manu_slipcasting.manu_slipcasting_profile_id','profile_name', 'manu_slip_recipe.recipe_id', 'manu_slip_recipe.recipe_name', 'manu_campaign.campaign_id'])
-				->join('manu_slipcasting_profile', 'manu_slipcasting.manu_slipcasting_profile_id', '=', 'manu_slipcasting_profile.manu_slipcasting_profile_id')
-				->join('manu_slipcasting_steel', 'manu_slipcasting_steel.manu_slipcasting_id', '=', 'manu_slipcasting.manu_slipcasting_id')
+				->Leftjoin('manu_slipcasting_profile', 'manu_slipcasting.manu_slipcasting_profile_id', '=', 'manu_slipcasting_profile.manu_slipcasting_profile_id')
+				->Leftjoin('manu_slipcasting_steel', 'manu_slipcasting_steel.manu_slipcasting_id', '=', 'manu_slipcasting.manu_slipcasting_id')
 				->Leftjoin('manu_slip_recipe', 'manu_slipcasting.manu_slip_id', '=', 'manu_slip_recipe.recipe_id')
-				->join('manu_inventory', 'manu_slipcasting_steel.inventory_id', '=', 'manu_inventory.manu_inventory_id')
-				->join('manu_campaign', 'manu_inventory.campaign_id', '=', 'manu_campaign.campaign_id')
+				->Leftjoin('manu_inventory', 'manu_slipcasting_steel.inventory_id', '=', 'manu_inventory.manu_inventory_id')
+				->Leftjoin('manu_campaign', 'manu_inventory.campaign_id', '=', 'manu_campaign.campaign_id')
 				->skip($input['start'])
 				->take($input['length']*2)
 				->orderBy('datetime','desc');
@@ -233,20 +233,19 @@ class SlipcastingController extends Controller
 		
 	}
 
-	public function createSlipcast(Request $request)
+	public function deleteSlipcast(Request $request, $slipcastID)
 	{
-		$params = $request -> all();
+		$response = (new Slipcasting ()) -> deleteSlipcast($slipcastID);
 
-		if (!$params['datetime'])
-		{
-			unset ($params['datetime']);
-		}
-		
-
- 		$response = $this -> slipcast -> createSlipcast($params);
-
-		return response() -> json(['Success' => 'created run with id QMSC-'.$response -> id, 'Params: ' => $response -> params], 200);
+		return response() -> json(['Success' => 'Deleted run with id QMSC-'.$slipcastID], 200);
 	}
+
+	public function createSlipcast(Request $request)
+		{
+			$response = (new Slipcasting ()) -> createSlipcast();
+
+			return response() -> json(['Success' => 'created run with id QMSC-'.$response -> id,  'id'=>$response->id], 200);
+		}
 
 
 	
