@@ -20,29 +20,29 @@ class SlipcastingController extends Controller
 
     public function tolueneData($slipcast_id)
     {
-		dd('why');
         try
         {
-            $response = new Slipcasting($slipcast_id);
-            return response() -> json ($response -> tolueneData, 200);
+			$response = (new Slipcasting()) -> getcsvData($slipcast_id);
+            return response() -> json ($response, 200);
+
         } catch (\Exception $e)
         {
-            return response() -> json (['error' => "could not find toluene data", 'id' => "QMSC-".$this -> slipcasting_id], 404);
+            return response() -> json (['error' => "could not find toluene data", 'id' => "QMSC-".$slipcast_id], 404);
         }
 
     }
 
    
 
-    public function humidityData()
+    public function humidityData($slipcast_id)
     {
         try
         {
-            $response = $this -> slipcast -> getHumidityData($this -> slipcasting_id);
+            $response = (new Slipcasting()) -> getHumidityData($slipcast_id);
             return response() -> json($response, 200);
         } catch (\Exception $e)
         {
-            return response() -> json (['error' => "could not find humiditiy data", 'id' => "QMSC-".$this -> slipcasting_id], 400);
+            return response() -> json (['error' => "could not find humiditiy data", 'id' => "QMSC-".$slipcast_id], 400);
         }
     }
 

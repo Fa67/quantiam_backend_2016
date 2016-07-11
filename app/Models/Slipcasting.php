@@ -70,7 +70,7 @@ class Slipcasting extends Model
         }
         //-- Create object to store response on.
         $response = app() -> make('stdClass');
-        $response -> title = $this -> slipcastID;
+        $response -> title = 'QMSC-'.$slipcastID;
         $response -> dataset = array();
 
         $columnCnt = count($arrays[14]);
@@ -119,7 +119,7 @@ class Slipcasting extends Model
 
     function getHumidityData($slipcastID)
     {
-        $txt_file = file_get_contents(__DIR__ . "/../../storage/humidity/QMSC-".$slipcastID.".txt");
+        $txt_file = file_get_contents(__DIR__ . "/../../storage/slipcasting/humiditydata/QMSC-".$slipcastID.".txt");
 
         $rows = explode("\r\n", $txt_file);
         $response = app() -> make('stdClass');

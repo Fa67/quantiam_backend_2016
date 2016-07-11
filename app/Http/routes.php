@@ -148,7 +148,7 @@ Route::get('/user/{user_id}/getSupervisors', 'RTOController@getSupervisors');
 
 Route::get('/slipcast/{id}/toluene', 'SlipcastingController@tolueneData');
 Route::get('/slip', 'SlipcastingController@slipData');
-Route::get('/slipcast/{id}/humidity', 'SlipcastingContro  ller@humidityData');
+Route::get('/slipcast/{id}/humidity', 'SlipcastingController@humidityData');
 
 Route::post('/slip/steel', 'SlipcastingController@slipData');
 
