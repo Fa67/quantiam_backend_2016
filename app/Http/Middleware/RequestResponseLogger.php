@@ -54,7 +54,7 @@ class RequestResponseLogger
             $params['params'] = json_encode($request -> all());
         }
 
-        //DB::table('api_activity_log')->insert($params);
+        DB::table('api_activity_log')->insert($params);
 
     }
 
