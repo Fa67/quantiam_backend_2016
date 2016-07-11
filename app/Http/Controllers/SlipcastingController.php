@@ -18,11 +18,12 @@ class SlipcastingController extends Controller
 {
    
 
-    public function tolueneData(Request $request)
+    public function tolueneData($slipcast_id)
     {
+		dd('why');
         try
         {
-            $response = new Slipcasting($this -> slipcasting_id);
+            $response = new Slipcasting($slipcast_id);
             return response() -> json ($response -> tolueneData, 200);
         } catch (\Exception $e)
         {
