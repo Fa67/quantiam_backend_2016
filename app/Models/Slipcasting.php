@@ -149,8 +149,8 @@ class Slipcasting extends Model
                     $tempRow = preg_split('/[\s]+/', $rows[$i]);
                     $tempObj = array();
 
-                    $tempObj[0] = $tempRow[0].' '.$tempRow[1]. ' '.$tempRow[2];
-                    $tempObj[1] = $tempRow[$k+3];
+                    $tempObj[0] = strtotime($tempRow[0].' '.$tempRow[1]. ' '.$tempRow[2]) * 1000;
+                    $tempObj[1] = (float)$tempRow[$k+3];
 
                     $response  -> dataset[$k] -> data[] = $tempObj;
 
