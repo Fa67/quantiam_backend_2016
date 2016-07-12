@@ -56,8 +56,8 @@
       <file leaf-file-name="Slipcasting.php" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/app/Models/Slipcasting.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="185">
-              <caret line="94" column="52" selection-start-line="94" selection-start-column="52" selection-end-line="94" selection-end-column="52" />
+            <state relative-caret-position="522">
+              <caret line="144" column="51" selection-start-line="144" selection-start-column="51" selection-end-line="144" selection-end-column="51" />
               <folding>
                 <element signature="e#30#69#0#PHP" expanded="true" />
               </folding>
@@ -383,12 +383,12 @@
       <workItem from="1467230122852" duration="6126000" />
       <workItem from="1467295469163" duration="8614000" />
       <workItem from="1468266191001" duration="5703000" />
-      <workItem from="1468333228749" duration="5841000" />
+      <workItem from="1468333228749" duration="6041000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="107419000" />
+    <option name="totallyTimeSpent" value="107619000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="1912" y="-8" width="1936" height="1096" extended-state="6" />
@@ -889,8 +889,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/app/Models/Slipcasting.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="185">
-          <caret line="94" column="52" selection-start-line="94" selection-start-column="52" selection-end-line="94" selection-end-column="52" />
+        <state relative-caret-position="522">
+          <caret line="144" column="51" selection-start-line="144" selection-start-column="51" selection-end-line="144" selection-end-column="51" />
           <folding>
             <element signature="e#30#69#0#PHP" expanded="true" />
           </folding>
