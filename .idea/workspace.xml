@@ -57,7 +57,7 @@
       <file leaf-file-name="Slipcasting.php" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/app/Models/Slipcasting.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="646">
+            <state relative-caret-position="68">
               <caret line="98" column="31" selection-start-line="98" selection-start-column="31" selection-end-line="98" selection-end-column="31" />
               <folding>
                 <element signature="e#30#69#0#PHP" expanded="true" />
@@ -384,12 +384,12 @@
       <workItem from="1467230122852" duration="6126000" />
       <workItem from="1467295469163" duration="8614000" />
       <workItem from="1468266191001" duration="5703000" />
-      <workItem from="1468333228749" duration="4779000" />
+      <workItem from="1468333228749" duration="4908000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="106357000" />
+    <option name="totallyTimeSpent" value="106486000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="1912" y="-8" width="1936" height="1096" extended-state="6" />
@@ -890,7 +890,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/app/Models/Slipcasting.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="646">
+        <state relative-caret-position="68">
           <caret line="98" column="31" selection-start-line="98" selection-start-column="31" selection-end-line="98" selection-end-column="31" />
           <folding>
             <element signature="e#30#69#0#PHP" expanded="true" />
