@@ -93,10 +93,10 @@ class Slipcasting extends Model
         {
             if (count($arrays[$i]) > 3) {
                 for ($k = 0; $k < $seriesCnt; $k++) {
-                    $tempObj = app()->make('stdClass');
+                    $tempObj = array();
 
-                    $tempObj->x = $arrays[$i][1] . " " . $arrays[$i][2];
-                    $tempObj->y = $arrays[$i][3 + $k];
+                    $tempObj[0] = $arrays[$i][1] . " " . $arrays[$i][2];
+                    $tempObj[1] = $arrays[$i][3 + $k];
 
                     $response->dataset[$k]->data[] = $tempObj;
                 }
