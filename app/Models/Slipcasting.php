@@ -89,10 +89,10 @@ class Slipcasting extends Model
 
         }
 
-        for ($i = 15; $i < count($arrays); $i++)
+        for ($i = 15; $i < count($arrays); $i += 10)
         {
             if (count($arrays[$i]) > 3) {
-                for ($k = 0; $k < $seriesCnt; $k += 10) {
+                for ($k = 0; $k < $seriesCnt; $k++) {
                     $tempObj = array();
 
                     $tempObj[0] = strtotime($arrays[$i][1] . " " . $arrays[$i][2])*1000;
