@@ -20,11 +20,6 @@ function get_hashed_images ($hash)
 		
 		{
 		
-				if(!$hash)
-				{
-				$return_array['error'] = 'There are missing mandatory arguments.'; 
-				goto end;
-				}	
 				
 				
 				$dir = 	$this->path.$hash;
