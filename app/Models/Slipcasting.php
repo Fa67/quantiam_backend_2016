@@ -147,10 +147,10 @@ class Slipcasting extends Model
                 for ($k = 0; $k < 3; $k++)
                 {
                     $tempRow = preg_split('/[\s]+/', $rows[$i]);
-                    $tempObj = app() -> make('stdClass');
+                    $tempObj = array();
 
-                    $tempObj -> x = $tempRow[0].' '.$tempRow[1]. ' '.$tempRow[2];
-                    $tempObj -> y = $tempRow[$k+3];
+                    $tempObj[0] = $tempRow[0].' '.$tempRow[1]. ' '.$tempRow[2];
+                    $tempObj[1] = $tempRow[$k+3];
 
                     $response  -> dataset[$k] -> data[] = $tempObj;
 
