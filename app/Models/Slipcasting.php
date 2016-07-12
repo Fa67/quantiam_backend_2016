@@ -96,7 +96,7 @@ class Slipcasting extends Model
                     $tempObj = array();
 
                     $tempObj[0] = $arrays[$i][1] . " " . $arrays[$i][2];
-                    $tempObj[1] = $arrays[$i][3 + $k];
+                    $tempObj[1] = (float) $arrays[$i][3 + $k];
 
                     $response->dataset[$k]->data[] = $tempObj;
                 }
