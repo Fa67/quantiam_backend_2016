@@ -8,7 +8,7 @@ use DB;
 use Closure;
 
 // Logs after request is fulfilled.
-class RequestResponseLogger 
+class RequestResponseLogger
 {
     /**
      * Handle an incoming request.
@@ -40,6 +40,7 @@ class RequestResponseLogger
                 $params["userID"] = $request -> user -> employeeid;
             } catch (\Exception $e)
             {
+                dd('shit broke yo');
             }
 
             
@@ -53,7 +54,7 @@ class RequestResponseLogger
         {
             $params['params'] = json_encode($request -> all());
         }
-
+        dd('working');
         DB::table('api_activity_log')->insert($params);
 
     }
