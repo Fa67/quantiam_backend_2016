@@ -33,7 +33,7 @@ class RequestResponseLogger
                 "requestURL" => $request -> fullUrl(),
                 );
 
-        // Check to see if method contr
+        // Check to see if` method contr
 
         if ($request -> user)
         {
@@ -41,7 +41,6 @@ class RequestResponseLogger
                 $params["userID"] = $request -> user -> employeeid;
             } catch (\Exception $e)
             {
-                dd('shit broke yo');
             }
 
             
@@ -55,7 +54,6 @@ class RequestResponseLogger
         {
             $params['params'] = json_encode($request -> all());
         }
-        dd('working');
         DB::table('api_activity_log')->insert($params);
 
     }
