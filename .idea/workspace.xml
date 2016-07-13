@@ -1,9 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="fa54337c-c1e0-412e-87a6-4b33a51ef842" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/Models/Slipcasting.php" afterPath="$PROJECT_DIR$/app/Models/Slipcasting.php" />
-    </list>
+    <list default="true" id="fa54337c-c1e0-412e-87a6-4b33a51ef842" name="Default" comment="" />
     <ignored path="quantiam_api.iws" />
     <ignored path=".idea/workspace.xml" />
     <ignored path=".idea/dataSources.local.xml" />
@@ -56,8 +54,8 @@
       <file leaf-file-name="Slipcasting.php" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/app/Models/Slipcasting.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="624">
-              <caret line="117" column="0" selection-start-line="117" selection-start-column="0" selection-end-line="117" selection-end-column="0" />
+            <state relative-caret-position="556">
+              <caret line="113" column="4" selection-start-line="113" selection-start-column="4" selection-end-line="113" selection-end-column="4" />
               <folding>
                 <element signature="e#30#69#0#PHP" expanded="true" />
               </folding>
@@ -383,12 +381,12 @@
       <workItem from="1467230122852" duration="6126000" />
       <workItem from="1467295469163" duration="8614000" />
       <workItem from="1468266191001" duration="5703000" />
-      <workItem from="1468333228749" duration="6578000" />
+      <workItem from="1468333228749" duration="6621000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="108156000" />
+    <option name="totallyTimeSpent" value="108199000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="1912" y="-8" width="1936" height="1096" extended-state="6" />
@@ -889,8 +887,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/app/Models/Slipcasting.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="624">
-          <caret line="117" column="0" selection-start-line="117" selection-start-column="0" selection-end-line="117" selection-end-column="0" />
+        <state relative-caret-position="556">
+          <caret line="113" column="4" selection-start-line="113" selection-start-column="4" selection-end-line="113" selection-end-column="4" />
           <folding>
             <element signature="e#30#69#0#PHP" expanded="true" />
           </folding>
