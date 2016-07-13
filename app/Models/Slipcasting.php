@@ -188,6 +188,8 @@ class Slipcasting extends Model
 		foreach($query as $obj)
 		{
 			$obj->datamatrix =  url('/').DNS2D::getBarcodePNGPath("QMIS-".$obj->inventory_id, "DATAMATRIX",8,8);
+			$obj->identifier =  "QMIS-".$obj->inventory_id;
+			$obj->container_weights = $this->getSteelContainerWeight($obj->inventory_id);
 		}
 
 		return $query;
@@ -301,6 +303,55 @@ class Slipcasting extends Model
 	return;
 	
 	
+	}
+	
+	function getSteelContainerWeight($inventoryID)
+	{
+	
+	
+		$query = DB::table('manu_slipcasting_steel_container_weights')
+			->where('inventory_id', '=', $inventoryID)
+			->get();
+	
+			return $query;
+	}
+	
+	
+	function editSteelContainerWeight($slipcast_id, $inventoryID, $containerID, $input)
+	{
+	
+			$query = DB::table('manu_slipcasting_steel_container_weights')
+			->where('container_id', '=', $containerID)
+			->where('inventory_id', '=', $inventoryID)
+			->get();
+			
+			if(count($query) > 0)
+			{
+			// update
+			
+			$query = DB::table('manu_slipcasting_steel_container_weights')
+			->where('container_id', '=', $containerID)
+			->where('inventory_id', '=', $inventoryID)
+			->update($input);
+			
+			}
+			else
+			{
+			$input['inventory_id'] = $inventoryID;
+			$input['container_id'] = $containerID;
+			
+			$query = DB::table('manu_slipcasting_steel_container_weights')
+			->insertGetID($input);
+			}
+			
+		$query = DB::table('manu_slipcasting_steel_container_weights')
+			->where('container_id', '=', $containerID)
+			->where('inventory_id', '=', $inventoryID)
+			->first();
+			
+			
+	
+		return $query;
 	}
 
 }

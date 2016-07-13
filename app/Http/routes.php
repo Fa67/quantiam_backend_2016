@@ -98,6 +98,10 @@ Route::group(['middleware' => 'authuser'], function()
 
 	//Slip Recipe 
 	Route::get('slip/recipe/{id}','SlipController@getSlipRecipe');
+	
+	// Slip Viscosity
+	
+	Route::get('slip/{id}/viscosity', 'SlipViscosityController@getSlipViscosity');
 
 	//Slipcasting
 	Route::post('slipcast', 'SlipcastingController@createSlipcast');
@@ -109,6 +113,9 @@ Route::group(['middleware' => 'authuser'], function()
 	Route::post('slipcast/{slipcast_id}/steel/{inventory_id}', 'SlipcastingController@addSteel');
 	Route::put('slipcast/{slipcast_id}/steel/{steel_id}', 'SlipcastingController@editSteel');
 	Route::delete('slipcast/{slipcast_id}/steel/{steel_id}', 'SlipcastingController@deleteSteel');
+	
+	//Slipcasting Steel Container Weight
+	Route::put('slipcast/{slipcast_id}/steel/{steel_id}/container/{container_id}', 'SlipcastingController@editSlipcastSteelContainerWeight');
 
 	// Slipcasting Operator
 	Route::post('slipcast/{slipcast_id}/operator/{operator_id}', 'SlipcastingController@addOperator');

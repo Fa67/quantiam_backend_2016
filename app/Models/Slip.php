@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use DB; 
 use DNS2D;
 use App\models\SlipRecipe;
+use App\models\SlipViscosity;
 
 class Slip extends Model
 {
@@ -32,6 +33,7 @@ class Slip extends Model
 			$temp->recipe = new SlipRecipe($temp->slip_recipe_id);
 			$temp->measured =  $this->getSlipMeasured($slipID);
 			$temp->datamatrix =  url('/').DNS2D::getBarcodePNGPath("QMSB-".$slipID, "DATAMATRIX",8,8);
+			$temp->viscosity =  (new SlipViscosity()) ->getSlipViscosity($slipID);;
 			
 				foreach($temp as $key => $value)
 				{

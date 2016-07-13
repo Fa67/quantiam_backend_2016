@@ -296,4 +296,13 @@ class SlipcastingController extends Controller
 
 		return response() -> json($query, 200);
 	}
+	
+	function editSlipcastSteelContainerWeight (Request $request, $slipcastID, $steelID, $containerID)
+	{
+		$input = $request->all();
+	
+		$response = (new Slipcasting ()) -> editSteelContainerWeight($slipcastID, $steelID,$containerID, $input);
+
+		return response() -> json($response, 200);
+	}
 }
