@@ -19,4 +19,26 @@ class SlipViscosityController extends Controller
 			return response() -> json($response, 200);
 	 
 	 }
+	 
+	 function editSlipViscosity (Request $request)
+	 {
+		$input = $request->all();
+		$response = (new SlipViscosity())->updateSlipViscosity($input);
+		
+		return response() -> json($response, 200);
+	
+	 }
+
+	 function createSlipViscosity (Request $request, $slipID)
+	 {
+		
+		$response = (new SlipViscosity())->createSlipViscosity($slipID);
+		
+		return response() -> json($response, 200);
+	
+	 }
+
+	
+	 
+	 
 }

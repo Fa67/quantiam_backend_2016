@@ -102,6 +102,10 @@ Route::group(['middleware' => 'authuser'], function()
 	// Slip Viscosity
 	
 	Route::get('slip/{id}/viscosity', 'SlipViscosityController@getSlipViscosity');
+	Route::put('slip/{id}/viscosity', 'SlipViscosityController@editSlipViscosity');
+	Route::post('slip/{id}/viscosity', 'SlipViscosityController@createSlipViscosity');
+	
+	
 
 	//Slipcasting
 	Route::post('slipcast', 'SlipcastingController@createSlipcast');
