@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use DirectoryIterator;
+
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
@@ -16,47 +18,39 @@ class DropzoneController extends Controller
 	
 	}
 
+	function deleteImage($hash,$filename)
+	{
+	
+	unlink($this->path.$hash.'/'.$filename);
+	unlink($this->path.$hash.'/thumb/'.$filename);
+	return response() -> json(['success'=>'Deleted '.$filename.''], 200);
 	
 	
-function get_hashed_images ($hash)
+	}
+	
+function getImages ($hash)
 		
 		{
-		
-				
-				
+
 				$dir = 	$this->path.$hash;
-				$webpath = url('/').$this->path.$hash;
+				$webpath = url('/').'/'.$this->path.$hash.'/';
+				
+				$filelist = scandir($dir);
+				foreach ($filelist as $key => $link) {
+					if(!is_dir($dir.$link) && $link != 'thumb'){
 					
-				$files = scandir($dir);
-										
-				
-				foreach($files as $file_name)
-				{
-				
-				
-					if(!is_dir($file_name))
-					{
+						$tempObj['url'] = $webpath.$link;
+						$tempObj['thumbUrl'] = $webpath.'thumb/'.$link;
+						$tempObj['filename'] = $link;
 						
-					$key = preg_replace('/\\.[^.\\s]{3,4}$/', '', $file_name);
-				
-					$image_size = getimagesize($dir.'/'.$file_name);
-					
-						if( $image_size['mime'])
-						{
-						$return_array[$key]['web_path'] =  $webpath.'/'.$file_name;
-						$return_array[$key]['file_name'] =  $file_name;
-						$return_array[$key]['width'] =  $image_size['0'];
-						$return_array[$key]['height'] =  $image_size['1'];
-						$return_array[$key]['mime'] =  $image_size['mime'];
-						}
+						//dd($link);
+						
+						$return[] = $tempObj;
+						
 					}
-					
-				}
-				
-			
-						
-		
-				return $return_array;
+
+					}
+					return response() -> json($return, 200);
 			
 			
 		}
@@ -105,9 +99,9 @@ function get_hashed_images ($hash)
 	
 private function makeThumbnails($updir, $img, $id)
 {
-    $thumbnail_width = 100;
-    $thumbnail_height = 100;
-    $thumb_beforeword = "thumb_";
+    $thumbnail_width = 50;
+    $thumbnail_height = 50;
+   // $thumb_beforeword = "thumb_";
     $arr_image_details = getimagesize("$updir" . $id . '' . "$img"); // pass id to thumb name
     $original_width = $arr_image_details[0];
     $original_height = $arr_image_details[1];
@@ -136,7 +130,12 @@ private function makeThumbnails($updir, $img, $id)
         $old_image = $imgcreatefrom("$updir" . $id . '' . "$img");
         $new_image = imagecreatetruecolor($thumbnail_width, $thumbnail_height);
         imagecopyresized($new_image, $old_image, $dest_x, $dest_y, 0, 0, $new_width, $new_height, $original_width, $original_height);
-        $imgt($new_image, "$updir" . $id . '' . "$thumb_beforeword" . "$img");
+		
+		if (!file_exists("$updir" . $id . '' . "/thumb/")) {
+			mkdir("$updir" . $id . '' . "/thumb/", 0777, true);
+		}
+				
+        $imgt($new_image, "$updir" . $id . '' . "/thumb/" . "$img");
     }
 }
 	

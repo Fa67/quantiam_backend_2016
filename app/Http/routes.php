@@ -139,10 +139,11 @@ Route::group(['middleware' => 'authuser'], function()
 	Route::get('steel/list','SteelController@getSteelList');
 	
 	
-	//Upload Routes
+	//Dropzone Routes
 	
 	Route::post('dropzone','DropzoneController@dropzoneUpload');
-	Route::get('dropzone/{hash}','DropzoneController@dropzoneUpload');
+	Route::get('dropzone/{hash}','DropzoneController@getImages');
+	Route::delete('dropzone/{hash}/{filename}','DropzoneController@deleteImage');
 	
 });
 
