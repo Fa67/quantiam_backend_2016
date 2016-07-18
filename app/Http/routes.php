@@ -112,6 +112,9 @@ Route::group(['middleware' => 'authuser'], function()
 	Route::get('slipcast/{slipcast_id}', 'SlipcastingController@getSlipcast'); //works 7/4/2016
 	Route::put('slipcast/{slipcast_id}', 'SlipcastingController@editSlipcast');
 	Route::delete('slipcast/{slipcast_id}', 'SlipcastingController@deleteSlipcast');
+		//Task Completion
+		Route::post('slipcast/{slipcast_id}/task/{task_id}', 'SlipcastingController@postTaskCompletion');
+		Route::delete('slipcast/{slipcast_id}/task/{task_id}', 'SlipcastingController@deleteTaskCompletion');
 
 	//Slipcasting Steel
 	Route::post('slipcast/{slipcast_id}/steel/{inventory_id}', 'SlipcastingController@addSteel');
