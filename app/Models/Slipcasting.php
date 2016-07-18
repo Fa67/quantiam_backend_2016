@@ -89,7 +89,7 @@ class Slipcasting extends Model
 
         }
 
-        for ($i = 15; $i < count($arrays); $i += 10)
+        for ($i = 15; $i < count($arrays); $i += 20)
         {
             if (count($arrays[$i]) > 3) {
                 for ($k = 0; $k < $seriesCnt; $k++) {
@@ -142,7 +142,7 @@ class Slipcasting extends Model
 
         }
 
-        for($i = 6; $i < count($rows) - 1; $i += 10)
+        for($i = 6; $i < count($rows) - 1; $i += 20)
             {
                 for ($k = 0; $k < 3; $k++)
                 {
