@@ -30,7 +30,7 @@ class Slip extends Model
 	
 			
 			$temp = $this->getSlipAtrr($slipID);
-			$temp ->identifier =  "QMSC-".$slipID;
+			$temp ->identifier =  "QMSB-".$slipID;
 			$temp->recipe = new SlipRecipe($temp->slip_recipe_id);
 			$temp->measured =  $this->getSlipMeasured($slipID);
 			$temp->datamatrix =  url('/').DNS2D::getBarcodePNGPath("QMSB-".$slipID, "DATAMATRIX",8,8);
