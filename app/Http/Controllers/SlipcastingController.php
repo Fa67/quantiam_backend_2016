@@ -305,4 +305,29 @@ class SlipcastingController extends Controller
 
 		return response() -> json($response, 200);
 	}
+
+	function postTaskCompletion($slipcastid, $stepid) {
+
+	    $params = [
+	        'manu_slipcasting_id' => $slipcastid,
+            'step' => $stepid,
+            'completion' => 1
+        ];
+
+
+	    DB::table('manu_slipcasting_step_completion')->insert($params);
+
+        $response = 'Completed step ' .  $stepid .' for slipcast ' . $slipcastid;
+
+        return response() -> json($response, 200);
+    }
+
+    function deleteTaskCompletion($slipcastid, $stepid){
+
+        DB::table('manu_slipcasting_step_completion')->where('manu_slipcasting_id', '=', $slipcastid)->where('step', '=', $stepid)->delete();
+
+        $response = 'Deleted step ' . $stepid .   ' for slipcast ' . $slipcastid;
+
+        return response() -> json ($response, 200);
+    }
 }

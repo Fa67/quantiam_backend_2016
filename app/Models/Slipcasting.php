@@ -44,7 +44,15 @@ class Slipcasting extends Model
 		$this->profile = new SlipcastingProfile($this->manu_slipcasting_profile_id);
 		}
 		$this->datamatrix =  url('/').DNS2D::getBarcodePNGPath("QMSC-".$slipcastID, "DATAMATRIX",8,8);
-		
+
+        $completedTasks = $this -> getCompletedTasks($slipcastID);
+        $tempArray = array();
+
+        foreach($completedTasks as $task) {
+            $tempArray[] = $task -> step;
+        }
+
+        $this -> tasks = $tempArray;
 		
 		
 		
@@ -165,6 +173,16 @@ class Slipcasting extends Model
 
         return $response;
 
+    }
+
+    function getCompletedTasks($slipcastID)
+    {
+        $query = DB::table('manu_slipcasting_step_completion')
+            -> select('step', 'completion')
+            -> where('manu_slipcasting_id', '=', $slipcastID)
+            -> get();
+
+        return $query;
     }
 
    
