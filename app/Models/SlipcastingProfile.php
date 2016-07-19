@@ -31,6 +31,10 @@ class SlipcastingProfile extends Model
 			$this->$key = $value;
 		
 		}
+
+		$steps = DB::table('manu_slipcasting_profile_steps')->where('profile_id', '=', $slipcastProfileID)->get();
+		$this -> steps = $steps;
+
 	}
 	
 	function getSlipcastProfile ($slipcastProfileID){
