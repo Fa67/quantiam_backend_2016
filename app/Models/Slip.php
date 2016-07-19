@@ -28,8 +28,9 @@ class Slip extends Model
 	function buildSlipObj ($slipID){
 	
 	
-			$this->identifier =  "QMSC-".$slipID;
+			
 			$temp = $this->getSlipAtrr($slipID);
+			$temp ->identifier =  "QMSC-".$slipID;
 			$temp->recipe = new SlipRecipe($temp->slip_recipe_id);
 			$temp->measured =  $this->getSlipMeasured($slipID);
 			$temp->datamatrix =  url('/').DNS2D::getBarcodePNGPath("QMSB-".$slipID, "DATAMATRIX",8,8);
@@ -42,7 +43,7 @@ class Slip extends Model
 				}
 				
 			
-
+		return $temp; 
 	}
 	
 	function getSlipAtrr($slipID)
@@ -94,5 +95,15 @@ class Slip extends Model
 		return $temp;
 	
 	}
+	
+	
+	function updateSlip($params, $slipID)
+    {
+        DB::table('manu_slip')->where('slip_id', '=', $slipID)->update($params);
+		$slipObj = $this->buildSlipObj($slipID);
+		
+		return $slipObj;
+    }
+
 	
 }

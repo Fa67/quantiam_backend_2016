@@ -94,6 +94,7 @@ Route::group(['middleware' => 'authuser'], function()
 	//Slip
 	Route::get('slip/list','SlipController@getSlipList');
 	Route::get('slip/{id}','SlipController@getSlip');
+	Route::put('slip/{id}','SlipController@updateSlip');
 	
 
 	//Slip Recipe 
