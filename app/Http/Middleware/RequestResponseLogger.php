@@ -39,6 +39,7 @@ class RequestResponseLogger
 			"path" => $request ->path(),
 			"route_parameters" => json_encode($routeParams),
 			"payload" => json_encode($request -> all()),
+			"userID" => $request -> user -> employeeid
 			);
 
 			
