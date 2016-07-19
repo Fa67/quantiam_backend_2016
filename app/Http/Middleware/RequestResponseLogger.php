@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Log;
 
 use DB;
 use Closure;
+use Route;
 
 // Logs after request is fulfilled.
 class RequestResponseLogger
@@ -26,36 +27,23 @@ class RequestResponseLogger
 
     public function terminate($request)
     {
-        
+  
+       
 
-        $params = array(
-                "method" => $request -> method(),
-                "requestURL" => $request -> fullUrl(),
-                );
+		if($request -> method() != 'GET' && isset($request -> user -> employeeid) && $request->path() != 'auth')
+		{
+			$routeParams = Route::getCurrentRoute()->parameters();
+			//dd($routeParams);
+			$params = array(
+			"method" => $request -> method(),
+			"path" => $request ->path(),
+			"route_parameters" => json_encode($routeParams),
+			"payload" => json_encode($request -> all()),
+			);
 
-        // Check to see if` method contr
-
-        if ($request -> user)
-        {
-             try { 
-                $params["userID"] = $request -> user -> employeeid;
-            } catch (\Exception $e)
-            {
-            }
-
-            
-           }
-
-        if ($request -> has('pass'))
-        {
-            $params['params'] = (json_encode("Login Credentials"));
-        }
-        else
-        {
-            $params['params'] = json_encode($request -> all());
-        }
-        DB::table('api_activity_log')->insert($params);
-
+			
+			DB::table('api_activity_log')->insert($params);
+		}
     }
 
 }
