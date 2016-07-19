@@ -23,7 +23,7 @@ class CommentController extends Controller
 	//dd($request);
 	$input = $request->all();
 	
-	$validate = array('comment_path', 'comment_text'); //expected fields. 
+	$validate = array('comment_hash', 'comment_text'); //expected fields. 
 	
 	if($input){
 		foreach($validate as $key )
@@ -84,7 +84,7 @@ class CommentController extends Controller
 			$query = DB::table('comments')
 			->select('*')
 			->join('employees', 'employees.employeeid', '=', 'comments.comment_employee_id')
-			->where('comment_path', '=', $input['path'])
+			->where('comment_hash', '=', $input['comment_hash'])
 			->orderBy('comment_datetime', 'desc')
 			->get();
 
