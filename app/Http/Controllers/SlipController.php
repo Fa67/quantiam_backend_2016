@@ -39,4 +39,14 @@ class SlipController extends Controller
 		
 
 	}
+	
+	function updateSlip(Request $request, $slipID)
+	{
+	
+		$input = $request->all();
+		$response = (new Slip())->updateSlip($input,$slipID);
+		return response() -> json($response, 200);
+		
+		
+	}
 }
