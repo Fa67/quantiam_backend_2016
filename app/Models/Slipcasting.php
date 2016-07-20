@@ -371,5 +371,24 @@ class Slipcasting extends Model
 	
 		return $query;
 	}
+	
+	function getSlipcastTableList($params)
+	{
+	
+	$query = DB::table('manu_slipcasting_tables')
+		->select(['manu_slipcasting_table_id as id', 'manu_slipcasting_table_name as text']);
+
+		if(isset($params['like']))
+		{
+		
+			$query->where('manu_slipcasting_table_name','Like','%'.$params['like'].'%');
+		}
+	
+		$result = $query->get();
+		
+		return $result;
+		
+	
+	}
 
 }

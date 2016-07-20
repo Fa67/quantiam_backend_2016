@@ -72,7 +72,6 @@ class SlipcastingController extends Controller
 				->select(['manu_slipcasting.created_datetime','manu_inventory.campaign_id as campaign_id'])
 				->Leftjoin('manu_slipcasting_profile', 'manu_slipcasting.manu_slipcasting_profile_id', '=', 'manu_slipcasting_profile.manu_slipcasting_profile_id')
 				->Leftjoin('manu_slipcasting_steel', 'manu_slipcasting_steel.manu_slipcasting_id', '=', 'manu_slipcasting.manu_slipcasting_id')
-				->Leftjoin('manu_slip_recipe', 'manu_slipcasting.manu_slip_id', '=', 'manu_slip_recipe.recipe_id')
 				->Leftjoin('manu_inventory', 'manu_slipcasting_steel.inventory_id', '=', 'manu_inventory.manu_inventory_id')
 				->Leftjoin('manu_campaign', 'manu_inventory.campaign_id', '=', 'manu_campaign.campaign_id');
 
@@ -87,7 +86,8 @@ class SlipcastingController extends Controller
 				->select(['manu_slipcasting.manu_slipcasting_id', 'inventory_id', 'heat_id', 'manu_slipcasting.datetime', 'campaign_name','manu_slipcasting.manu_slipcasting_profile_id','profile_name', 'manu_slip_recipe.recipe_id', 'manu_slip_recipe.recipe_name', 'manu_campaign.campaign_id'])
 				->Leftjoin('manu_slipcasting_profile', 'manu_slipcasting.manu_slipcasting_profile_id', '=', 'manu_slipcasting_profile.manu_slipcasting_profile_id')
 				->Leftjoin('manu_slipcasting_steel', 'manu_slipcasting_steel.manu_slipcasting_id', '=', 'manu_slipcasting.manu_slipcasting_id')
-				->Leftjoin('manu_slip_recipe', 'manu_slipcasting.manu_slip_id', '=', 'manu_slip_recipe.recipe_id')
+				->Leftjoin('manu_slip', 'manu_slipcasting.manu_slip_id', '=', 'manu_slip.slip_id')
+				->Leftjoin('manu_slip_recipe', 'manu_slip_recipe.recipe_id', '=', 'manu_slip.slip_recipe_id')
 				->Leftjoin('manu_inventory', 'manu_slipcasting_steel.inventory_id', '=', 'manu_inventory.manu_inventory_id')
 				->Leftjoin('manu_campaign', 'manu_inventory.campaign_id', '=', 'manu_campaign.campaign_id')
 				->skip($input['start'])
@@ -275,13 +275,7 @@ class SlipcastingController extends Controller
 	
 		$input = $request->all();
 		
-		if(isset($input['active']))
-		{
-		$active = 1; 
-		
-		}
-
-		$query = (new SlipcastingProfile())->getSlipCastProfileList($active);
+		$query = (new SlipcastingProfile())->getSlipCastProfileList($input);
 
 		return response() -> json($query, 200);
 	}
@@ -300,11 +294,13 @@ class SlipcastingController extends Controller
 	public function getSlipcastTableList (Request $request)
 	{
 
-		$query = DB::table('manu_slipcasting_tables')
-		->select('*')
-		->get();
+		$input = $request->all();
+		
+		$query = (new Slipcasting())->getSlipcastTableList($input);
 
 		return response() -> json($query, 200);
+	
+
 	}
 	
 	function editSlipcastSteelContainerWeight (Request $request, $slipcastID, $steelID, $containerID)

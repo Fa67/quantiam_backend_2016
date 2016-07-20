@@ -50,17 +50,23 @@ class SlipcastingProfile extends Model
 	}
 	
 	
-	function getSlipCastProfileList ($active)
+	function getSlipCastProfileList ($params)
 	{
 	
 		$query = DB::table('manu_slipcasting_profile')
-		->select('*'); // set up intial table
+		->select(['manu_slipcasting_profile_id as id', 'profile_name as text']); // set up intial table
 		
 		
 		
-		if($active)
+		if(isset($params['active']) && $params['active'] == true)
 		{
 			$query->where('active','=',1); //conditional based on variable presence.
+		}
+		
+		if(isset($params['like']))
+		{
+		
+			$query->where('profile_name','Like','%'.$params['like'].'%');
 		}
 	
 		$result = $query->get();
