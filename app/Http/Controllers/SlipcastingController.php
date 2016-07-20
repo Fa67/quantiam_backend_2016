@@ -286,6 +286,16 @@ class SlipcastingController extends Controller
 		return response() -> json($query, 200);
 	}
 	
+	function getSlipcastProfile($slipcastProfileID)
+	{
+	
+		$query = (new SlipcastingProfile($slipcastProfileID));
+
+		return response() -> json($query, 200);
+	
+	
+	}
+	
 	
 	public function getSlipcastTableList (Request $request)
 	{
