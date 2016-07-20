@@ -76,7 +76,7 @@ class Slip extends Model
 				
 				if(isset($params['like']))
 				{
-				$query->where('slip_id','Like',$params['like'].'%');
+					$query->where('slip_id','Like',$params['like'].'%');
 			
 				}
 				
@@ -84,6 +84,20 @@ class Slip extends Model
 				->take(10)
 				->orderBy('slip_id','desc')
 				->get();
+				
+				
+				
+				if(isset($params['guarantee']))
+				{
+					$guarantee = DB::table('manu_slip')
+					->select(['slip_id'])
+					->where('slip_id','=',$params['guarantee'])
+					->first();
+					$query[] = $guarantee;
+				}
+				
+				
+				
 			
 		$temp = array();
 		foreach($query as $obj)

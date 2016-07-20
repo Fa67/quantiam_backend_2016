@@ -51,6 +51,12 @@ Route::group(['middleware' => 'authuser'], function()
 	Route::get('/user/{user_id}', 'userController@specificUser');
 
 	
+	
+	// Campaign
+	
+	Route::get('campaign/list','CampaignController@getCampaignList');
+	
+	
 	//Timesheet Controller
 	Route::get('/u/rtobank/', 'TimesheetController@rto_allotment');
 	Route::post('/rto/existingabsences/', 'TimesheetController@rto_existing_absences');
@@ -91,6 +97,13 @@ Route::group(['middleware' => 'authuser'], function()
 	Route::delete('group/{groupID}/user/{userID}', 'GroupController@removeUserFromGroup');
 	Route::post('group/{groupID}/user/{userID}', 'GroupController@addUserToGroup');
 
+	
+	//Furnace Run Routes
+	
+	Route::get('furnacerun/list/datatable', 'FurnaceController@furnaceRunDatatables');
+	
+	
+	
 	//Slip
 	Route::get('slip/list','SlipController@getSlipList');
 	Route::get('slip/{id}','SlipController@getSlip');

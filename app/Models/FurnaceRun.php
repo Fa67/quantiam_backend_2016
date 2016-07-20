@@ -92,6 +92,126 @@ function buildFurnaceRun($furnacerunID)
 	
 	
 	
+	function datatablesFurnaceRunlist($input){   //respsone specific for datatables plugin needs
+	
+			
+					
+				$returnObj = array();
+				
+					if(!isset($input['draw']))
+					{
+						$input = array(
+						'draw' => null,
+						'start' => 0,
+						'length' => 10,
+						'search' => null,
+						
+						);
+					}
+						
+					
+				//$input['campaign_id'] = 7;
+				$returnObj['draw'] = intval($input['draw']);
+					
+				$queryCount  = DB::table('manu_furnace_runs')
+				->select('*')
+				->Leftjoin('manu_furnace_runs_profile', 'manu_furnace_runs_profile.profile_id', '=', 'manu_furnace_runs.furnace_profile_id')
+				->Leftjoin('manu_furnace_runs_steel', 'manu_furnace_runs_steel.furnace_run_id', '=', 'manu_furnace_runs.furnace_run_id')
+				->Leftjoin('manu_furnace', 'manu_furnace_runs.furnace_id','=','manu_furnace.furnace_id')
+				->Leftjoin ('manu_furnace_runs_type','manu_furnace_runs.furnace_run_type_id','=','manu_furnace_runs_type.furnace_run_type_id')
+				
+				->Leftjoin('manu_inventory', 'manu_furnace_runs_steel.inventory_id', '=', 'manu_inventory.manu_inventory_id')
+				->Leftjoin('manu_campaign', 'manu_inventory.campaign_id', '=', 'manu_campaign.campaign_id')
+				->groupBy('manu_furnace_runs.furnace_run_id');
+
+				
+				
+				// What can we search or filter by?
+				$SearchableConditionals = array('furnace_run_name');
+				$FilterableConditionals = array(
+				'campaign_id' => 'manu_campaign.campaign_id',
+				'furnace_id' => 'manu_furnace.furnace_id',
+				'furnace_profile_id' => 'furnace_profile_id',
+				'furnace_run_type_id' => 'furnace_run_type_id',
+				);
+			
+						
+				$query  = DB::table('manu_furnace_runs')
+				->select(['manu_furnace_runs_type.furnace_run_type_name', 'manu_campaign.campaign_name', 'manu_furnace_runs.created_date', 'manu_furnace_runs.furnace_run_name', 'manu_furnace_runs_profile.profile_name',
+				'manu_furnace_runs.furnace_run_id'])
+				//->distinct('furnace_run_id')
+				->Leftjoin('manu_furnace_runs_profile', 'manu_furnace_runs_profile.profile_id', '=', 'manu_furnace_runs.furnace_profile_id')
+				->Leftjoin('manu_furnace_runs_steel', 'manu_furnace_runs_steel.furnace_run_id', '=', 'manu_furnace_runs.furnace_run_id')
+				->Leftjoin('manu_furnace', 'manu_furnace_runs.furnace_id','=','manu_furnace.furnace_id')
+				->Leftjoin ('manu_furnace_runs_type','manu_furnace_runs.furnace_run_type_id','=','manu_furnace_runs_type.furnace_run_type_id')
+				
+				->Leftjoin('manu_inventory', 'manu_furnace_runs_steel.inventory_id', '=', 'manu_inventory.manu_inventory_id')
+				->Leftjoin('manu_campaign', 'manu_inventory.campaign_id', '=', 'manu_campaign.campaign_id')
+				->skip($input['start'])
+				->take($input['length'])
+				->groupBy('manu_furnace_runs.furnace_run_id')
+				->orderBy('created_date','desc');
+				
+				
+					
+				
+			
+					 if($input['search']['value'])
+							{
+								foreach($SearchableConditionals as $key)
+								{
+									
+								
+									$query->orWhere($key,'Like','%'.$input['search']['value'].'%');
+									$queryCount->orWhere($key,'Like','%'.$input['search']['value'].'%');
+									
+								}
+								
+								
+							}
+
+			
+					foreach($FilterableConditionals as $key =>$value)
+							{
+								if(isset($input[$key]) && strlen($input[$key]) > 0)
+								{
+									
+										$query->Where($FilterableConditionals[$key],'=',''.$input[$key].'');
+										$queryCount->Where($FilterableConditionals[$key],'=',''.$input[$key].'');
+									
+								}
+								
+							} 
+							
+							
+			
+				
+			
+				
+				$query = $query ->get();
+				$queryCount = $queryCount ->get();
+				$queryCount = count($queryCount);
+				$resultCnt = count($query);
+			
+					
+				$returnObj['recordsTotal'] = $queryCount;
+				$returnObj['recordsFiltered'] = $queryCount;
+			
+				// add the datamatixstuff
+				foreach($query as $obj)
+				{
+					$obj->datamatrix = url('/').DNS2D::getBarcodePNGPath("QMFR-".$obj->furnace_run_id, "DATAMATRIX",8,8);
+				}				
+					
+				
+				$returnObj['aoData'] = $query; 
+				
+		
+				return $returnObj;
+	
+	
+	}
+	
 	
 	
 	

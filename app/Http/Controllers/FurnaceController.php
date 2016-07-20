@@ -55,5 +55,14 @@ class FurnaceController extends Controller
 		$profile = (new FurnaceRun()) -> getfurnaceprofile($furnacerunID);
 		return response() -> json($profile, 200);
 	} 
+	
+	
+	function furnaceRunDatatables (Request $request)
+	{
+		$params = $request->all();
+		$response = (new FurnaceRun())->datatablesFurnaceRunlist($params);
+		return response() -> json($response, 200);
+	
+	}
 }
 

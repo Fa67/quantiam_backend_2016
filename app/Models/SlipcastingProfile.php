@@ -68,8 +68,13 @@ class SlipcastingProfile extends Model
 		
 			$query->where('profile_name','Like','%'.$params['like'].'%');
 		}
+		
+			
 	
-		$result = $query->get();
+		$result = $query
+		->take(10)
+		->orderBy('manu_slipcasting_profile_id','desc')
+		->get();
 		
 		return $result;
 		
