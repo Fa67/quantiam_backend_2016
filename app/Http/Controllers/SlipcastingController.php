@@ -276,7 +276,6 @@ class SlipcastingController extends Controller
 		$input = $request->all();
 		
 		$query = (new SlipcastingProfile())->getSlipCastProfileList($input);
-        dd($query);
 
 		return response() -> json($query, 200);
 	}

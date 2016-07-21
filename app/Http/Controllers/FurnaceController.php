@@ -16,7 +16,7 @@ class FurnaceController extends Controller
    
    function buildFurnaceRun($furnacerunID)
 	{
-		$fullobject = (new FurnaceRun($furnacerunID));
+		$fullobject = (new FurnaceRun($furnacerunID));d
 		return response() -> json($fullobject, 200);
 	} 
    
