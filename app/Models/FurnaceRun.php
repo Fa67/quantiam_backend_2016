@@ -131,8 +131,8 @@ function buildFurnaceRun($furnacerunID)
 				$FilterableConditionals = array(
 				'campaign_id' => 'manu_campaign.campaign_id',
 				'furnace_id' => 'manu_furnace.furnace_id',
-				'furnace_profile_id' => 'furnace_profile_id',
-				'furnace_run_type_id' => 'furnace_run_type_id',
+				'furnace_profile_id' => 'manu_furnace_runs.furnace_profile_id',
+				'furnace_run_type_id' => 'manu_furnace_runs.furnace_run_type_id',
 				);
 			
 						
@@ -212,7 +212,29 @@ function buildFurnaceRun($furnacerunID)
 	
 	}
 	
+	function getFurnaceRunTypeList ($params)
+	{
 	
+		$query = DB::table('manu_furnace_runs_type')
+		->select(['furnace_run_type_id as id', 'furnace_run_type_name as text']); // set up intial table
+
+	
+		if(isset($params['like']))
+		{
+		
+			$query->where('furnace_run_type_name','Like','%'.$params['like'].'%');
+		}
+		
+			
+	
+		$result = $query
+		->take(20)
+		->orderBy('furnace_run_type_id','desc')
+		->get();
+		
+		return $result;
+		
+	}
 	
 	
 	

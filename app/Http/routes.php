@@ -98,11 +98,19 @@ Route::group(['middleware' => 'authuser'], function()
 	Route::post('group/{groupID}/user/{userID}', 'GroupController@addUserToGroup');
 
 	
+	//Furnace Routes
+	
+	Route::get('furnace/list', 'FurnaceController@getFurnaceList');
+	
 	//Furnace Run Routes
 	
 	Route::get('furnacerun/list/datatable', 'FurnaceController@furnaceRunDatatables');
+	Route::get('furnacerun/type/list', 'FurnaceController@getFurnaceRunTypeList');
+
 	
+	// Furnace Run Profile Routes
 	
+	Route::get('furnacerun/profile/list', 'FurnaceController@getFurnaceProfileList');
 	
 	//Slip
 	Route::get('slip/list','SlipController@getSlipList');

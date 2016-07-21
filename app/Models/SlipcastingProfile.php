@@ -72,7 +72,7 @@ class SlipcastingProfile extends Model
 			
 	
 		$result = $query
-		->take(10)
+		->take(20)
 		->orderBy('manu_slipcasting_profile_id','desc')
 		->get();
 		

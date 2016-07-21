@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Models\FurnaceRun;
+use App\Models\FurnaceRunProfile;
+use App\Models\Furnace;
 use DB;
 
 
@@ -61,6 +63,28 @@ class FurnaceController extends Controller
 	{
 		$params = $request->all();
 		$response = (new FurnaceRun())->datatablesFurnaceRunlist($params);
+		return response() -> json($response, 200);
+	
+	}
+	function getFurnaceList(Request $request)
+	{
+		$params = $request->all();
+		$response = (new Furnace())->getFurnaceList($params);
+		return response() -> json($response, 200);
+	
+	}	
+	
+	function getFurnaceProfileList(Request $request)
+	{
+		$params = $request->all();
+		$response = (new FurnaceRunProfile())->getFurnaceProfileList($params);
+		return response() -> json($response, 200);
+	
+	}
+	function getFurnaceRunTypeList(Request $request)
+	{
+		$params = $request->all();
+		$response = (new FurnaceRun())->getFurnaceRunTypeList($params);
 		return response() -> json($response, 200);
 	
 	}

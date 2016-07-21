@@ -81,7 +81,7 @@ class Slip extends Model
 				}
 				
 				$query = $query
-				->take(10)
+				->take(20)
 				->orderBy('slip_id','desc')
 				->get();
 				
