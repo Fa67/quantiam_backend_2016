@@ -289,6 +289,13 @@ class SlipcastingController extends Controller
 	
 	
 	}
+
+	function updateSlipcastProfile(Request $request)
+    {
+        $input = $request -> all();
+
+
+    }
 	
 	
 	public function getSlipcastTableList (Request $request)
@@ -312,12 +319,13 @@ class SlipcastingController extends Controller
 		return response() -> json($response, 200);
 	}
 
-	function postTaskCompletion($slipcastid, $stepid) {
+	function postTaskCompletion(Request $request, $slipcastid, $stepid) {
 
 	    $params = [
 	        'manu_slipcasting_id' => $slipcastid,
             'step' => $stepid,
-            'completion' => 1
+            'completion' => 1,
+            'employeeID' => $request -> user -> employeeid
         ];
 
 
