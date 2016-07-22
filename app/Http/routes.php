@@ -47,8 +47,6 @@ Route::group(['middleware' => 'authuser'], function()
 
 	Route::post('/mail/send', 'MailController@send');
 
-	Route::get('/user/', 'userController@identifyUser');
-	Route::get('/user/{user_id}', 'userController@specificUser');
 
 	
 	
@@ -67,10 +65,16 @@ Route::group(['middleware' => 'authuser'], function()
 	
 	//User
 
+	
+	Route::get('/user/', 'userController@identifyUser');
 	Route::post('/user/new', 'userController@newUser');
 	Route::post('/user/move', 'userController@moveUser');
 	Route::post('/user/tree', 'userController@viewTree');
 	Route::put('/user/edit', 'userController@editUser');
+	Route::get('/user/list', 'userController@getUserList');
+	Route::get('/user/{user_id}', 'userController@specificUser');
+
+	
 	// Load/search all users
 	Route::get('/users', 'userController@getUsers');
 	Route::get('/userlistactive', 'userController@getActiveUserList');

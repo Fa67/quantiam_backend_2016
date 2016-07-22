@@ -23,8 +23,14 @@ class JWTAuth
 
         $token = $request->header('authorization');
         $token = str_replace('Bearer ', '', $token); //  Removes "Bearer " from token
+		try{
         $token = (new Parser())->parse((string) $token); // Parses from a string
-
+		}
+		catch(\Exception $e)
+		{
+			 return response() -> json(['error' => 'Malformed or missing JWT token.'], 401);
+		
+		}
         $data = new ValidationData(); // It will use the current time to validate (iat, nbf and exp)
         $data->setIssuer($_SERVER['HTTP_HOST']);
         //dd($data);

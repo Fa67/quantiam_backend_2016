@@ -10,21 +10,27 @@ use Baum\Node;
 
 class User extends Model
 {
-    function __construct($input, $hierarchy = false)
+    function __construct($input = null, $hierarchy = false)
     {
-    	$this -> employeeID	= $input;
-    	$this -> getUserData();
+	
+	
+		if($input)
+			{
+			$this -> employeeID	= $input;
+			$this -> getUserData();
 
-        if($hierarchy)
-        {
-        $this -> getSupervisors();
-        $this -> getSubordinates();
-        $this -> getGroups();
-        }
-
+			if($hierarchy)
+			{
+			$this -> getSupervisors();
+			$this -> getSubordinates();
+			$this -> getGroups();
+			}
+		}
     	return $this;
 
     }
+	
+
 
     public function  checkGroupMembership($groupID)
     {
@@ -144,4 +150,44 @@ class User extends Model
         $depth = $this -> depth;
         return $depth;
     }
+	
+	
+	function getUserList($params)
+	{
+	
+		$query = DB::table('employees')
+				->select(['employeeid','firstname','lastname']);
+				
+				
+				if(!empty($params['like']))
+				{
+					$query->where('firstname','Like',$params['like'].'%');
+			
+				}
+				
+				if(!empty($params['active']))
+				{
+					$query->whereNull('leavedate');
+			
+				}
+				
+				$query = $query
+				->take(30)
+				->orderBy('employeeid','desc')
+				->get();
+				
+	
+				
+				
+			
+		$temp = array();
+		foreach($query as $obj)
+		{
+		$temp[] = array('id' => $obj->employeeid, 'text'=>$obj->employeeid.' - '.$obj->firstname.' '.$obj->lastname);
+		
+		}
+		
+		return $temp;
+	
+	}
 }
