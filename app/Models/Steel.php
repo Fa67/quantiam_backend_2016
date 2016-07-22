@@ -17,17 +17,19 @@ class Steel extends Model
 				->select(['manu_inventory_id','heat_id','rework']);
 				
 				
-				if(isset($params['like']))
+				if(!empty($params['like']))
 				{
 		
-				$query->orWhere('manu_inventory_id','Like',$params['like'].'%');
-				$query->orWhere('heat_id','Like','%'.$params['like'].'%');
+				$query->orWhere(function($query) use ($params){
+							$query->orWhere('manu_inventory_id','Like',$params['like'].'%')
+									 ->orWhere('heat_id','Like','%'.$params['like'].'%');
+				});
 			
 				}
 				
-				if(isset($params['campaign_id']))
+				if(!empty($params['campaign_id']))
 				{
-				
+			//	dd($params['campaign_id']);
 					$query->Where('campaign_id','=',$params['campaign_id']);
 			
 				}
