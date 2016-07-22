@@ -344,4 +344,11 @@ class SlipcastingController extends Controller
 
         return response() -> json ($response, 200);
     }
+
+    function editSlipcastProfile($profile_id, $toEdit, $newvalue) {
+
+        DB::table('manu_slipcasting_profile')->where('manu_slipcasting_profile_id', '=', $profile_id)->update([$toEdit => $newvalue]);
+
+        return response() -> json ('Updated ' . $toEdit . ' => ' . $newvalue);
+    }
 }
