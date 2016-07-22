@@ -351,4 +351,11 @@ class SlipcastingController extends Controller
 
         return response() -> json ('Updated ' . $toEdit . ' => ' . $newvalue);
     }
+
+    function deleteSlipcastProfileRow($profile_id, $key)
+    {
+        Schema::table('manu_slipcasting_profile')->where('manu_slipcasting_profile_id', '=', $profile_id)->delete($key);
+
+        return response() -> json ('Deleted ' . $key .' from profile ' . $profile_id);
+    }
 }
