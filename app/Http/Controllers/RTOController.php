@@ -143,7 +143,7 @@ class RTOController extends Controller
 
 			}catch (\Exception $e)
 			{
-				return response() -> json(['error' => $e], 401);
+				return response() -> json(['error' => $e], 400);
 			}
 		}
 		else 
@@ -245,7 +245,7 @@ class RTOController extends Controller
 			return response() -> json($response, 200);
 		} else
 		{
-			return response() -> json(['error' => 'Unauthorized to approve this request'], 401);
+			return response() -> json(['error' => 'Unauthorized to approve this request'], 400);
 		}
 	}
 
@@ -262,7 +262,7 @@ class RTOController extends Controller
 		}
 		else 
 		{
-			return response() -> json(['error' => 'Unauthorized access.  This Approval belongs to another employee.'], 401);
+			return response() -> json(['error' => 'Unauthorized access.  This Approval belongs to another employee.'], 400);
 		}
 
 	}
@@ -301,7 +301,7 @@ class RTOController extends Controller
 
 			if ($request -> user -> employeeID != $approvalEmployeeID)
 			{
-				return response() -> json(["error" => "Unauthorized"], 401);
+				return response() -> json(["error" => "Unauthorized"], 400);
 			}
 
 			else
