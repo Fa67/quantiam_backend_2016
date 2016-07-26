@@ -72,9 +72,9 @@ function buildFurnaceRun($furnacerunID)
 	function getfurnaceoperator($furnacerunID,$employeeID = null)
     {   
         $query = DB::table('manu_furnace_runs_operators') 
-		-> where('furnace_run_id', '=', $furnacerunID) 
+		-> select('operator_id','firstname','lastname')
 		-> join ('employees','employees.employeeid', '=', 'manu_furnace_runs_operators.operator_id')
-		-> select('operator_id','firstname','lastname');
+		-> where('furnace_run_id', '=', $furnacerunID);
 		
 		if($employeeID)
 		{
@@ -268,7 +268,7 @@ function buildFurnaceRun($furnacerunID)
 	function editFurnaceRun($furnacerunID,$input)
 	{
 	
-		$filter = array('furnace_run_id','furnace_name','furnace_type','furnace_run_type_name','datamatrix','profile');
+		$filter = array('furnace_run_id','furnace_name','furnace_type','furnace_run_type_name','datamatrix','profile','identifier');
 	
 		
 		foreach($input as $property => $value)
