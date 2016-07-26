@@ -21,29 +21,46 @@ function buildFurnaceRun($furnacerunID)
 	{
 		
 		$temp = $this -> getfurnaceproperties ($furnacerunID);
-	
+		
+		$temp -> steel = $this -> getfurnacesteel ($furnacerunID);
+		$temp -> operators = $this -> getfurnaceoperator ($furnacerunID);
+		$temp -> profile = $this -> getfurnaceprofile($temp -> furnace_profile_id);
+		$temp -> ramp_profile = $this -> getfurnaceramp ($temp -> furnace_profile_id);
+		$temp -> datamatrix =  url('/').DNS2D::getBarcodePNGPath("QMFR-".$furnacerunID, "DATAMATRIX",8,8);
+		
 	foreach ($temp as $key=>$value)
 		{
 			$this-> $key = $value;
 		}
 		
-	$this -> steel = $this -> getfurnacesteel ($furnacerunID);
-    $this -> operators = $this -> getfurnaceoperator ($furnacerunID);
-	$this -> profile = $this -> getfurnaceprofile($this -> furnace_profile_id);
-	$this -> ramp_profile = $this -> getfurnaceramp ($this -> furnace_profile_id);
-    $this -> datamatrix =  url('/').DNS2D::getBarcodePNGPath("QMFR-".$furnacerunID, "DATAMATRIX",8,8);
-   	return;
+	
+   	return $temp;
    	
 	}  
 
 	
-	function getfurnacesteel($furnacerunID)
+	function getfurnacesteel($furnacerunID,$inventoryID = null)
     {   
-        $manu_furnace_runs_steel = DB::table('manu_furnace_runs_steel') 
+        $query = DB::table('manu_furnace_runs_steel') 
 		-> where('furnace_run_id', '=', $furnacerunID) 
-		-> select('inventory_id', 'layer_id', 'order_id') 
-		-> get();
-		return $manu_furnace_runs_steel;
+		-> select('inventory_id', 'layer_id', 'order_id','heat_id','rework','campaign_id') 
+		->join('manu_inventory','manu_furnace_runs_steel.inventory_id','=','manu_inventory.manu_inventory_id');
+	
+		
+		if($inventoryID)
+		{
+		
+		$query -> where('inventory_id','=',$inventoryID);
+		}
+		
+		$query = $query	-> get();
+		
+		foreach($query as $Obj)
+		{
+		
+			$Obj->datamatrix = url('/').DNS2D::getBarcodePNGPath("QMIS-".$Obj->inventory_id, "DATAMATRIX",8,8);
+		}
+		return $query;
     }
 
 	
@@ -237,6 +254,50 @@ function buildFurnaceRun($furnacerunID)
 	}
 	
 	
+	function editFurnaceRun($furnacerunID,$input)
+	{
+	
+		$filter = array('furnace_run_id','furnace_name','furnace_type','furnace_run_type_name','datamatrix');
+	
+		
+		foreach($input as $property => $value)
+		{
+			if(is_array($value) || in_array($property,$filter))
+			{
+				unset($input[$property]);
+			}			
+		
+		}
+		
+       $query = DB::table('manu_furnace_runs')
+		->where('furnace_run_id','=',$furnacerunID)
+		->update($input);
+	
+		$response = $this->buildFurnaceRun($furnacerunID);
+
+		return $response;
+	}
+	
+	
+   function addSteel($furnacerunID, $inventoryID)
+    {
+		
+		
+        $id = DB::table('manu_furnace_runs_steel')->insert(['inventory_id' => $inventoryID, 'furnace_run_id' => $furnacerunID]);
+
+		$steel = $this->getfurnacesteel($furnacerunID, $inventoryID);
+
+        return ($steel[0]);
+    }
+
+	
+
+    function deleteSteel($furnacerunID, $inventoryID)
+    {
+        $query = DB::table('manu_furnace_runs_steel')->where('furnace_run_id', '=', $furnacerunID)->where('inventory_id', '=', $inventoryID)->delete();
+        return $query;
+    }
+
 	
 }
 

@@ -110,6 +110,10 @@ Route::group(['middleware' => 'authuser'], function()
 	
 	Route::get('furnacerun/list/datatable', 'FurnaceController@furnaceRunDatatables');
 	Route::get('furnacerun/type/list', 'FurnaceController@getFurnaceRunTypeList');
+	Route::put('furnacerun/{id}', 'FurnaceController@editFurnaceRun');
+	Route::post('furnacerun/{furnacerunID}/steel/{inventoryID}', 'FurnaceController@addFurnaceRunSteel');
+	Route::delete('furnacerun/{furnacerunID}/steel/{inventoryID}', 'FurnaceController@deleteFurnaceRunSteel');
+	Route::put('furnacerun/{furnacerunID}/steel/{inventoryID}', 'FurnaceController@editFurnaceRunSteel');
 
 	
 	// Furnace Run Profile Routes

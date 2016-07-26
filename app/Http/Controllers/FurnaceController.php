@@ -88,5 +88,42 @@ class FurnaceController extends Controller
 		return response() -> json($response, 200);
 	
 	}
+	
+	
+
+	
+	
+	function editFurnaceRun(Request $request,$furnacerunID)
+	{
+	
+		$input = $request->all();
+		$response = (new FurnaceRun())->editFurnaceRun($furnacerunID,$input);
+		return response() -> json($response, 200);
+	
+	
+	}	
+	
+	function editFurnaceRunSteel(Request $request,$furnacerunID,$inventoryID)
+	{
+		$input = $request->all();
+		$response = (new FurnaceRun())->editFurnaceRunSteel($furnacerunID,$inventoryID,$input);
+		return response() -> json($response, 200);
+	}
+	
+	
+	function addFurnaceRunSteel (Request $request,$furnacerunID,$inventoryID)
+	{
+		$response = (new FurnaceRun())->addSteel($furnacerunID,$inventoryID);
+		return response() -> json($response, 200);
+	}
+	
+	function deleteFurnaceRunSteel (Request $request,$furnacerunID,$inventoryID)
+	{
+		$response = (new FurnaceRun())->deleteSteel($furnacerunID,$inventoryID);
+		return response() -> json($response, 200);
+	}
+	
+	
+	
 }
 
