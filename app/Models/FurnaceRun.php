@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use App\Models\Ramp;
 use DB;
 use DNS2D;
+use stdClass;
 
 class FurnaceRun extends Model
 {
@@ -19,21 +20,20 @@ class FurnaceRun extends Model
    
 function buildFurnaceRun($furnacerunID)
 	{
-		
+		$temp = new StdClass();
 		$temp = $this -> getfurnaceproperties ($furnacerunID);
-		
 		$temp -> steel = $this -> getfurnacesteel ($furnacerunID);
 		$temp -> operators = $this -> getfurnaceoperator ($furnacerunID);
 		$temp -> profile = $this -> getfurnaceprofile($temp -> furnace_profile_id);
 		$temp -> ramp_profile = $this -> getfurnaceramp ($temp -> furnace_profile_id);
 		$temp -> datamatrix =  url('/').DNS2D::getBarcodePNGPath("QMFR-".$furnacerunID, "DATAMATRIX",8,8);
 		
+		
 	foreach ($temp as $key=>$value)
 		{
 			$this-> $key = $value;
 		}
-		
-	
+
    	return $temp;
    	
 	}  
@@ -55,11 +55,15 @@ function buildFurnaceRun($furnacerunID)
 		
 		$query = $query	-> get();
 		
+		
 		foreach($query as $Obj)
 		{
 		
 			$Obj->datamatrix = url('/').DNS2D::getBarcodePNGPath("QMIS-".$Obj->inventory_id, "DATAMATRIX",8,8);
 		}
+		
+		//dd($query);
+		
 		return $query;
     }
 
@@ -85,8 +89,8 @@ function buildFurnaceRun($furnacerunID)
     {   
         $manu_furnace_runs_properties = DB::table('manu_furnace_runs') 
 		-> where('furnace_run_id', '=', $furnacerunID) 
-		-> join ('manu_furnace','manu_furnace.furnace_id', '=', 'manu_furnace_runs.furnace_id')
-		-> join ('manu_furnace_runs_type','manu_furnace_runs_type.furnace_run_type_id', '=', 'manu_furnace_runs.furnace_run_type_id')
+		-> leftjoin ('manu_furnace','manu_furnace.furnace_id', '=', 'manu_furnace_runs.furnace_id')
+		-> leftjoin ('manu_furnace_runs_type','manu_furnace_runs_type.furnace_run_type_id', '=', 'manu_furnace_runs.furnace_run_type_id')
 		-> first();
       	return $manu_furnace_runs_properties;
     }
@@ -351,6 +355,13 @@ function buildFurnaceRun($furnacerunID)
         return $query;
     }
 
+	function createFurnacerun ($creatorID)
+	{
+		$params = array('created_by'=>$creatorID);
+        $id = DB::table('manu_furnace_runs')->insertGetID($params);
+        $response = $this->buildFurnaceRun($id);
+        return $response;
+	}
 	
 }
 

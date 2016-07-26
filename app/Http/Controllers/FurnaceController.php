@@ -32,6 +32,14 @@ class FurnaceController extends Controller
 		return response() -> json($steel, 200);
 	} 
 	
+	
+	function createFurnacerun (Request $request)
+	{
+		$userID = $request->user->employeeid;
+		$response = (new FurnaceRun()) -> createFurnacerun($userID);			
+		return response() -> json($response, 200);
+	} 
+	
 	function furnaceoperatorrun($furnacerunID)
 	{
 		
