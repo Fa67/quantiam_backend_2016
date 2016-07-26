@@ -27,6 +27,7 @@ function buildFurnaceRun($furnacerunID)
 		$temp -> profile = $this -> getfurnaceprofile($temp -> furnace_profile_id);
 		$temp -> ramp_profile = $this -> getfurnaceramp ($temp -> furnace_profile_id);
 		$temp -> datamatrix =  url('/').DNS2D::getBarcodePNGPath("QMFR-".$furnacerunID, "DATAMATRIX",8,8);
+		$temp -> identifier =  "QMFR-".$furnacerunID;
 		
 		
 	foreach ($temp as $key=>$value)
