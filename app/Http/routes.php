@@ -114,11 +114,15 @@ Route::group(['middleware' => 'authuser'], function()
 	Route::post('furnacerun/{furnacerunID}/steel/{inventoryID}', 'FurnaceController@addFurnaceRunSteel');
 	Route::delete('furnacerun/{furnacerunID}/steel/{inventoryID}', 'FurnaceController@deleteFurnaceRunSteel');
 	Route::put('furnacerun/{furnacerunID}/steel/{inventoryID}', 'FurnaceController@editFurnaceRunSteel');
+	Route::post('furnacerun/{furnacerunID}/operator/{employeeID}', 'FurnaceController@addFurnaceRunOperator');
+	Route::delete('furnacerun/{furnacerunID}/operator/{employeeID}', 'FurnaceController@deleteFurnaceRunOperator');
+
 
 	
 	// Furnace Run Profile Routes
 	
 	Route::get('furnacerun/profile/list', 'FurnaceController@getFurnaceProfileList');
+	
 	
 	//Slip
 	Route::get('slip/list','SlipController@getSlipList');

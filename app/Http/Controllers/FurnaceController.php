@@ -124,6 +124,19 @@ class FurnaceController extends Controller
 	}
 	
 	
+	function addFurnaceRunOperator  (Request $request,$furnacerunID,$employeeID)
+	{
+		$response = (new FurnaceRun())->addOperator($furnacerunID,$employeeID);
+		return response() -> json($response, 200);
+	}
+	
+	function deleteFurnaceRunOperator (Request $request,$furnacerunID,$employeeID)
+	{
+		$response = (new FurnaceRun())->deleteOperator($furnacerunID,$employeeID);
+		return response() -> json($response, 200);
+	}
+	
+	
 	
 }
 

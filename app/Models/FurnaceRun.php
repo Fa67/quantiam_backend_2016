@@ -64,14 +64,20 @@ function buildFurnaceRun($furnacerunID)
     }
 
 	
-	function getfurnaceoperator($furnacerunID)
+	function getfurnaceoperator($furnacerunID,$employeeID = null)
     {   
-        $manu_furnace_runs_operator = DB::table('manu_furnace_runs_operators') 
+        $query = DB::table('manu_furnace_runs_operators') 
 		-> where('furnace_run_id', '=', $furnacerunID) 
 		-> join ('employees','employees.employeeid', '=', 'manu_furnace_runs_operators.operator_id')
-		-> select('operator_id','firstname','lastname') 
-		-> get();
-		return $manu_furnace_runs_operator;
+		-> select('operator_id','firstname','lastname');
+		
+		if($employeeID)
+		{
+		$query->where('operator_id','=',$employeeID);
+		}
+		$query = $query -> get();
+		
+		return $query;
     }
 	
 	
@@ -257,7 +263,7 @@ function buildFurnaceRun($furnacerunID)
 	function editFurnaceRun($furnacerunID,$input)
 	{
 	
-		$filter = array('furnace_run_id','furnace_name','furnace_type','furnace_run_type_name','datamatrix');
+		$filter = array('furnace_run_id','furnace_name','furnace_type','furnace_run_type_name','datamatrix','profile');
 	
 		
 		foreach($input as $property => $value)
@@ -278,6 +284,34 @@ function buildFurnaceRun($furnacerunID)
 		return $response;
 	}
 	
+	function editFurnaceRunSteel($furnacerunID,$inventoryID, $input)
+	{
+	
+		$allowed = array('layer_id','order_id');
+	
+		
+		foreach($input as $property => $value)
+		{
+			if(is_array($value) || !in_array($property,$allowed))
+			{
+				unset($input[$property]);
+			}			
+		
+		}
+		
+		if($input)
+		{
+		   $query = DB::table('manu_furnace_runs_steel')
+			->where('furnace_run_id','=',$furnacerunID)
+			->where('inventory_id','=',$inventoryID)
+			->update($input);
+		}
+		
+		$steel = $this->getfurnacesteel($furnacerunID, $inventoryID);
+
+        return ($steel[0]);
+	}
+	
 	
    function addSteel($furnacerunID, $inventoryID)
     {
@@ -295,6 +329,25 @@ function buildFurnaceRun($furnacerunID)
     function deleteSteel($furnacerunID, $inventoryID)
     {
         $query = DB::table('manu_furnace_runs_steel')->where('furnace_run_id', '=', $furnacerunID)->where('inventory_id', '=', $inventoryID)->delete();
+        return $query;
+    } 
+	
+	
+	function addOperator($furnacerunID, $employeeID)
+    {
+		
+		
+        $id = DB::table('manu_furnace_runs_operators')->insert(['operator_id' => $employeeID, 'furnace_run_id' => $furnacerunID]);
+
+		$operator = $this->getfurnaceoperator($furnacerunID, $employeeID);
+
+        return ($operator[0]);
+    }
+
+
+	function deleteOperator($furnacerunID, $employeeID)
+    {
+        $query = DB::table('manu_furnace_runs_operators')->where('furnace_run_id', '=', $furnacerunID)->where('operator_id', '=', $employeeID)->delete();
         return $query;
     }
 
