@@ -237,5 +237,4 @@ Route::get('/path/{furnacename}/{furnacerunname}','RampProfileController@setPath
 
 //Route for Image Processing
 
-Route::get('/imageprocess/{experimenttype}/{coupontype}/{pressure}/{gritsize}/{loading}','FurnaceController@imageProcessing');
-//Route::get('/imageprocess','FurnaceController@imageProcessing');
+Route::get('/imageprocess/{experimenttype}/{coupontype}/{pressure}/{gritsize}/{loading}','ImageProcessingController@imageProcessing');
