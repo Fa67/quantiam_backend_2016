@@ -13,3 +13,7 @@ web.config
 *.jpg
 *.png
 Sync*
+*.CDS
+*.CDS.xls
+*.db
+*.zip

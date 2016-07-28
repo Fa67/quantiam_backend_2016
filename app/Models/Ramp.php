@@ -18,7 +18,6 @@ class Ramp extends Model
    
 	function buidRampProfile($rampprofileID)
 	{
-		
 		$temp = $this -> getrampproperties ($rampprofileID);
 	
 	foreach ($temp as $key=>$value)
@@ -51,9 +50,5 @@ class Ramp extends Model
 		return $manu_ramp_profile_steps;
     }
 
-	
-	
-	
-	
 }
 

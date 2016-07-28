@@ -230,3 +230,12 @@ Route::get('/furnacerun/{furnacerunid}','FurnaceController@buildFurnaceRun');
 //Routes for Ramp Model
 
 Route::get('/ramp/{rampprofileid}','RampProfileController@buidRampProfile');
+
+//Routes for SearchPath Model
+
+Route::get('/path/{furnacename}/{furnacerunname}','RampProfileController@setPath');
+
+//Route for Image Processing
+
+Route::get('/imageprocess/{experimenttype}/{coupontype}/{pressure}/{gritsize}/{loading}','FurnaceController@imageProcessing');
+//Route::get('/imageprocess','FurnaceController@imageProcessing');

@@ -4,6 +4,7 @@ namespace App\models;
 
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Ramp;
+use App\Models\PathFinder;
 use DB;
 use DNS2D;
 use stdClass;
@@ -34,15 +35,26 @@ function buildFurnaceRun($furnacerunID)
 		{
 			$this-> $key = $value;
 		}
-
-   	return $temp;
+		
+	return $temp;
    	
 	}  
 
 	
-	function getfurnacesteel($furnacerunID,$inventoryID = null)
+	function getfurnaceproperties($furnacerunID)
     {   
         $query = DB::table('manu_furnace_runs_steel') 
+		-> where('furnace_run_id', '=', $furnacerunID) 
+		-> join ('manu_furnace','manu_furnace.furnace_id', '=', 'manu_furnace_runs.furnace_id')
+		-> join ('manu_furnace_runs_type','manu_furnace_runs_type.furnace_run_type_id', '=', 'manu_furnace_runs.furnace_run_type_id')
+		-> first();
+      	return $manu_furnace_runs_properties;
+    }
+	
+	
+	function getfurnacesteel($furnacerunID)
+    {   
+        $manu_furnace_runs_steel = DB::table('manu_furnace_runs_steel') 
 		-> where('furnace_run_id', '=', $furnacerunID) 
 		-> select('inventory_id', 'layer_id', 'order_id','heat_id','rework','campaign_id') 
 		->join('manu_inventory','manu_furnace_runs_steel.inventory_id','=','manu_inventory.manu_inventory_id');
@@ -86,16 +98,7 @@ function buildFurnaceRun($furnacerunID)
     }
 	
 	
-	function getfurnaceproperties($furnacerunID)
-    {   
-        $manu_furnace_runs_properties = DB::table('manu_furnace_runs') 
-		-> where('furnace_run_id', '=', $furnacerunID) 
-		-> leftjoin ('manu_furnace','manu_furnace.furnace_id', '=', 'manu_furnace_runs.furnace_id')
-		-> leftjoin ('manu_furnace_runs_type','manu_furnace_runs_type.furnace_run_type_id', '=', 'manu_furnace_runs.furnace_run_type_id')
-		-> first();
-      	return $manu_furnace_runs_properties;
-    }
-	
+    
 	
 	function getfurnaceprofile($profileID)
     {   
@@ -108,17 +111,25 @@ function buildFurnaceRun($furnacerunID)
 	
 	function getfurnaceramp($profileID)
     {   
-        	
-		$fullramp = (new Ramp($profileID));
-				
+        $fullramp = (new Ramp($profileID));
 		return $fullramp;
     }
 
 	
 	
-	
-	
-	
+	function getactualramp ($furnacenmame, $furnacerunnmame)
+	{
+		$fullactualramp = (new PathFinder($furnacenmame, $furnacerunnmame));
+		
+		
+		return /*$fullactualramp*/;
+		
+		
+		
+		
+		
+		
+	}
 	
 	function datatablesFurnaceRunlist($input){   //respsone specific for datatables plugin needs
 	
