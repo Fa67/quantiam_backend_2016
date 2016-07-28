@@ -54,7 +54,7 @@ function buildFurnaceRun($furnacerunID)
 	
 	function getfurnacesteel($furnacerunID)
     {   
-        $manu_furnace_runs_steel = DB::table('manu_furnace_runs_steel') 
+        $query = DB::table('manu_furnace_runs_steel') 
 		-> where('furnace_run_id', '=', $furnacerunID) 
 		-> select('inventory_id', 'layer_id', 'order_id','heat_id','rework','campaign_id') 
 		->join('manu_inventory','manu_furnace_runs_steel.inventory_id','=','manu_inventory.manu_inventory_id');
@@ -102,10 +102,10 @@ function buildFurnaceRun($furnacerunID)
 	
 	function getfurnaceprofile($profileID)
     {   
-        $manu_furnace_runs_profile = DB::table('manu_furnace_runs_profile') 
+        $query = DB::table('manu_furnace_runs_profile') 
 		-> where('profile_id', '=', $profileID) 
 		-> first();
-		return $manu_furnace_runs_profile;
+		return $query;
     }
 	
 	
@@ -122,7 +122,7 @@ function buildFurnaceRun($furnacerunID)
 		$fullactualramp = (new PathFinder($furnacenmame, $furnacerunnmame));
 		
 		
-		return /*$fullactualramp*/;
+		//return /*$fullactualramp*/;
 		
 		
 		
