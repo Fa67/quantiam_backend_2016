@@ -43,16 +43,16 @@ function buildFurnaceRun($furnacerunID)
 	
 	function getfurnaceproperties($furnacerunID)
     {   
-        $query = DB::table('manu_furnace_runs_steel') 
+        $query = DB::table('manu_furnace_runs') 
 		-> where('furnace_run_id', '=', $furnacerunID) 
-		-> join ('manu_furnace','manu_furnace.furnace_id', '=', 'manu_furnace_runs.furnace_id')
-		-> join ('manu_furnace_runs_type','manu_furnace_runs_type.furnace_run_type_id', '=', 'manu_furnace_runs.furnace_run_type_id')
+		-> leftjoin ('manu_furnace','manu_furnace.furnace_id', '=', 'manu_furnace_runs.furnace_id')
+		-> leftjoin ('manu_furnace_runs_type','manu_furnace_runs_type.furnace_run_type_id', '=', 'manu_furnace_runs.furnace_run_type_id')
 		-> first();
-      	return $manu_furnace_runs_properties;
+      	return $query;
     }
 	
 	
-	function getfurnacesteel($furnacerunID)
+	function getfurnacesteel($furnacerunID,$inventoryID= null)
     {   
         $query = DB::table('manu_furnace_runs_steel') 
 		-> where('furnace_run_id', '=', $furnacerunID) 
