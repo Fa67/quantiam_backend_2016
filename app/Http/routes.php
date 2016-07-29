@@ -132,6 +132,7 @@ Route::group(['middleware' => 'authuser'], function()
 	
 
 	//Slip Recipe 
+	Route::get('slip/recipe/list','SlipController@getSlipRecipeList');
 	Route::get('slip/recipe/{id}','SlipController@getSlipRecipe');
 	
 	// Slip Viscosity

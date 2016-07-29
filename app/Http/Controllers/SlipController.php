@@ -13,11 +13,20 @@ class SlipController extends Controller
 {
     //
 	
-	function getSlipList (Request $request, $like = null)
+	function getSlipList (Request $request)
 	{
 		$input = $request->all();
 	
 	   $query = (new Slip())->getSlipList($input);
+	   
+	   	return response() -> json($query, 200);
+	}
+	
+	function getSlipRecipeList (Request $request)
+	{
+		$input = $request->all();
+	
+	   $query = (new SlipRecipe())->getSlipRecipeList($input);
 	   
 	   	return response() -> json($query, 200);
 	}

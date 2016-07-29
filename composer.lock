@@ -709,16 +709,16 @@
         },
         {
             "name": "lcobucci/jwt",
-            "version": "3.1.1",
+            "version": "3.1.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/lcobucci/jwt.git",
-                "reference": "afea8e682e911a21574fd8519321b32522fa25b5"
+                "reference": "9a8db2cd42346f96993928ff6a6c22563f555ab1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/lcobucci/jwt/zipball/afea8e682e911a21574fd8519321b32522fa25b5",
-                "reference": "afea8e682e911a21574fd8519321b32522fa25b5",
+                "url": "https://api.github.com/repos/lcobucci/jwt/zipball/9a8db2cd42346f96993928ff6a6c22563f555ab1",
+                "reference": "9a8db2cd42346f96993928ff6a6c22563f555ab1",
                 "shasum": ""
             },
             "require": {
@@ -726,7 +726,7 @@
                 "php": ">=5.5"
             },
             "require-dev": {
-                "mdanter/ecc": "~0.3",
+                "mdanter/ecc": "~0.3.1",
                 "mikey179/vfsstream": "~1.5",
                 "phpmd/phpmd": "~2.2",
                 "phpunit/php-invoker": "~1.1",
@@ -763,7 +763,7 @@
                 "JWS",
                 "jwt"
             ],
-            "time": "2016-03-24 22:46:13"
+            "time": "2016-07-27 11:09:37"
         },
         {
             "name": "league/flysystem",

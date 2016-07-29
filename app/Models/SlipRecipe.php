@@ -79,7 +79,48 @@ class SlipRecipe extends Model
 	
 	}
 	
-
+function getSlipRecipeList($params)
+	{
+	
+		$query = DB::table('manu_slip_recipe')
+				->select(['recipe_id','recipe_name']);
+				
+				
+				if(isset($params['like']))
+				{
+					$query->where('recipe_id','Like',$params['like'].'%');
+			
+				}
+				
+				$query = $query
+				->take(20)
+				->orderBy('recipe_id','desc')
+				->get();
+				
+				
+				
+				if(isset($params['guarantee']))
+				{
+					$guarantee = DB::table('manu_slip_recipe')
+					->select(['recipe_id'])
+					->where('recipe_id','=',$params['guarantee'])
+					->first();
+					$query[] = $guarantee;
+				}
+				
+				
+				
+			
+		$temp = array();
+		foreach($query as $obj)
+		{
+		$temp[] = array('id' => $obj->recipe_id, 'text'=>$obj->recipe_name);
+		
+		}
+		
+		return $temp;
+	
+	}
 	
 	
 }

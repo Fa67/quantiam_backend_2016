@@ -79,11 +79,18 @@ class SlipcastingController extends Controller
 				
 				// What can we search or filter by?
 				$SearchableConditionals = array('manu_slip_id', 'qti_id','manu_slipcasting.manu_slipcasting_id','manu_slipcasting_steel.inventory_id');
-				$FilterableConditionals = array('campaign_id' => 'manu_campaign.campaign_id');
+				$FilterableConditionals = array(
+				'campaign_id' => 'manu_campaign.campaign_id',
+				'inventory_id' => 'manu_slipcasting_steel.inventory_id',
+				'profile_id' => 'manu_slipcasting.manu_slipcasting_profile_id',
+				'slip_recipe_id' => 'manu_slip_recipe.recipe_id',
+				'slip_id' => 'manu_slipcasting.manu_slip_id',
+				
+				);
 			
 						
 				$query  = DB::table('manu_slipcasting')
-				->select(['manu_slipcasting.manu_slipcasting_id', 'inventory_id', 'heat_id', 'manu_slipcasting.datetime', 'campaign_name','manu_slipcasting.manu_slipcasting_profile_id','profile_name', 'manu_slip_recipe.recipe_id', 'manu_slip_recipe.recipe_name', 'manu_campaign.campaign_id'])
+				->select(['manu_slipcasting.manu_slipcasting_id', 'inventory_id', 'heat_id', 'manu_slipcasting.datetime', 'campaign_name','manu_slipcasting.manu_slipcasting_profile_id','profile_name', 'manu_slipcasting.manu_slip_id', 'manu_slip_recipe.recipe_id', 'manu_slip_recipe.recipe_name', 'manu_campaign.campaign_id'])
 				->Leftjoin('manu_slipcasting_profile', 'manu_slipcasting.manu_slipcasting_profile_id', '=', 'manu_slipcasting_profile.manu_slipcasting_profile_id')
 				->Leftjoin('manu_slipcasting_steel', 'manu_slipcasting_steel.manu_slipcasting_id', '=', 'manu_slipcasting.manu_slipcasting_id')
 				->Leftjoin('manu_slip', 'manu_slipcasting.manu_slip_id', '=', 'manu_slip.slip_id')
@@ -134,7 +141,7 @@ class SlipcastingController extends Controller
 					$last_slipcast_id = 0;
 				//Special Filtering for slipcast needs
 				
-				$omitt = array('inventory_id', 'heat_id','recipe_id','recipe_name');
+				$omitt = array('inventory_id', 'heat_id','recipe_id',);
 				try{
 						foreach($query as $slipcast)
 						{
