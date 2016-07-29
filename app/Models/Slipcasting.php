@@ -17,8 +17,6 @@ class Slipcasting extends Model
 
     function __construct($slipcastID = null)
     {
-
-
         if($slipcastID) {
             $this->buildSlipcastObj($slipcastID,null);
         }
@@ -26,41 +24,49 @@ class Slipcasting extends Model
 
     }
 	
-	function buildSlipcastObj($slipcastID,$graphs = null)
+	function buildSlipcastObj($slipcastID,$graphs = null,$details = null)
 	{
-	
-		$this->identifier =  "QMSC-".$slipcastID;
+
 		$temp = $this->getSlipcast($slipcastID);
 		
-		foreach($temp as $key=>$value)
-		{
-			$this->$key = $value;
+	
+		if(!$details) $temp->steel = $this->getSteel($slipcastID);
+		 $temp->operators = $this->getOperators($slipcastID);
+	
 		
-		}
-		$this->steel = $this->getSteel($slipcastID);
-		$this->operators = $this->getOperators($slipcastID);
-		
-		if($this->manu_slipcasting_profile_id){
-		$this->profile = new SlipcastingProfile($this->manu_slipcasting_profile_id);
-		}
-		$this->datamatrix =  url('/').DNS2D::getBarcodePNGPath("QMSC-".$slipcastID, "DATAMATRIX",8,8);
+	
+		if($temp->manu_slipcasting_profile_id) $temp->profile = new SlipcastingProfile($temp->manu_slipcasting_profile_id);
 
-        $completedTasks = $this -> getCompletedTasks($slipcastID);
+		$temp->datamatrix =  url('/').DNS2D::getBarcodePNGPath("QMSC-".$slipcastID, "DATAMATRIX",8,8);
+		$temp->identifier =  "QMSC-".$slipcastID;
+
+		
+		$completedTasks = $this -> getCompletedTasks($slipcastID);
         $tempArray = array();
 
         foreach($completedTasks as $task) {
             $tempArray[] = $task -> step;
         }
 
-        $this -> tasks = $tempArray;
+        $temp -> tasks = $tempArray;
 		
 		
 		
-		if($graphs)
+		foreach($temp as $key=>$value)
 		{
-			$this->tolueneData = $this->getcsvData($slipcastID);
+			$this->$key = $value;
 		
 		}
+		
+		
+		
+       
+		
+		
+		if($graphs) $temp->tolueneData = $this->getcsvData($slipcastID);
+		
+		
+		return $temp;
 	
 	}
 

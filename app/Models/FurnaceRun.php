@@ -19,11 +19,11 @@ class FurnaceRun extends Model
 		}	
    }
    
-function buildFurnaceRun($furnacerunID)
+function buildFurnaceRun($furnacerunID, $details = null)
 	{
 		$temp = new StdClass();
 		$temp = $this -> getfurnaceproperties ($furnacerunID);
-		$temp -> steel = $this -> getfurnacesteel ($furnacerunID);
+		if(!$details) $temp -> steel = $this -> getfurnacesteel ($furnacerunID);
 		$temp -> operators = $this -> getfurnaceoperator ($furnacerunID);
 		$temp -> profile = $this -> getfurnaceprofile($temp -> furnace_profile_id);
 		$temp -> ramp_profile = $this -> getfurnaceramp ($temp -> furnace_profile_id);

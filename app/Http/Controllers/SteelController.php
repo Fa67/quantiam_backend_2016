@@ -21,4 +21,19 @@ class SteelController extends Controller
 	   	return response() -> json($query, 200);
 	}
 	
+	function getSteel ($inventoryID)
+	{
+		$query = (new Steel($inventoryID));
+	   	return response() -> json($query, 200);
+	
+	}
+	
+	
+	function getSteelDatatables (Request $request)
+	{
+		$params = $request->all();
+		$response = (new Steel())->datatablesSteelList($params);
+		return response() -> json($response, 200);
+	
+	}
 }

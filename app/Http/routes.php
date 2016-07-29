@@ -181,6 +181,8 @@ Route::group(['middleware' => 'authuser'], function()
 	
 	//Steel Routes
 	Route::get('steel/list','SteelController@getSteelList');
+	Route::get('steel/list/datatable','SteelController@getSteelDatatables');
+	Route::get('steel/{id}','SteelController@getSteel');
 	
 	
 	//Dropzone Routes
