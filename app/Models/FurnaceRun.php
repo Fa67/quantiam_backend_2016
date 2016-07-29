@@ -172,6 +172,7 @@ function buildFurnaceRun($furnacerunID)
 				'furnace_id' => 'manu_furnace.furnace_id',
 				'furnace_profile_id' => 'manu_furnace_runs.furnace_profile_id',
 				'furnace_run_type_id' => 'manu_furnace_runs.furnace_run_type_id',
+				'inventory_id' => 'manu_furnace_runs_steel.inventory_id',
 				);
 			
 						
