@@ -108,7 +108,7 @@ Route::group(['middleware' => 'authuser'], function()
 	
 	//Furnace Run Routes
 	
-	Route::get('furnacerun/list/datatable', 'FurnaceController@furnaceRunDatatables');
+	Route::post('furnacerun/list/datatable', 'FurnaceController@furnaceRunDatatables');
 	Route::get('furnacerun/type/list', 'FurnaceController@getFurnaceRunTypeList');
 	Route::post('furnacerun/', 'FurnaceController@createFurnaceRun');
 	Route::put('furnacerun/{id}', 'FurnaceController@editFurnaceRun');
@@ -181,7 +181,7 @@ Route::group(['middleware' => 'authuser'], function()
 	
 	//Steel Routes
 	Route::get('steel/list','SteelController@getSteelList');
-	Route::get('steel/list/datatable','SteelController@getSteelDatatables');
+	Route::post('steel/list/datatable','SteelController@getSteelDatatables');
 	Route::get('steel/{id}','SteelController@getSteel');
 	
 	
@@ -214,7 +214,7 @@ Route::post('/slip/steel', 'SlipcastingController@slipData');
 
 
 
-Route::get('slipcasting/list','SlipcastingController@slipDataList');
+Route::post('slipcasting/list','SlipcastingController@slipDataList');
 
 
 //Routes for FurnaceRun Model
