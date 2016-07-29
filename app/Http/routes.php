@@ -169,6 +169,8 @@ Route::group(['middleware' => 'authuser'], function()
 	Route::get('slipcast/profile/{id}', 'SlipcastingController@getSlipCastProfile');
         //Profile editing
         Route::put('slipcast/profile/{profile_id}/{key}/{value}', 'SlipcastingController@editSlipcastProfile');
+        Route::put('slipcast/profile/{profile_id}/steps/{step}/{value}', 'SlipcastingController@editSlipcastProfileSteps');
+        Route::post('slipcast/profile/{profile_id}/steps', 'SlipcastingController@editSlipcastProfileStepsOrder');
 	
 	//Slipcasting Table
 	Route::get('slipcast/table/list','SlipcastingController@getSlipcastTableList');

@@ -368,5 +368,49 @@ class SlipcastingController extends Controller
         return response() -> json ($response, 200);
     }
 
+    function editSlipcastProfileSteps(Request $request, $profile_id, $step, $newvalue) {
+
+
+
+        $response = (['newvalue' => $newvalue]);
+
+        DB::table('manu_slipcasting_profile_steps')->where('profile_id', '=', $profile_id)->where('step', '=', $step)->update(['tasks' => $newvalue]);
+
+        return response() -> json ($response, 200);
+    }
+
+    function editSlipcastProfileStepsOrder(Request $request, $profile_id)
+    {
+        $newsteps = $request -> all();
+
+        foreach($newsteps as $index => $row)
+        {
+            $newsteps[$index]['step'] = $index;
+        }
+
+        return $newsteps;
+
+        if ($newsteps)
+        {
+            DB::table('manu_slipcasting_profile_steps')->where('profile_id', '=', $profile_id)->delete();
+
+
+            foreach($newsteps as $row)
+            {
+
+                    DB::table('manu_slipcasting_profile_steps')->insert($row);
+
+            }
+        }
+
+        return response() -> json(['steps' => $newsteps], 200);
+
+
+
+
+
+    }
+
+
 
 }
