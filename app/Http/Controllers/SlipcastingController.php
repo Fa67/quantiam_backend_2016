@@ -388,7 +388,6 @@ class SlipcastingController extends Controller
             $newsteps[$index]['step'] = $index;
         }
 
-        return $newsteps;
 
         if ($newsteps)
         {
