@@ -371,12 +371,24 @@ class SlipcastingController extends Controller
     function editSlipcastProfileSteps(Request $request, $profile_id, $step, $newvalue) {
 
 
-
         $response = (['newvalue' => $newvalue]);
 
         DB::table('manu_slipcasting_profile_steps')->where('profile_id', '=', $profile_id)->where('step', '=', $step)->update(['tasks' => $newvalue]);
 
         return response() -> json ($response, 200);
+    }
+
+    function deleteSlipcastProfileSteps($profile_id, $step)
+    {
+        DB::table('manu_slipcasting_profile_steps')->where('profile_id', '=', $profile_id)->where('step', '=', $step)->delete();
+
+        return response() -> json ('Deleted step ' . $step, 200);
+    }
+
+    function addSlipcastProfileStep($profile_id)
+    {
+        return "working on this";
+        //DB::table('manu_slipcasting_profile_steps')->insertGetID()
     }
 
     function editSlipcastProfileStepsOrder(Request $request, $profile_id)
