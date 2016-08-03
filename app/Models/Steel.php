@@ -166,7 +166,7 @@ function datatablesSteelList($input){   //respsone specific for datatables plugi
 				
 				
 				// What can we search or filter by?
-				$SearchableConditionals = array('qti_id','heat_id','manu_inventory_id');
+				$SearchableConditionals = array('qti_id','heat_id','manu_inventory_id','root_manu_inventory_id');
 				$FilterableConditionals = array(
 				'campaign_id' => 'manu_campaign.campaign_id',
 				'furnace_id' => 'manu_furnace.furnace_id',

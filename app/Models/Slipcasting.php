@@ -329,7 +329,7 @@ class Slipcasting extends Model
 	
 	}
 	
-	function getSteelContainerWeight($inventoryID)
+	function getSteelContainerWeight($inventoryID)  
 	{
 	
 	
@@ -397,4 +397,43 @@ class Slipcasting extends Model
 	
 	}
 
+	
+	function getSlipcastList($params = null)
+	{
+	
+		$query = DB::table('manu_slipcasting')
+				->select(['manu_slipcasting_id']);
+				
+				
+				
+				$query = $query
+				->take(20)
+				->orderBy('manu_slipcasting_id','desc')
+				->get();
+				
+				
+				
+				if(isset($params['guarantee']))
+				{
+					$guarantee = DB::table('manu_slipcasting')
+					->select(['manu_slipcasting_id'])
+					->where('manu_slipcasting_id','=',$params['guarantee'])
+					->first();
+					$query[] = $guarantee;
+				}
+				
+				
+				
+			
+		$temp = array();
+		foreach($query as $obj)
+		{
+		$temp[] = array('id' => $obj->manu_slipcasting_id, 'text'=>'QMSC-'.$obj->manu_slipcasting_id);
+		
+		}
+		
+		return $temp;
+	
+	}
+	
 }
