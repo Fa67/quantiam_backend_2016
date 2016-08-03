@@ -385,10 +385,11 @@ class SlipcastingController extends Controller
         return response() -> json ('Deleted step ' . $step, 200);
     }
 
-    function addSlipcastProfileStep($profile_id)
+    function addSlipcastProfileStep($profile_id, $index)
     {
-        return "working on this";
-        //DB::table('manu_slipcasting_profile_steps')->insertGetID()
+        DB::table('manu_slipcasting_profile_steps')->insert(['profile_id' => $profile_id, 'step' => $index]);
+
+        return response() -> json('Added row', 200);
     }
 
     function editSlipcastProfileStepsOrder(Request $request, $profile_id)
