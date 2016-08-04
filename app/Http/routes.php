@@ -178,7 +178,7 @@ Route::group(['middleware' => 'authuser'], function()
 	Route::get('slipcast/table/list','SlipcastingController@getSlipcastTableList');
 	
 	//Slipcasting Analytics
-	Route::get('slipcast/analytic/slipweight/campaign/{campaign_id}','SlipcastAnalyticController@getSlipcastSlipUsedData');
+	Route::get('slipcast/controlcharts/slipweight/campaign/{campaign_id}','SlipcastAnalyticController@getSlipcastSlipUsedData');
 	
 	//Ramp Profiles
 	
