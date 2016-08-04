@@ -67,7 +67,7 @@ class RTOController extends Controller
         if($request->user->checkGroupMembership(4))
         {
 
-            $idtofetch = DB::table("employees") -> whereNotNull ('employeeid', null) -> pluck('employeeid');
+            $idstofetch = DB::table("employees") -> whereNotNull ('employeeid', null) -> pluck('employeeid');
 
         }
         else {
