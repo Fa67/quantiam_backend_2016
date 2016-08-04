@@ -68,7 +68,6 @@ class RTOController extends Controller
         {
 
             $idstofetch = DB::table("employees") -> whereNotNull ('employeeid', null) -> pluck('employeeid');
-            return $idstofetch;
 
         }
         else {
@@ -78,7 +77,6 @@ class RTOController extends Controller
                 $idstofetch[] = $obj -> employeeid;
             }
         }
-
 
         //Adapted from Tyson Boyce: slipDataList @ SlipcastingController
         $input = $request->all();
@@ -102,6 +100,7 @@ class RTOController extends Controller
 
         $queryCount = DB::table('timesheet_rto')
             ->select(['timesheet_rto.*', 'employees.firstname', 'employees.lastname'])
+            ->whereIn('timesheet_rto.employeeID', $idstofetch)
             ->Leftjoin('employees', 'timesheet_rto.employeeID', '=', 'employees.employeeid');
 
 
