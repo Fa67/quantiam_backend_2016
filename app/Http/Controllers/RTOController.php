@@ -68,6 +68,7 @@ class RTOController extends Controller
         {
 
             $idstofetch = DB::table("employees") -> whereNotNull ('employeeid', null) -> pluck('employeeid');
+            return $idstofetch;
 
         }
         else {
