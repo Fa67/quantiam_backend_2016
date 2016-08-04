@@ -47,6 +47,8 @@ Route::group(['middleware' => 'authuser'], function()
 
 	Route::post('/mail/send', 'MailController@send');
 
+    Route::post('/rto/data/list', 'RTOController@rtoDataList');
+
 
 	
 	

@@ -59,6 +59,151 @@ class RTOController extends Controller
 
 	}
 
+	public function rtoDataList(Request $request)
+    {
+        // Initialize array containing employeeID and subordinates.
+        $idstofetch = array($request->user->employeeid);
+
+        if($request->user->checkGroupMembership(4))
+        {
+
+            $idtofetch = DB::table("employees") -> whereNotNull ('employeeid', null) -> pluck('employeeid');
+
+        }
+        else {
+
+            foreach($request->user->subordinates as $obj)
+            {
+                $idstofetch[] = $obj -> employeeid;
+            }
+        }
+
+
+        //Adapted from Tyson Boyce: slipDataList @ SlipcastingController
+        $input = $request->all();
+
+        $returnObj = array();
+
+        if(!isset($input['draw']))
+        {
+            $input = array(
+                'draw' => null,
+                'start' => 0,
+                'length' => 10,
+                'search' => null,
+
+            );
+        }
+
+
+        //$input['campaign_id'] = 7;
+        $returnObj['draw'] = intval($input['draw']);
+
+        $queryCount = DB::table('timesheet_rto')
+            ->select(['timesheet_rto.*', 'employees.firstname', 'employees.lastname'])
+            ->Leftjoin('employees', 'timesheet_rto.employeeID', '=', 'employees.employeeid');
+
+
+
+        // What can we search or filter by?
+        $SearchableConditionals = array('requestID', 'created','employeeID','employees.firstname', 'employees.lastname');
+        $FilterableConditionals = array(
+            'created' => 'timesheet_rto.created',
+            'status' => 'timesheet_rto.status',
+            'firstname' => 'employees.firstname',
+            'lastname' => 'employees.lastname',
+            'employeeID' => 'timesheet_rto.employeeID',
+
+        );
+
+
+        $query  = DB::table('timesheet_rto')
+            ->select(['timesheet_rto.*', 'employees.firstname', 'employees.lastname'])
+            ->whereIn('timesheet_rto.employeeID', $idstofetch)
+            ->Leftjoin('employees', 'timesheet_rto.employeeID', '=', 'employees.employeeid')
+            ->skip($input['start'])
+            ->take($input['length']*2)
+            ->orderBy('created','desc');
+
+
+        //Search value functionality
+        if($input['search']['value'])
+        {
+            foreach($SearchableConditionals as $key)
+            {
+
+
+                $query->orWhere($key,'Like','%'.$input['search']['value'].'%');
+                $queryCount->orWhere($key,'Like','%'.$input['search']['value'].'%');
+
+            }
+
+
+        }
+
+        //custom field functionality
+        foreach($FilterableConditionals as $key =>$value)
+        {
+            if(isset($input[$key]) && strlen($input[$key]) > 0)
+            {
+
+                $query->Where($FilterableConditionals[$key],'=',''.$input[$key].'');
+                $queryCount->Where($FilterableConditionals[$key],'=',''.$input[$key].'');
+
+            }
+
+        }
+
+        //	$query->orWhere('characterName','Like','%Troyd%');
+        $queryCount = $queryCount->count();
+        $query = $query ->get();
+        $resultCnt = count($query);
+
+
+        $returnObj['recordsTotal'] = $queryCount;
+        $returnObj['recordsFiltered'] = $queryCount;
+
+
+        $omitt = array('updated');
+        $last_request_id = 0;
+        try{
+            foreach($query as $rto)
+            {
+
+                if($rto->requestID != $last_request_id)
+                {
+                    $tempArray = array();
+
+
+                    foreach($rto as $key => $value)
+                    {
+
+                        if(!in_array($key, $omitt))
+                        {
+                            $tempArray[$key] = $value;
+                        }
+
+                    }
+
+                }
+                else
+                {
+                    array_pop($tempObj);
+                }
+
+                $tempObj[] = $tempArray;
+
+                $last_request_id = $rto->requestID;
+            }
+
+
+            $returnObj['aoData'] = $tempObj;
+        }
+        catch(\Exception  $e){}
+
+        return response()->json($returnObj, 200);
+    }
+
 	public function specRTO($requestID)
 	{
 		try {

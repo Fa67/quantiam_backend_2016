@@ -337,32 +337,7 @@ class RTO extends Model
     }
 
     public function getSubRTO($idstofetch, $params)
-    { 
- /*       $status = $params -> status;
-        $employeeID = $params -> employeeID;
-        $firstDate = $params -> firstDate;
-        $lastDate = $params -> lastDate;
-        $perPage = $params -> perPage;
-        $page = $params -> page;
-
-        if ($page == null)
-        {
-            $page = 1;
-        }
-        if($firstDate == null)
-        {
-           $firstDate = Carbon::now() -> addYear(-1) -> toDateString();
-        }
-        if ($lastDate == null)
-        {
-            $lastDate = Carbon::tomorrow() -> toDateString();
-        }
-        if($perPage == null)
-        {
-            $perPage = 30;
-        }
-        
-        $result['draw'] = $page;*/
+    {
         
         $requestIDarray = DB::table('timesheet_rto')
                                 ->whereIn('employeeID', $idstofetch)
@@ -375,16 +350,7 @@ class RTO extends Model
                                                 ->whereIn('timesheet_rto.requestID', $requestIDarray)
                                                 ->orderBy('timesheet_rto.created')
                                                 ->get();
-/*
-        $result['recordsTotal'] = $tableData -> count();
 
-                                     $tableData ->whereIn('timesheet_rto.requestID', $requestIDarray)
-                                                ->where('timesheet_rto.status', 'like', '%'.$status.'%')
-                                                ->where('timesheet_rto.employeeID', 'like', '%'.$employeeID.'%')
-                                                ->whereBetween('created', [$firstDate, $lastDate]);
-        $result['recordsFiltered'] = $tableData -> count();
-        $dataArray = $tableData ->simplePaginate($perPage)->toJson();
-        $dataObj = json_decode($dataArray);*/
 
         return $tableData;
     }
