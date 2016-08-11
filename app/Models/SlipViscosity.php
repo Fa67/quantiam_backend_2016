@@ -43,6 +43,7 @@ class SlipViscosity extends Model
 	{
 	
 		$query = DB::table('manu_slip_viscosity_measure')
+		->select('*')
 		->where('viscosityID', '=', $viscosityID)
 		->get();
 		

@@ -144,7 +144,7 @@ Route::group(['middleware' => 'authuser'], function()
 	Route::post('slip/{id}/viscosity', 'SlipViscosityController@createSlipViscosity');
 	
 	
-
+Route::get('slipcast/viscosity-conversion/','SlipcastAnalyticController@convertOldViscosity');
 	//Slipcasting
 	Route::post('slipcast', 'SlipcastingController@createSlipcast');
 	Route::get('slipcast/{slipcast_id}', 'SlipcastingController@getSlipcast'); //works 7/4/2016
@@ -181,6 +181,9 @@ Route::group(['middleware' => 'authuser'], function()
 	
 	//Slipcasting Analytics
 	Route::get('slipcast/controlcharts/slipweight/campaign/{campaign_id}','SlipcastAnalyticController@getSlipcastSlipUsedData');
+	Route::get('slipcast/controlcharts/viscositycast/campaign/{campaign_id}','SlipcastAnalyticController@getSlipcastCastedViscosityData');
+	Route::get('slipcast/controlcharts/percent-solvent/campaign/{campaign_id}','SlipcastAnalyticController@getSlipcastPercentSolventData');
+	
 	
 	//Ramp Profiles
 	

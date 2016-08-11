@@ -61,6 +61,7 @@ class Slip extends Model
 	
 		$query = DB::table('manu_slip_measured')
 				->select('*')
+				->LeftJoin('manu_slip_materials','manu_slip_materials.slip_material_id','=','manu_slip_measured.slip_material_id')
 				->where('slip_id','=',$slipID)
 				->get();
 				
