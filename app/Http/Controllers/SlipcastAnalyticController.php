@@ -14,6 +14,147 @@ use DB;
 class SlipcastAnalyticController extends Controller
 {
     //
+	function getSlipcastScatterSolventPercentViscosity(Request $request, $campaign_id)
+		{
+		
+		
+			
+			$query = DB::table('manu_slipcasting_steel')
+			->select(['campaign_id','manu_slipcasting_steel.manu_slipcasting_id','manu_slipcasting.datetime','heat_id','manu_slip_id'])
+			->leftJoin('manu_inventory','manu_inventory.manu_inventory_id','=','manu_slipcasting_steel.inventory_id')
+			->leftJoin('manu_slipcasting','manu_slipcasting.manu_slipcasting_id','=','manu_slipcasting_steel.manu_slipcasting_id')
+			->where('campaign_id','=',$campaign_id)
+			->orderBy('manu_slipcasting.datetime','asc')
+			//->orderBy('manu_slipcasting_steel.inventory_id','asc')
+			->groupBy('manu_slipcasting_steel.manu_slipcasting_id')
+
+			->get();
+		
+		
+			$returnArray = array();
+			$returnArray['title'] = 'Slipcasting Analysis';
+			$returnArray['sub_title'] = 'Viscosity vs Percent Solvent';
+			$returnArray['y_name'] = 'Percent Solvent';
+			$returnArray['y_unit'] = '%';
+			$returnArray['x_name'] = 'Viscosity';
+			$returnArray['x_unit'] = 'cps';
+			
+			
+			$tempObj = array();
+			
+			foreach($query as $Obj)
+			{
+			
+			$slip = (new Slip($Obj->manu_slip_id));
+			
+			
+				//dd($slipcast);
+			
+			if($slip->viscosity)
+			{
+			
+				//	dd($slip);
+					$tempArray = array();	
+					$excludeFromAverage = 0;
+					$solvent_mass = 0;
+					$slip_mass = 0;
+					$percent_solvent = 0;
+					$comment = null;
+					
+					
+			
+					
+					$lastViscosityTestObjIndex = count($slip->viscosity)-1;
+					
+					if(isset($slip->viscosity) && isset($slip->viscosity[$lastViscosityTestObjIndex]->measurements))
+									{
+										// viscosity 
+										
+										$lastMeasurement = count($slip->viscosity[$lastViscosityTestObjIndex]->measurements) - 1;
+									
+										//toluene mass calc
+										
+										$solvent_mass = $solvent_mass + $slip->solvent_added_at_filtering; //fetech solvent added at filtering.
+										
+										foreach($slip->viscosity as $viscosityTest)
+										{
+												$solvent_mass = $solvent_mass + $viscosityTest->solvent_addition;  // fetch solvent added during tests
+										}
+										
+										foreach($slip->measured as $measuredComponent)
+										{
+											if($measuredComponent->solvent)
+											{
+												$solvent_mass = $solvent_mass + $measuredComponent->measured; //measured solvent
+											}
+											
+											if(!$measuredComponent->media)
+											{
+											$slip_mass = $slip_mass + $measuredComponent->measured;
+											}
+										}
+										
+										$percent_solvent = round(($solvent_mass / $slip_mass * 100),2);
+										
+										
+							
+										
+										$tempArray['slipcastID'] = $Obj->manu_slipcasting_id;
+										$tempArray['slipID'] = $Obj->manu_slip_id;
+										$tempArray['identifier'] = 'QMSB-'.$Obj->manu_slip_id;
+										$tempArray['x'] = $slip->viscosity[$lastViscosityTestObjIndex]->measurements[$lastMeasurement]->viscosity; //casted viscosity
+										$tempArray['y'] = $percent_solvent; // percent colvent
+										$tempArray['viscosity_slip_temp'] = $slip->viscosity[$lastViscosityTestObjIndex]->temperature; // percent colvent
+										$tempArray['slip_mass'] = $slip_mass;
+										$tempArray['solvent_mass'] = $solvent_mass;
+										$tempArray['dateTime'] = strtotime($Obj->datetime)*1000;
+										$tempArray['readableDate'] = date('D, M d, Y',strtotime($Obj->datetime));
+									
+										
+											
+			
+											 
+								
+		
+										
+										$returnArray['data'][] = $tempArray;
+									
+									
+									}					
+				
+		
+					
+					
+					}
+			}
+			$tempArray = array();
+		
+	
+			$returnArray['trend_line'] = array();
+			
+		
+			foreach($returnArray as $seriesKey => $series)
+			{
+				if(is_array($series)){
+						foreach($series as $key => $value){
+						if(!is_array($value)) $returnArray[$seriesKey][$key] = round($value,2);
+						}
+				}
+			}
+		
+		
+		
+			
+			return	$returnArray;
+		
+		
+		
+		}
+	
+	
+	
+	
+	
 	function getSlipcastPercentSolventData(Request $request, $campaign_id)
 		{
 		
