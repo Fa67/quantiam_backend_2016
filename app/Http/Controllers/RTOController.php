@@ -83,7 +83,7 @@ class RTOController extends Controller
 
         $returnObj = array();
 
-        if(!isset($input['draw']))
+           if(!isset($input['draw']))
         {
             $input = array(
                 'draw' => null,
@@ -106,7 +106,7 @@ class RTOController extends Controller
 
 
         // What can we search or filter by?
-        $SearchableConditionals = array('requestID', 'created','employeeID','employees.firstname', 'employees.lastname');
+        $SearchableConditionals = array('employees.firstname', 'employees.lastname');
         $FilterableConditionals = array(
             'created' => 'timesheet_rto.created',
             'status' => 'timesheet_rto.status',
@@ -119,11 +119,9 @@ class RTOController extends Controller
 
         $query  = DB::table('timesheet_rto')
             ->select(['timesheet_rto.*', 'employees.firstname', 'employees.lastname'])
-            ->whereIn('timesheet_rto.employeeID', $idstofetch)
             ->Leftjoin('employees', 'timesheet_rto.employeeID', '=', 'employees.employeeid')
             ->skip($input['start'])
-            ->take($input['length']*2)
-            ->orderBy('created','desc');
+            ->take($input['length']);
 
 
         //Search value functionality
@@ -140,6 +138,8 @@ class RTOController extends Controller
 
 
         }
+        $query->whereIn('timesheet_rto.employeeID', $idstofetch);
+
 
         //custom field functionality
         foreach($FilterableConditionals as $key =>$value)
@@ -156,6 +156,24 @@ class RTOController extends Controller
 
         //	$query->orWhere('characterName','Like','%Troyd%');
         $queryCount = $queryCount->count();
+
+        // Ordering for datatable.
+        if(isset($input['order']))
+        {
+            foreach($input['order'] as $index => $vals)
+            {
+                $columnName = $input['columns'][$input['order'][$index]['column']]['data'];
+                $orderDir =  $input['order'][$index]['dir'];
+                if ($columnName == 'employee-name')
+                {
+                    $query -> orderBy('employees.lastname', $orderDir);
+                }
+                else {
+                    $query -> orderBy($columnName, $orderDir);
+                }
+            }
+        }
+
         $query = $query ->get();
         $resultCnt = count($query);
 
