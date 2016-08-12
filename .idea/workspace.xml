@@ -3,8 +3,6 @@
   <component name="ChangeListManager">
     <list default="true" id="fa54337c-c1e0-412e-87a6-4b33a51ef842" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/Http/Controllers/RTOController.php" afterPath="$PROJECT_DIR$/app/Http/Controllers/RTOController.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/Http/routes.php" afterPath="$PROJECT_DIR$/app/Http/routes.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/Models/User.php" afterPath="$PROJECT_DIR$/app/Models/User.php" />
     </list>
     <ignored path="quantiam_api.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -50,8 +48,8 @@
       <file leaf-file-name="RTOController.php" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/app/Http/Controllers/RTOController.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="834">
-              <caret line="440" column="1" selection-start-line="440" selection-start-column="1" selection-end-line="440" selection-end-column="1" />
+            <state relative-caret-position="732">
+              <caret line="431" column="30" selection-start-line="431" selection-start-column="20" selection-end-line="431" selection-end-column="30" />
               <folding />
             </state>
           </provider>
@@ -383,12 +381,12 @@
       <workItem from="1470147267364" duration="10735000" />
       <workItem from="1470336979466" duration="1492000" />
       <workItem from="1470678998027" duration="3960000" />
-      <workItem from="1470925945107" duration="7947000" />
+      <workItem from="1470925945107" duration="8692000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="180731000" />
+    <option name="totallyTimeSpent" value="181476000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="1912" y="-8" width="1936" height="1096" extended-state="6" />
@@ -767,7 +765,7 @@
         <state relative-caret-position="644">
           <caret line="39" column="40" selection-start-line="39" selection-start-column="40" selection-end-line="39" selection-end-column="40" />
           <folding>
-            <element signature="e#39#74#0#PHP" expanded="true" />
+            <element signature="e#39#74#0#PHP" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -824,8 +822,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/app/Http/Controllers/RTOController.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="834">
-          <caret line="440" column="1" selection-start-line="440" selection-start-column="1" selection-end-line="440" selection-end-column="1" />
+        <state relative-caret-position="732">
+          <caret line="431" column="30" selection-start-line="431" selection-start-column="20" selection-end-line="431" selection-end-column="30" />
           <folding />
         </state>
       </provider>

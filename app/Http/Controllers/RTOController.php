@@ -429,13 +429,9 @@ class RTOController extends Controller
 // Lists for dropdown
 
 // Employees List
-    public function employeesList(Request $request)
+    public function statusList(Request $request)
     {
 
-        $input = $request->all();
-
-       // $query = (new User()->getUserList($input));
-
-   // return response()->json($query, 200);
+        $statuses = array(['approved', 'denied', 'pending']);
     }
 }
