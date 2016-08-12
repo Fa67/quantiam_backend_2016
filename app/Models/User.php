@@ -162,6 +162,7 @@ class User extends Model
 				if(!empty($params['like']))
 				{
 					$query->where('firstname','Like',$params['like'].'%');
+                    $query->orWhere('lastname', 'Like', $params['like'].'%');
 			
 				}
 				

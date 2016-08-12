@@ -49,6 +49,7 @@ Route::group(['middleware' => 'authuser'], function()
 
     Route::post('/rto/data/list', 'RTOController@rtoDataList');
 
+    // RTO LISTS
 
 	
 	
