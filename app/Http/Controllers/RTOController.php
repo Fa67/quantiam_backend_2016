@@ -170,6 +170,10 @@ class RTOController extends Controller
 
             }
         }
+        else
+        {
+            $query -> orderBy('created', 'desc');
+        }
 
 
         $query = $query ->get();
