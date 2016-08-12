@@ -18,12 +18,14 @@ class User extends Model
 			{
 			$this -> employeeID	= $input;
 			$this -> getUserData();
+			$this -> getGroups();
+			$this -> permissions = $this -> getPermissions();
 
 			if($hierarchy)
 			{
 			$this -> getSupervisors();
 			$this -> getSubordinates();
-			$this -> getGroups();
+			
 			}
 		}
     	return $this;
@@ -125,7 +127,8 @@ class User extends Model
             $this->depth = $temp->depth;
             $this->id = $temp->id;
             $this->tag = $temp->tag;
-
+			
+			
     return;
     }
 
@@ -150,6 +153,58 @@ class User extends Model
         $depth = $this -> depth;
         return $depth;
     }
+	
+	
+	function getPermissions()
+	{
+		$returnObj = array();
+	
+		
+		//get user permissions
+	
+	
+		$query = DB::table('permissions_employees')
+			->select(['permissions.permission_id','permissions.permission_name','permissions.permission_description'])
+			->leftJoin('permissions', 'permissions.permission_id','=','permissions_employees.permission_id')
+			->where('employee_id',$this -> employeeID)
+			->get();
+		
+		foreach($query as $obj)
+		{
+
+				$obj->derived_from_group = 0;
+				$returnObj[] = $obj;
+				$permObj[] = $obj->permission_id;
+			
+		}
+		
+		
+			//get permissions from groups
+		foreach($this->groups as $groupObj)
+		{
+		  $groupIDs [] = $groupObj->group_id;
+		}
+		
+		$query = DB::table('permissions_groups')
+		->select(['permissions.permission_id','permissions.permission_name','permissions.permission_description','group.group_name'])
+		->leftJoin('permissions', 'permissions.permission_id','=','permissions_groups.permission_id')
+		->leftJoin('group', 'group.group_id','=','permissions_groups.group_id')
+		->whereIn('group.group_id',$groupIDs)
+		->get();
+		
+		foreach($query as $obj)
+		{
+		
+			if(!in_array($obj->permission_id, $permObj))
+			{
+				$obj->derived_from_group = 1;
+				$returnObj[] = $obj;
+			}
+		}
+	
+		
+		return $returnObj;
+	}
 	
 	
 	function getUserList($params)

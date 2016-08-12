@@ -50,6 +50,7 @@ class Slipcasting extends Model
 
         $temp -> tasks = $tempArray;
 		
+		if(isset($temp->steel[0])) $temp -> control_limits = $this -> getSlipcastControlLimits($temp->steel[0]->campaign_id);
 		
 		
 		foreach($temp as $key=>$value)
@@ -436,4 +437,18 @@ class Slipcasting extends Model
 	
 	}
 	
+	function getSlipcastControlLimits ($campaignID)
+	{
+		$query = DB::table('process_control_limits')
+		->where('campaign_id','=',$campaignID)
+		->where('operation','=','slipcast')
+		->get();
+		
+		foreach($query as $obj)
+		{
+			$returnObj[$obj->variable] = $obj;
+		}
+		return $returnObj;
+	
+	}
 }

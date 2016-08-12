@@ -537,13 +537,7 @@ class SlipcastAnalyticController extends Controller
 				$returnArray['mrSeries']['data'][] = $tempArray;
 			
 			}
-			
-			
-	//		$xArray = remove_outliers($xArray);
-			
-		//	$mrArray = remove_outliers($mrArray);
-			
-			//dd($mrArray);
+
 			$returnArray['xSeries']['avg'] = array_sum($xArray)/count($xArray);
 			$returnArray['mrSeries']['avg'] = array_sum($mrArray)/count($mrArray);
 			$returnArray['xSeries']['LCL'] = $returnArray['xSeries']['avg'] - (2.66*$returnArray['mrSeries']['avg']);
@@ -551,6 +545,9 @@ class SlipcastAnalyticController extends Controller
 			
 			$returnArray['mrSeries']['UCL'] = (3.267 *$returnArray['mrSeries']['avg']);
 			$returnArray['mrSeries']['LCL'] =  (0*$returnArray['mrSeries']['avg']);
+			
+			
+
 			
 			foreach($returnArray as $seriesKey => $series)
 			{
@@ -561,7 +558,27 @@ class SlipcastAnalyticController extends Controller
 				}
 			}
 		
+			// put into the database
 		
+			DB::table('process_control_limits')
+			->where('operation','=','slipcast')
+			->where('variable','=','sliponsteel')
+			->where('campaign_id','=',$campaign_id)
+			->delete();
+			
+			DB::table('process_control_limits')
+			->insert([
+			'operation' => 'slipcast',
+			'variable' => 'sliponsteel',
+			'campaign_id' => $campaign_id,
+			'xUCL' => $returnArray['xSeries']['UCL'],
+			'xLCL' => $returnArray['xSeries']['LCL'],
+			'xAVG' => $returnArray['xSeries']['avg'],
+			'mrUCL' => $returnArray['mrSeries']['UCL'],
+			'mrLCL' => $returnArray['mrSeries']['LCL'],
+			'mrAVG' => $returnArray['mrSeries']['avg'],
+			
+			]);
 		
 			
 			return	$returnArray;
