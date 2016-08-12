@@ -164,15 +164,13 @@ class RTOController extends Controller
             {
                 $columnName = $input['columns'][$input['order'][$index]['column']]['data'];
                 $orderDir =  $input['order'][$index]['dir'];
-                if ($columnName == 'employee-name')
-                {
-                    $query -> orderBy('employees.lastname', $orderDir);
-                }
-                else {
-                    $query -> orderBy($columnName, $orderDir);
-                }
+
+                $query -> orderBy($columnName, $orderDir);
+
+
             }
         }
+
 
         $query = $query ->get();
         $resultCnt = count($query);

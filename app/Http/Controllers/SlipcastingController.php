@@ -98,8 +98,7 @@ class SlipcastingController extends Controller
 				->Leftjoin('manu_inventory', 'manu_slipcasting_steel.inventory_id', '=', 'manu_inventory.manu_inventory_id')
 				->Leftjoin('manu_campaign', 'manu_inventory.campaign_id', '=', 'manu_campaign.campaign_id')
 				->skip($input['start'])
-				->take($input['length']*2)
-				->orderBy('datetime','desc');
+				->take($input['length']*2);
 					
 				
 					//Search value functionality
@@ -128,7 +127,25 @@ class SlipcastingController extends Controller
 									
 								}
 								
-							} 
+							}
+
+
+        // Ordering for datatable.
+        if(isset($input['order']))
+        {
+            foreach($input['order'] as $index => $vals)
+            {
+                $columnName = $input['columns'][$input['order'][$index]['column']]['data'];
+                $orderDir =  $input['order'][$index]['dir'];
+
+                    $query -> orderBy($columnName, $orderDir);
+
+
+            }
+        }
+        else{
+            $query -> orderBy('manu_slipcasting_id', 'desc');
+        }
 				
 				//	$query->orWhere('characterName','Like','%Troyd%');
 					$queryCount = $queryCount->count();
