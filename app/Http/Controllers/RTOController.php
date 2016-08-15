@@ -318,7 +318,8 @@ class RTOController extends Controller
         $employeeID = $this->rto->getRTOdata($requestID)->employeeID;
         $rtoEmployee = (new User($employeeID));
 
-        if ($rtoEmployee->depth > $supervisorObj->depth || $supervisorObj->depth == 0) {
+
+        if ($rtoEmployee->depth > $supervisorObj->depth || (new User($supervisorObj -> employeeid))->checkPermissions(2)) {
             $response = $this->rto->postApproval($params, $supervisorObj->depth);
             $response->name = $request->user->name;
 

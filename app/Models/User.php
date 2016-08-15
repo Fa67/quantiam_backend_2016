@@ -268,7 +268,7 @@ class User extends Model
 			else
 			{
 				/// single permission
-				if($obj->permission_id == $permissionID)
+				if($obj->permission_id == $permissionIDArray)
 				{
 					return true;
 				}
