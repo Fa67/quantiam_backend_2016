@@ -60,7 +60,7 @@ class RTOController extends Controller
         // Initialize array containing employeeID and subordinates.
         $idstofetch = array($request->user->employeeid);
 
-        if ($request->user->checkGroupMembership(4)) {
+        if ($request->user->checkPermissions(3)) {
 
             $idstofetch = DB::table("employees")->whereNotNull('employeeid', null)->pluck('employeeid');
 
