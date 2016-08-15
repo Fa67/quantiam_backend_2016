@@ -246,4 +246,49 @@ class User extends Model
 		return $temp;
 	
 	}
+	
+	
+	function checkPermission($permissionIDArray) //accepts arrays or IDs
+	{
+		
+		
+        foreach($this->permissions as $obj)
+        {
+			
+			if(is_array($permissionIDArray))
+			{
+				// array of permissions
+				if(in_array($obj->permission_id,$permissionIDArray))
+				{
+					$confirmedArray[] = $obj->permission_id;
+				}
+			
+			
+			}
+			else
+			{
+				/// single permission
+				if($obj->permission_id == $permissionID)
+				{
+					return true;
+				}
+			}
+
+        }
+		
+		
+		if(is_array($permissionIDArray))
+		{
+			sort($permissionIDArray);
+			sort($confirmedArray)
+			if($permissionIDArray == $confirmedArray) return true;
+		
+		}
+		
+        return false; 
+		
+	
+		
+	}
+	
 }

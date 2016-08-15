@@ -105,6 +105,7 @@ class SlipcastAnalyticController extends Controller
 										$tempArray['x'] = $slip->viscosity[$lastViscosityTestObjIndex]->measurements[$lastMeasurement]->viscosity; //casted viscosity
 										$tempArray['y'] = $percent_solvent; // percent colvent
 										$tempArray['viscosity_slip_temp'] = $slip->viscosity[$lastViscosityTestObjIndex]->temperature; // percent colvent
+										$tempArray['z'] = $slip->viscosity[$lastViscosityTestObjIndex]->temperature; // percent colvent
 										$tempArray['slip_mass'] = $slip_mass;
 										$tempArray['solvent_mass'] = $solvent_mass;
 										$tempArray['dateTime'] = strtotime($Obj->datetime)*1000;
