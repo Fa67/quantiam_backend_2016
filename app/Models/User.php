@@ -248,7 +248,7 @@ class User extends Model
 	}
 	
 	
-	function checkPermission($permissionIDArray) //accepts arrays or IDs
+	function checkPermissions($permissionIDArray) //accepts arrays or IDs
 	{
 		
 		
