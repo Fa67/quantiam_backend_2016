@@ -280,7 +280,7 @@ class User extends Model
 		if(is_array($permissionIDArray))
 		{
 			sort($permissionIDArray);
-			sort($confirmedArray)
+			sort($confirmedArray);
 			if($permissionIDArray == $confirmedArray) return true;
 		
 		}
