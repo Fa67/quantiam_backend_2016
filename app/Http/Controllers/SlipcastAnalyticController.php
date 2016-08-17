@@ -98,7 +98,8 @@ class SlipcastAnalyticController extends Controller
 										
 										
 							
-										
+										if($percent_solvent == '14.08')
+										{
 										$tempArray['slipcastID'] = $Obj->manu_slipcasting_id;
 										$tempArray['slipID'] = $Obj->manu_slip_id;
 										$tempArray['identifier'] = 'QMSB-'.$Obj->manu_slip_id;
@@ -110,7 +111,8 @@ class SlipcastAnalyticController extends Controller
 										$tempArray['solvent_mass'] = $solvent_mass;
 										$tempArray['dateTime'] = strtotime($Obj->datetime)*1000;
 										$tempArray['readableDate'] = date('D, M d, Y',strtotime($Obj->datetime));
-									
+										$returnArray['data'][] = $tempArray;
+										}
 										
 											
 			
@@ -118,7 +120,7 @@ class SlipcastAnalyticController extends Controller
 								
 		
 										
-										$returnArray['data'][] = $tempArray;
+										
 									
 									
 									}					

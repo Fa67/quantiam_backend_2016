@@ -73,7 +73,6 @@ class RTOController extends Controller
 
         //Adapted from Tyson Boyce: slipDataList @ SlipcastingController
         $input = $request->all();
-
         $returnObj = array();
 
         if (!isset($input['draw'])) {
@@ -93,7 +92,10 @@ class RTOController extends Controller
         $queryCount = DB::table('timesheet_rto')
             ->select(['timesheet_rto.*', 'employees.firstname', 'employees.lastname'])
             ->whereIn('timesheet_rto.employeeID', $idstofetch)
-            ->Leftjoin('employees', 'timesheet_rto.employeeID', '=', 'employees.employeeid');
+            ->Leftjoin('employees', 'timesheet_rto.employeeID', '=', 'employees.employeeid')
+			->leftjoin('timesheet_rtotime','timesheet_rtotime.requestID','=','timesheet_rto.requestID')
+			->groupBy('timesheet_rto.requestID')
+			;
 
 
         // What can we search or filter by?
@@ -104,6 +106,7 @@ class RTOController extends Controller
             'firstname' => 'employees.firstname',
             'lastname' => 'employees.lastname',
             'employeeID' => 'timesheet_rto.employeeID',
+            'date' => 'timesheet_rtotime.date',
 
         );
 
@@ -111,12 +114,24 @@ class RTOController extends Controller
         $query = DB::table('timesheet_rto')
             ->select(['timesheet_rto.*', 'employees.firstname', 'employees.lastname'])
             ->Leftjoin('employees', 'timesheet_rto.employeeID', '=', 'employees.employeeid')
+			->leftjoin('timesheet_rtotime','timesheet_rtotime.requestID','=','timesheet_rto.requestID')
             ->skip($input['start'])
-            ->take($input['length']);
+            ->take($input['length'])
+			->groupBy('timesheet_rto.requestID');
 
+			
+	
+		
+		if(isset($input['startdate']) && isset($input['enddate']))
+		{
 
+			$query->orWhereBetween('timesheet_rtotime.date', array($input['startdate'], $input['enddate']));
+			$queryCount->orWhereBetween('timesheet_rtotime.date', array($input['startdate'], $input['enddate']));
+			//dd($query);
+		}
+			
         //Search value functionality
-        if ($input['search']['value']) {
+        if (isset($input['search']['value'])) {
             foreach ($SearchableConditionals as $key) {
 
 
