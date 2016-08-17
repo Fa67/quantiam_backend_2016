@@ -207,8 +207,8 @@ class User extends Model
 	}
 	
 	
-	function getUserList($params)
-	{
+	function getUserList($params, $user)
+    {
 	
 		$query = DB::table('employees')
 				->select(['employeeid','firstname','lastname']);
@@ -226,6 +226,19 @@ class User extends Model
 					$query->whereNull('leavedate');
 			
 				}
+				if(!empty($params['hierarchy']))
+                {
+                    $this->permissions = $user->permissions;
+                    if (($this->checkPermissions(3)) || $this->checkPermissions(2))
+                    {
+                    }
+                    else
+                    {
+                        $idstofetch = $this -> getSubordinateIdArray($user);
+                        $query -> whereIn('employeeid', $idstofetch);
+                    }
+
+                }
 				
 				$query = $query
 				->take(30)
@@ -246,11 +259,22 @@ class User extends Model
 		return $temp;
 	
 	}
+
+	function getSubordinateIdArray($user)
+    {
+        $ids = array($user -> employeeid);
+
+        foreach($user -> subordinates as $sub)
+        {
+            $ids[] = $sub -> employeeid;
+        }
+
+        return $ids;
+    }
 	
 	
 	function checkPermissions($permissionIDArray) //accepts arrays or IDs
 	{
-		
 		
         foreach($this->permissions as $obj)
         {

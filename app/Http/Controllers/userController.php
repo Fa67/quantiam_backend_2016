@@ -213,10 +213,11 @@ class userController extends Controller
 	
 	public function getUserList (Request $request)
 	{
+        $input = $request->all();
 
-		$input = $request->all();
+        $user = $request -> user;
 		
-		$query = (new User())->getUserList($input);
+		$query = (new User())->getUserList($input, $user);
 
 		return response() -> json($query, 200);
 	
