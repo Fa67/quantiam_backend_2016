@@ -189,7 +189,7 @@ class RTO extends Model
                     $status = 'denied';
                 }
 
-                else if ($approvals[0] -> approval == 'approved' && ((new User ($approvals[0] -> employeeID)) -> depth) > 0)
+                else if ($approvals[0] -> approval == 'approved' && !((new User ($approvals[0] -> employeeID)) -> checkPermissions(2)))
                 {
                     if ($this -> checkPto($requestID))
                     {
