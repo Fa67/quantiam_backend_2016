@@ -125,8 +125,8 @@ class RTOController extends Controller
 		if(isset($input['startdate']) && isset($input['enddate']))
 		{
 
-			$query->orWhereBetween('timesheet_rtotime.date', array($input['startdate'], $input['enddate']));
-			$queryCount->orWhereBetween('timesheet_rtotime.date', array($input['startdate'], $input['enddate']));
+			$query->WhereBetween('timesheet_rtotime.date', array($input['startdate'], $input['enddate']));
+			$queryCount->WhereBetween('timesheet_rtotime.date', array($input['startdate'], $input['enddate']));
 			//dd($query);
 		}
 			
