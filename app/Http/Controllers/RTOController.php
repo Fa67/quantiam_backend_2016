@@ -179,19 +179,20 @@ class RTOController extends Controller
         $query = $query->get();
         $resultCnt = count($query);
 
-
+		
        foreach($query as $obj)
        {
            $requestIdArray[] = $obj->requestID;
        }
 
-
+		if(isset($requestIdArray))
+		{
         $queryHours = DB::table('timesheet_rtotime')
                 ->select('requestID', 'hours', 'date', 'type')
                 ->whereIn('requestID', $requestIdArray)
                 ->orderBy('date')
                 ->get();
-
+		}
         //query data from rtotime
         //$queryhours
 
