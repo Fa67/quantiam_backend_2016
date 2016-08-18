@@ -114,7 +114,7 @@ class RTOController extends Controller
         $query = DB::table('timesheet_rto')
             ->select(['timesheet_rto.*', 'employees.firstname', 'employees.lastname'])
             ->Leftjoin('employees', 'timesheet_rto.employeeID', '=', 'employees.employeeid')
-			->leftjoin('timesheet_rtotime','timesheet_rtotime.requestID','=','timesheet_rto.requestID')
+            ->Leftjoin('timesheet_rtotime', 'timesheet_rto.employeeID', '=', 'employees.employeeid')
             ->skip($input['start'])
             ->take($input['length'])
 			->groupBy('timesheet_rto.requestID');
@@ -122,7 +122,7 @@ class RTOController extends Controller
 			
 	
 		
-		if(isset($input['startdate']) && isset($input['enddate']))
+		if((isset($input['startdate']) && isset($input['enddate'])) && ($input['startdate'] && $input['enddate']))
 		{
 
 			$query->WhereBetween('timesheet_rtotime.date', array($input['startdate'], $input['enddate']));
@@ -131,18 +131,19 @@ class RTOController extends Controller
 		}
 			
         //Search value functionality
-        if (isset($input['search']['value'])) {
+        if ($input['search']['value']) {
             foreach ($SearchableConditionals as $key) {
 
 
-                $query->orWhere($key, 'Like', '%' . $input['search']['value'] . '%');
-                $queryCount->orWhere($key, 'Like', '%' . $input['search']['value'] . '%');
+                $query->Where($key, 'Like', '%' . $input['search']['value'] . '%');
+                $queryCount->Where($key, 'Like', '%' . $input['search']['value'] . '%');
 
             }
 
 
         }
         $query->whereIn('timesheet_rto.employeeID', $idstofetch);
+
 
 
         //custom field functionality
@@ -177,6 +178,34 @@ class RTOController extends Controller
 
         $query = $query->get();
         $resultCnt = count($query);
+
+
+       foreach($query as $obj)
+       {
+           $requestIdArray[] = $obj->requestID;
+       }
+
+
+        $queryHours = DB::table('timesheet_rtotime')
+                ->select('requestID', 'hours', 'date', 'type')
+                ->whereIn('requestID', $requestIdArray)
+                ->get();
+
+        //query data from rtotime
+        //$queryhours
+
+        foreach($query as $obj)
+        {
+            foreach($queryHours as $time)
+            {
+                if ($obj->requestID == $time->requestID)
+                {
+                    $obj->time[] = $time;
+                }
+            }
+        }
+
+
 
 
         $returnObj['recordsTotal'] = $queryCount;
