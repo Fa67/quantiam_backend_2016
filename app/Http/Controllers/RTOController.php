@@ -155,8 +155,7 @@ class RTOController extends Controller
 
         }
 
-        //	$query->orWhere('characterName','Like','%Troyd%');
-        $queryCount = $queryCount->count();
+     
 
         // Ordering for datatable.
         if (isset($input['order'])) {
@@ -173,8 +172,12 @@ class RTOController extends Controller
             $query->orderBy('created', 'desc');
         }
 
-
+   
+       
         $query = $query->get();
+        $queryCount = $queryCount->get();
+		
+        $queryCount = count($queryCount);
         $resultCnt = count($query);
 
 		
@@ -207,7 +210,8 @@ class RTOController extends Controller
 
 
 
-
+		
+		
         $returnObj['recordsTotal'] = $queryCount;
         $returnObj['recordsFiltered'] = $queryCount;
 
