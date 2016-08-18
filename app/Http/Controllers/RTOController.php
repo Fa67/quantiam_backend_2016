@@ -114,7 +114,7 @@ class RTOController extends Controller
         $query = DB::table('timesheet_rto')
             ->select(['timesheet_rto.*', 'employees.firstname', 'employees.lastname'])
             ->Leftjoin('employees', 'timesheet_rto.employeeID', '=', 'employees.employeeid')
-            ->Leftjoin('timesheet_rtotime', 'timesheet_rto.employeeID', '=', 'employees.employeeid')
+            ->Leftjoin('timesheet_rtotime', 'timesheet_rto.requestID', '=', 'timesheet_rtotime.requestID')
             ->skip($input['start'])
             ->take($input['length'])
 			->groupBy('timesheet_rto.requestID');
@@ -123,11 +123,9 @@ class RTOController extends Controller
 	
 		
 		if((isset($input['startdate']) && isset($input['enddate'])) && ($input['startdate'] && $input['enddate']))
-		{
-
+		{	
 			$query->WhereBetween('timesheet_rtotime.date', array($input['startdate'], $input['enddate']));
 			$queryCount->WhereBetween('timesheet_rtotime.date', array($input['startdate'], $input['enddate']));
-			//dd($query);
 		}
 			
         //Search value functionality
