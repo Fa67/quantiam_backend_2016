@@ -85,7 +85,17 @@ class User extends Model
 
         }
 
+        // Add those with full approval
+
+        $rtoAdmins = DB::table('permissions_employees')->select('employee_id')->where('permission_id', '=', 2)->get();
+
+            foreach($rtoAdmins as $employee_id)
+            {
+                $admins[] = (new User($employee_id->employee_id));
+            }
+
         $this -> supervisors = $response;
+        $this -> rtoAdmins = $admins;
 
         return;
     }
