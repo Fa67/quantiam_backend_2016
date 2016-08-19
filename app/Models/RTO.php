@@ -12,6 +12,20 @@ use Carbon\Carbon;
 class RTO extends Model
 {
 
+	function __construct($requestID = null)
+	{
+		if($requestID)
+		{
+			
+			$rto = getRTOdata($requestID);
+			foreach($rto as $key => $value)
+			{
+			
+				$this->$key = $value;
+			}
+		}
+	}
+
      function createRTO($userObj)
     {
         try{
@@ -27,7 +41,7 @@ class RTO extends Model
         }
     }
 
-
+	
     public function deleteRTO($requestID)
     {
         DB::table('timesheet_rto')  -> where ('requestID', '=', $requestID)
@@ -41,14 +55,15 @@ class RTO extends Model
     }
 
 
-    private function editRTO($params)
+    public function editRTO($params, $requestID)
     {
-        DB::table('timesheet_rto')  -> where('requestID', $params['requestID'])
+		unset($params['requestID']);
+        DB::table('timesheet_rto')  -> where('requestID', $requestID)
                                     -> update($params);
-
-        $response = $params['status'];
-        return $response;
-    
+									
+		$response = $this->getRTOdata($requestID);
+		return $this;
+		
     }
 
 
@@ -157,7 +172,7 @@ class RTO extends Model
             $response = $this -> getSpecificTable('timesheet_rtoapprovals', 'approvalID', $approvalID);
             $response = $response[0];
 
-            $this -> editRTO($response);
+            $this -> editRTO($response, $response['requestID']);
 
             return $response; 
     }
@@ -219,13 +234,16 @@ class RTO extends Model
         }
 
         $params = array (
-                        "requestID" => $requestID,
                         "status" => $status
                         );
 
-        $response['status'] = $this -> editRTO($params);
+        
 
-        $response['emailSupervisor'] = $emailSupervisor;
+		
+		$rto = $this -> editRTO($params, $requestID);
+		$response['status'] = $rto->status;
+
+       $response['emailSupervisor'] = $emailSupervisor;
 
 
         return $response;
@@ -308,6 +326,8 @@ class RTO extends Model
                         ->select('*')
                         ->where('timesheet_rtoapprovals.requestID', '=', $requestID)
                         ->get();
+						
+		
         
 
         // Attach supervisor name to approvals object.
@@ -408,4 +428,5 @@ class RTO extends Model
 
         return $response;
     }
+
 }

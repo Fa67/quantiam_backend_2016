@@ -422,6 +422,15 @@ class RTOController extends Controller
         }
 
     }
+	
+	function updateRTO(Request $request, $requestID)
+	{
+	
+		$params = $request->all();
+		//$params['employeeID'] = 4;
+		$response = (new RTO())->editRTO($params, $requestID);
+		return response()->json($response, 200);
+	}
 
     public function deleteApproval(Request $request, $approvalID)
     {

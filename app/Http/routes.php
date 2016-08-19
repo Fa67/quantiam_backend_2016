@@ -34,7 +34,7 @@ Route::group(['middleware' => 'authuser'], function()
 	Route::post('/rto', 'RTOController@loadRTO');	// Load all self- and subordinate-RTOs
 	Route::get('/rto/{request_id}', 'RTOController@specRTO');	// Load specific rto
 	Route::post('/rto/new', 'RTOController@createRTO');  // Post a new row in the timesheet_rto table.
-	Route::put('/rto', 'RTOController@updateRTO');  // Edit existing RTO status.
+	Route::put('/rto/{requestID}', 'RTOController@updateRTO');  // Edit existing RTO status.
 	Route::delete('/rto/{request_id}', 'RTOController@deleteRTO'); // Delete and RTO and all its associated approvals/times.
 
 	Route::post('/rto/{request_id}/requestTime', 'RTOController@requestTime');
