@@ -57,7 +57,19 @@ class RTO extends Model
 
     public function editRTO($params, $requestID)
     {
-		unset($params['requestID']);
+
+		$allowableAttributes = array('employeeID','status');
+		
+		foreach($params as $key => $value)
+		{
+		
+			if(!in_array($key, $allowableAttributes)) unset($params[$key]);
+			
+			
+		
+		
+		}
+		
         DB::table('timesheet_rto')  -> where('requestID', $requestID)
                                     -> update($params);
 									
@@ -313,7 +325,8 @@ class RTO extends Model
         $return_object = array();
         
         $tableData = DB::table('timesheet_rto')
-                        ->select('*')
+                        ->select(['requestID','employees.employeeID', 'firstname','lastname','created', 'updated','reason','status'])
+						->leftJoin('employees', 'employees.employeeid','=','timesheet_rto.employeeID')
                         ->where('timesheet_rto.requestID', '=', $requestID)
                         ->get();
                                             

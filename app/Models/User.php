@@ -224,6 +224,10 @@ class User extends Model
 				->select(['employeeid','firstname','lastname']);
 				
 				
+				
+			
+				
+				
 				if(!empty($params['like']))
 				{
 					$query->where('firstname','Like',$params['like'].'%');
@@ -256,7 +260,15 @@ class User extends Model
 				->get();
 				
 	
+				if(isset($params['guarantee']))
+				{
 				
+					$guarantee = DB::table('employees')
+					->select(['employeeid','firstname','lastname'])
+					->where('employeeid','=',$params['guarantee'])
+					->first();
+					$query[] = $guarantee;
+				}
 				
 			
 		$temp = array();
